@@ -1,4 +1,8 @@
 {
 	"name": "example-name",
-	"paths": ["array of objects with x and y"]
+	"paths": [
+		{x: 0, y: 0},
+		"array of objects with x and y"
+	]
+	
 }
