@@ -7,7 +7,7 @@ const plugins = [
    new HtmlWebpackPlugin({
       hash: true,
       title: 'lol',
-      template: './src/template.html',
+      template: './game/template.html',
       filename: './index.html',
       minify: {
          removeComments: true,
@@ -18,7 +18,7 @@ const plugins = [
    /* new BundleAnalyzerPlugin(), */
 ];
 module.exports = {
-   entry: './src/index.js',
+   entry: './game/index.js',
    mode: 'development',
    devtool: 'source-map',
    output: {
