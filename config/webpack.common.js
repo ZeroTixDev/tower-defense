@@ -1,13 +1,15 @@
 'use strict';
+
 const path = require('path');
-/* const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer'); */
+const paths = require('./paths');
+const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const plugins = [
    new HtmlWebpackPlugin({
       hash: true,
       title: 'lol',
-      template: './game/template.html',
+      template: paths.game + '/template.html',
       filename: './index.html',
       minify: {
          removeComments: true,
@@ -15,15 +17,16 @@ const plugins = [
       },
    }),
    new CleanWebpackPlugin(),
-   /* new BundleAnalyzerPlugin(), */
+   new WebpackBar(),
 ];
 module.exports = {
-   entry: './game/index.js',
+   entry: [paths.game + '/index.js'],
    mode: 'development',
    devtool: 'source-map',
    output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, 'dist'),
+      path: paths.build,
+      publicPath: '/',
    },
    module: {
       rules: [
@@ -34,7 +37,4 @@ module.exports = {
       ],
    },
    plugins,
-   devServer: {
-      contentBase: path.join(__dirname, 'dist'),
-   },
 };

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve",
-    "build": "webpack",
-    "dev": "webpack serve"
+    "start": "webpack serve --config config/webpack.prod.js",
+    "build": "webpack --config config/webpack.prod.js",
+    "dev": "webpack serve --config config/webpack.dev.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,8 @@
     "webpack": "^5.10.0",
     "webpack-bundle-analyzer": "^4.2.0",
     "webpack-cli": "^4.2.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.7.3",
+    "webpackbar": "^5.0.0-3"
   }
 }
