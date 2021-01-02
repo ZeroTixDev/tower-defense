@@ -1,5 +1,6 @@
 'use strict';
 
+const { join } = require('path');
 const paths = require('./paths');
 const WebpackBar = require('webpackbar');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -8,18 +9,8 @@ const plugins = [
    new HtmlWebpackPlugin({
       hash: true,
       title: 'lol',
-      template: paths.game + '/template.html',
-      filename: './index.html',
-      minify: {
-         removeComments: true,
-         collapseWhitespace: true,
-      },
-   }),
-   new HtmlWebpackPlugin({
-      hash: true,
-      title: 'lol',
-      template: paths.editor + '/template.html',
-      filename: './editor/index.html',
+      template: join(paths.game, 'template.html'),
+      filename: './game/index.html',
       minify: {
          removeComments: true,
          collapseWhitespace: true,
@@ -29,11 +20,9 @@ const plugins = [
    new WebpackBar(),
 ];
 module.exports = {
-   /* entry: {
-      game: { import: paths.game + '/index.js', filename: 'game/[name].[contenthash].bundle.js' },
-      editor: { import: paths.editor + '/index.js', filename: 'editor/[name].[contenthash].bundle.js' },
-   },*/
-   entry: paths.game + '/index.js',
+   entry: {
+      game: { import: join(paths.game, 'index.js'), filename: 'game/js/[name].[contenthash].bundle.js' },
+   },
    mode: 'development',
    devtool: 'source-map',
    output: {

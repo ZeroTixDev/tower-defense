@@ -11,7 +11,8 @@ module.exports = merge(common, {
       historyApiFallback: true,
       contentBase: paths.game,
       open: true,
+      openPage: 'game',
       compress: true,
-      port: 8080,
+      port: 80,
    },
 });
