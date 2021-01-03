@@ -1,7 +1,15 @@
 * {
 	margin:0;
 	padding:0;
+	box-sizing: border-box;
 }
 body {
-	background-color:white;
+	font-size:16px;
+	background-color: #b0b0b0;
+}
+canvas {
+	position:absolute;
+	left:0;
+	top:0;
+	cursor:none;
 }

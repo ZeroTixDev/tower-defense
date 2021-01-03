@@ -1,9 +1,9 @@
 'use strict';
 
-const resizeCanvas = require('./util/resizeCanvas');
+const resizeCanvas = require('../util/resizeCanvas');
 const Path = require('./path');
 const Camera = require('./camera');
-const { BACKGROUND_COLOR } = require('./constants');
+const { BACKGROUND_COLOR } = require('../util/constants');
 
 module.exports = class Game {
    constructor() {

@@ -1,6 +1,6 @@
 'use strict';
 
-const { GAME_WIDTH, GAME_HEIGHT } = require('./constants');
+const { GAME_WIDTH, GAME_HEIGHT } = require('../util/constants');
 module.exports = class Camera {
    constructor(x = GAME_WIDTH / 2, y = GAME_HEIGHT / 2) {
       this.x = x;

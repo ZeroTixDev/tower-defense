@@ -1,6 +1,6 @@
 'use strict';
 
-const offset = require('./util/offset');
+const offset = require('../util/offset');
 
 module.exports = class Path {
    constructor(paths, size) {
