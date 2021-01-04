@@ -1,16 +1,17 @@
 'use strict';
 
-const { PATH_SIZE } = require('../../util/constants');
+const { PATH_SIZE, BASIC_ENEMY_COLOR } = require('../../util/constants');
 const offset = require('../../util/offset');
 
 module.exports = class Enemy {
-   constructor(path, speed = 10, size = PATH_SIZE - 5) {
+   constructor(path, speed = 5, size = PATH_SIZE - 10) {
       this.pathIndex = 1;
       this.path = path;
       this.x = this.lastPath.x;
       this.y = this.lastPath.y;
       this.radius = size / 2;
       this.speed = speed;
+      this.color = BASIC_ENEMY_COLOR;
       this.calculateVelocity();
    }
    lerp(start, end, time) {
@@ -29,7 +30,8 @@ module.exports = class Enemy {
       this.y += this.yv;
       if (this.onPath) {
          this.pathIndex++;
-         console.log('next path');
+         this.x = this.lastPath.x;
+         this.y = this.lastPath.y;
          if (!this.nextPath) {
             this.pathIndex = 0;
          }
@@ -48,16 +50,16 @@ module.exports = class Enemy {
          ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
          ctx.fill();
       }
-      drawPlayer(this.x, this.y, 'gray');
-      drawPlayer(this.lastPath.x, this.lastPath.y, 'blue');
-      drawPlayer(this.currentPath.x, this.currentPath.y, 'red');
-      drawPlayer(this.nextPath.x, this.nextPath.y, 'green');
+      drawPlayer(this.x, this.y, this.color);
    }
    get lastPath() {
       return this.path[this.pathIndex - 1];
    }
    get onPath() {
-      return this.currentPath.x - this.roundPos.x < 1 && this.currentPath.y - this.roundPos.y < 1;
+      return (
+         Math.abs(this.currentPath.x - this.roundPos.x) < this.speed &&
+         Math.abs(this.currentPath.y - this.roundPos.y) < this.speed
+      );
    }
    get nextPath() {
       return this.path[this.pathIndex + 1];

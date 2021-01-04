@@ -1,4 +1,5 @@
 'use strict';
 
 const Basic = require('./basic');
-module.exports = { Basic };
+const Fast = require('./fast');
+module.exports = { Basic, Fast };

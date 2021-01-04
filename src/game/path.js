@@ -30,11 +30,5 @@ module.exports = class Path {
       ctx.strokeStyle = 'white';
       ctx.lineWidth = PATH_SIZE * 0.8;
       ctx.stroke();
-      // ideal path
-      ctx.beginPath();
-      this.lineToPaths(ctx, camera);
-      ctx.strokeStyle = 'red';
-      ctx.lineWidth = 2;
-      ctx.stroke();
    }
 };

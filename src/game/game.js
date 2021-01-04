@@ -5,8 +5,8 @@ const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
 const { BACKGROUND_COLOR } = require('../util/constants');
-const enemy = require('./enemy/all');
 const currentTick = require('../util/currentTick');
+const spawnEnemy = require('../util/spawnEnemy');
 
 module.exports = class Game {
    constructor() {
@@ -14,12 +14,12 @@ module.exports = class Game {
       this.towers = [];
       this.fov = 0.1;
       this.camera = new Camera();
-      this.path = require('./path.json');
+      this.path = require('./map/path.json');
       this.pathObject = new Path(this.path);
       this.canvas = document.createElement('canvas');
       this.ctx = this.canvas.getContext('2d');
       this.state = new State();
-      this.state.enemy.push(new enemy.Basic(this.path));
+      spawnEnemy(this.state.enemy, this.path, require('./map/enemy.json'));
       this.tick = 0;
       this.startTime = window.performance.now();
       resizeCanvas(this.canvas);
@@ -52,9 +52,14 @@ module.exports = class Game {
    }
    update() {
       const expectedTick = currentTick(this.startTime);
+      let amount = 0;
       while (this.tick < expectedTick) {
+         if (amount > 5) {
+            break;
+         }
          this.simulate();
          this.tick++;
+         amount++;
       }
    }
 };
