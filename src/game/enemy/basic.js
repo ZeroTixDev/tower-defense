@@ -12,6 +12,7 @@ module.exports = class Enemy {
       this.radius = size / 2;
       this.speed = speed;
       this.color = BASIC_ENEMY_COLOR;
+      this.accuracy = 5;
       this.calculateVelocity();
    }
    lerp(start, end, time) {
@@ -22,22 +23,25 @@ module.exports = class Enemy {
    }
    calculateVelocity() {
       this.angle = this.findAngle();
-      this.xv = this.speed * Math.cos(this.angle);
-      this.yv = this.speed * Math.sin(this.angle);
+      this.xv = (this.speed * Math.cos(this.angle)) / this.accuracy;
+      this.yv = (this.speed * Math.sin(this.angle)) / this.accuracy;
    }
    update() {
-      if (this.onPath) {
-         this.pathIndex++;
-         this.x = this.lastPath.x;
-         this.y = this.lastPath.y;
-         if (!this.currentPath) {
-            this.dead = true;
-         } else {
-            this.calculateVelocity();
+      for (let i = 0; i < this.accuracy; i++) {
+         this.x += this.xv;
+         this.y += this.yv;
+         if (this.onPath) {
+            this.pathIndex++;
+            this.x = this.lastPath.x;
+            this.y = this.lastPath.y;
+            if (!this.currentPath) {
+               this.dead = true;
+               break;
+            } else {
+               this.calculateVelocity();
+            }
          }
       }
-      this.x += this.xv;
-      this.y += this.yv;
    }
    get roundPos() {
       return { x: Math.round(this.x), y: Math.round(this.y) };
@@ -57,10 +61,7 @@ module.exports = class Enemy {
       return this.path[this.pathIndex - 1];
    }
    get onPath() {
-      return (
-         Math.abs(this.currentPath.x - this.roundPos.x) < this.speed &&
-         Math.abs(this.currentPath.y - this.roundPos.y) < this.speed
-      );
+      return Math.abs(this.currentPath.x - this.roundPos.x) < 2 && Math.abs(this.currentPath.y - this.roundPos.y) < 2;
    }
    get nextPath() {
       return this.path[this.pathIndex + 1];
