@@ -10,7 +10,8 @@ const plugins = [
       hash: true,
       title: 'lol',
       template: join(paths.game, 'template.html'),
-      filename: './game/index.html',
+      filename: '/index.html',
+      publicPath: './',
       minify: {
          removeComments: true,
          collapseWhitespace: true,
@@ -21,12 +22,12 @@ const plugins = [
 ];
 module.exports = {
    entry: {
-      game: { import: join(paths.game, 'index.js'), filename: 'game/js/[name].[contenthash].bundle.js' },
+      game: { import: join(paths.game, 'index.js'), filename: '[name].[contenthash].bundle.js' },
    },
    mode: 'development',
    devtool: 'source-map',
    output: {
-      path: paths.build,
+      path: join(paths.build + '/game'),
       publicPath: '/',
       filename: '[name].[contenthash].bundle.js',
    },

@@ -3,7 +3,7 @@
 require('./style.css');
 
 const { BACKGROUND_COLOR, GAME_WIDTH, GAME_HEIGHT } = require('../util/constants');
-const loadImage = require('../util/loadImage');
+// const loadImage = require('../util/loadImage');
 const drawCursor = require('..//util/drawCursor');
 const resizeCanvas = require('../util/resizeCanvas');
 const canvas = document.createElement('canvas');
@@ -46,4 +46,4 @@ function listen(type, func, element = window) {
    requestAnimationFrame(run);
 })();
 
-console.log('tower defense editor');
+console.log('tower defense editor (by ZeroTix)');

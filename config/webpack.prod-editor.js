@@ -1,28 +1,36 @@
 'use strict';
 
 const { merge } = require('webpack-merge');
-const { join } = require('path');
 const paths = require('./paths');
+const { join } = require('path');
+const WebpackBar = require('webpackbar');
 const common = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackBar = require('webpackbar');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const config = { ...common };
 config.entry = {
-   editor: { import: join(paths.editor, 'index.js'), filename: 'editor/js/[name].[contenthash].bundle.js' },
+   editor: { import: join(paths.editor, 'index.js'), filename: '[name].[contenthash].bundle.js' },
 };
 config.plugins = [
    new HtmlWebpackPlugin({
       hash: true,
       title: 'lol',
       template: join(paths.editor, 'template.html'),
-      filename: './editor/index.html',
+      publicPath: './',
+      filename: '/index.html',
       minify: {
          removeComments: true,
          collapseWhitespace: true,
       },
    }),
    new WebpackBar(),
+   new CleanWebpackPlugin(),
 ];
+config.output = {
+   path: join(paths.build, '/editor'),
+   publicPath: '/',
+   filename: '[name].[contenthash].bundle.js',
+};
 module.exports = merge(config, {
    mode: 'production',
    devtool: false,

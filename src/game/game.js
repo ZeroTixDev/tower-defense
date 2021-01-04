@@ -51,11 +51,16 @@ module.exports = class Game {
    listen(type, func) {
       window.addEventListener(type, func.bind(this));
    }
+   stop() {
+      if (this.afr) {
+         window.cancelAnimationFrame(this.afr);
+      }
+   }
    start() {
       (function run() {
          this.update();
          this.render();
-         requestAnimationFrame(run.bind(this));
+         this.afr = requestAnimationFrame(run.bind(this));
       }.bind(this)());
    }
    render() {
