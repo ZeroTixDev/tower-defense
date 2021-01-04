@@ -3,14 +3,12 @@
 		"type": "basic",
 		"amount": 10,
 		"time-in-between-ms": 400,
-		"delay": 1000,
-		"random-time": 150
+		"delay": 1200
 	},
 	{
 		"type": "fast",
 		"amount": 5,
 		"delay": 0,
-		"time-in-between-ms": 300,
-		"random-time": 100
+		"time-in-between-ms": 300
 	}
 ]

@@ -26,8 +26,6 @@ module.exports = class Enemy {
       this.yv = this.speed * Math.sin(this.angle);
    }
    update() {
-      this.x += this.xv;
-      this.y += this.yv;
       if (this.onPath) {
          this.pathIndex++;
          this.x = this.lastPath.x;
@@ -38,6 +36,8 @@ module.exports = class Enemy {
             this.calculateVelocity();
          }
       }
+      this.x += this.xv;
+      this.y += this.yv;
    }
    get roundPos() {
       return { x: Math.round(this.x), y: Math.round(this.y) };
