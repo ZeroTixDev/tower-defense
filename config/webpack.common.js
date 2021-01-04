@@ -27,7 +27,7 @@ module.exports = {
    mode: 'development',
    devtool: 'source-map',
    output: {
-      path: join(paths.build + '/game'),
+      path: join(paths.build, '/game'),
       publicPath: '/',
       filename: '[name].[contenthash].bundle.js',
    },
