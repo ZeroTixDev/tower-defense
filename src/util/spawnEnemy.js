@@ -1,18 +1,24 @@
 'use strict';
 
 const enemy = require('../game/enemy/all');
-module.exports = function spawnEnemy(enemyArray, path, json) {
+const currentTick = require('./currentTick');
+const { SIMULATION_RATE } = require('./constants');
+
+module.exports = function spawnEnemy(path, json, game) {
+   const enemyArray = game.state.enemy;
+   function calculateTime(ms) {
+      return currentTick(game.startTime) + (ms / 1000) * SIMULATION_RATE;
+   }
    function spawn(type, amount, time, delay) {
-      setTimeout(() => {
+      game.newEvent(() => {
          for (let i = 0; i < amount; i++) {
-            setTimeout(() => {
+            game.newEvent(() => {
                enemyArray.push(new type(path));
-            }, i * time);
+            }, calculateTime(i * time));
          }
-      }, delay);
+      }, calculateTime(delay));
    }
    for (const object of json) {
-      console.log(object);
       const { type, amount, delay } = object;
       if (type === 'basic') {
          spawn(enemy.Basic, amount, object['time-in-between-ms'], delay);

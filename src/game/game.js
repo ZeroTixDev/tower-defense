@@ -12,6 +12,7 @@ module.exports = class Game {
    constructor() {
       this.wave = 0;
       this.towers = [];
+      this.events = Object.create(null);
       this.fov = 0.1;
       this.camera = new Camera();
       this.path = require('./map/path.json');
@@ -19,12 +20,18 @@ module.exports = class Game {
       this.canvas = document.createElement('canvas');
       this.ctx = this.canvas.getContext('2d');
       this.state = new State();
-      spawnEnemy(this.state.enemy, this.path, require('./map/enemy.json'));
       this.tick = 0;
       this.startTime = window.performance.now();
       resizeCanvas(this.canvas);
+      spawnEnemy(this.path, require('./map/enemy.json'), this);
       this.listen('resize', () => resizeCanvas(this.canvas));
       document.body.appendChild(this.canvas);
+   }
+   newEvent(func, tick) {
+      if (this.events[tick] === undefined) {
+         this.events[tick] = [];
+      }
+      this.events[tick].push(func);
    }
    listen(type, func) {
       window.addEventListener(type, func.bind(this));
@@ -54,11 +61,18 @@ module.exports = class Game {
       const expectedTick = currentTick(this.startTime);
       let amount = 0;
       while (this.tick < expectedTick) {
-         if (amount > SIMULATION_RATE) {
-            this.tick = expectedTick;
+         if (this.events[this.tick]) {
+            for (const func of this.events[this.tick]) {
+               func();
+            }
+         }
+         if (amount <= SIMULATION_RATE) {
+            this.simulate();
+         }
+         if (amount >= SIMULATION_RATE * 120) {
+            alert('You left the tab for too long. Please refresh.');
             break;
          }
-         this.simulate();
          this.tick++;
          amount++;
       }
