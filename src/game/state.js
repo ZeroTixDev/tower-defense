@@ -6,8 +6,12 @@ module.exports = class State {
       this.enemy = [];
    }
    simulate() {
-      for (const enemy of this.enemy) {
+      for (let i = this.enemy.length - 1; i >= 0; i--) {
+         const enemy = this.enemy[i];
          enemy.update();
+         if (enemy.dead) {
+            this.enemy.splice(i, 1);
+         }
       }
    }
    render(ctx, camera) {
