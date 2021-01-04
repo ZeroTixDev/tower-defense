@@ -34,8 +34,9 @@ module.exports = class Enemy {
          this.y = this.lastPath.y;
          if (!this.currentPath) {
             this.dead = true;
+         } else {
+            this.calculateVelocity();
          }
-         this.calculateVelocity();
       }
    }
    get roundPos() {
