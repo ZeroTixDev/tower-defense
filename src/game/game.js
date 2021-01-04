@@ -4,7 +4,7 @@ const resizeCanvas = require('../util/resizeCanvas');
 const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
-const { BACKGROUND_COLOR } = require('../util/constants');
+const { BACKGROUND_COLOR, SIMULATION_RATE } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const spawnEnemy = require('../util/spawnEnemy');
 
@@ -54,7 +54,8 @@ module.exports = class Game {
       const expectedTick = currentTick(this.startTime);
       let amount = 0;
       while (this.tick < expectedTick) {
-         if (amount > 5) {
+         if (amount > SIMULATION_RATE) {
+            this.tick = expectedTick;
             break;
          }
          this.simulate();
