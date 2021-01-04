@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = class Tower {
-   constructor(path) {}
+   constructor() {}
 };
-// add towers @param { pre-determined path}
+// add towers @param {x , y}
