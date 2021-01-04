@@ -1,11 +1,11 @@
 'use strict';
 
 const offset = require('../util/offset');
+const { PATH_SIZE } = require('../util/constants');
 
 module.exports = class Path {
-   constructor(paths, size) {
+   constructor(paths) {
       this.paths = paths;
-      this.pathSize = size;
    }
    idx(num) {
       return this.paths[num];
@@ -22,13 +22,13 @@ module.exports = class Path {
       // outside
       this.lineToPaths(ctx, camera);
       ctx.strokeStyle = 'black';
-      ctx.lineWidth = this.pathSize;
+      ctx.lineWidth = PATH_SIZE;
       ctx.stroke();
       // inside
       ctx.beginPath();
       this.lineToPaths(ctx, camera);
       ctx.strokeStyle = 'white';
-      ctx.lineWidth = this.pathSize * 0.8;
+      ctx.lineWidth = PATH_SIZE * 0.8;
       ctx.stroke();
       // ideal path
       ctx.beginPath();

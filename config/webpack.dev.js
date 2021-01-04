@@ -9,9 +9,9 @@ module.exports = merge(common, {
    devtool: 'inline-source-map',
    devServer: {
       historyApiFallback: true,
-      contentBase: paths.game,
+      contentBase: paths.build,
+      openPage: '/game',
       open: true,
-      openPage: 'game',
       compress: true,
       port: 80,
    },

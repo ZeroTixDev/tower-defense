@@ -36,10 +36,10 @@ module.exports = merge(config, {
    devtool: 'inline-source-map',
    devServer: {
       historyApiFallback: true,
-      contentBase: paths.editor,
+      contentBase: paths.build,
       open: true,
-      openPage: 'editor',
       compress: true,
       port: 80,
+      openPage: '/editor',
    },
 });
