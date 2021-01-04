@@ -12,6 +12,7 @@ module.exports = function spawnEnemy(enemyArray, path, json) {
       }, delay);
    }
    for (const object of json) {
+      console.log(object);
       const { type, amount, delay } = object;
       if (type === 'basic') {
          spawn(enemy.Basic, amount, object['time-in-between-ms'], delay, object['random-time']);
