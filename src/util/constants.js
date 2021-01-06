@@ -11,7 +11,7 @@ const FAST_ENEMY_COLOR = '#19d4ab';
 const BASIC_ENEMY_COLOR = '#2d2e2e';
 const PATH_ENDS_COLOR = '#470703';
 const PATH_ENDS_SIZE = 70;
-const SPOT_COLOR = '#9bb3c9';
+const SPOT_COLOR = '#333333';
 
 module.exports = {
    GAME_WIDTH,
