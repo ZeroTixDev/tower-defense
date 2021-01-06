@@ -8,8 +8,13 @@ module.exports = class Camera {
       this.speed = speed;
    }
    interp(x, y, delta) {
-      this.x += (x - this.x) * 0.5 * delta * this.speed;
-      this.y += (y - this.y) * 0.5 * delta * this.speed;
+      if (delta > 1) {
+         this.x += (x - this.x) * 0.5;
+         this.y += (y - this.y) * 0.5;
+      } else {
+         this.x += (x - this.x) * 0.5 * delta * this.speed;
+         this.y += (y - this.y) * 0.5 * delta * this.speed;
+      }
    }
    setTo(x, y) {
       this.x = x;
