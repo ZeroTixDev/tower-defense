@@ -1,10 +1,10 @@
 'use strict';
 
-const { PATH_SIZE, BASIC_ENEMY_COLOR } = require('../../util/constants');
+const { BASIC_ENEMY_COLOR } = require('../../util/constants');
 const offset = require('../../util/offset');
 
 module.exports = class Enemy {
-   constructor(path, speed = 5, size = PATH_SIZE - 10) {
+   constructor(path, speed = 5, size = 50) {
       this.pathIndex = 1;
       this.path = path;
       this.x = this.lastPath.x;

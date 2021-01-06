@@ -4,9 +4,11 @@ const resizeCanvas = require('../util/resizeCanvas');
 const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
+const Spot = require('./spot');
 const { BACKGROUND_COLOR, SIMULATION_RATE } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const spawnEnemy = require('../util/spawnEnemy');
+const offset = require('../util/offset');
 
 module.exports = class Game {
    constructor() {
@@ -20,6 +22,7 @@ module.exports = class Game {
       this.canvas = document.createElement('canvas');
       this.ctx = this.canvas.getContext('2d');
       this.state = new State();
+      this.makeSpots();
       this.tick = 0;
       this.startTime = window.performance.now();
       this.mouse = {
@@ -35,7 +38,41 @@ module.exports = class Game {
          this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
          this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
       });
+      /* debug to make spots
+      this.spot = {
+         x: 0,
+         y: 0,
+      };
+      this.listen('keydown', (event) => {
+         if (event.repeat) return;
+         if (event.code === 'KeyW') {
+            this.spot.y -= 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyS') {
+            this.spot.y += 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyA') {
+            this.spot.x -= 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyD') {
+            this.spot.x += 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'Space') {
+            console.log(this.spot);
+         }
+      });
+      */
       document.body.appendChild(this.canvas);
+   }
+   makeSpots() {
+      const spots = require('./map/spot.json');
+      for (const spot of spots) {
+         this.state.spots.push(new Spot(spot.x, spot.y));
+      }
    }
    newEvent(func, tick) {
       if (this.events[tick] === undefined) {
