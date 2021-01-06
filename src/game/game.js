@@ -30,15 +30,11 @@ module.exports = class Game {
       this.listen('resize', () => {
          this.scale = resizeCanvas(this.canvas);
       });
-      this.listen(
-         'mousemove',
-         (event) => {
-            const bound = this.canvas.getBoundingClientRect();
-            this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
-            this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
-         },
-         this.canvas
-      );
+      this.listen('mousemove', (event) => {
+         const bound = this.canvas.getBoundingClientRect();
+         this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
+         this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
+      });
       document.body.appendChild(this.canvas);
    }
    newEvent(func, tick) {
