@@ -10,13 +10,11 @@ module.exports = function spawnEnemy(path, json, game) {
       return currentTick(game.startTime) + (ms / 1000) * SIMULATION_RATE;
    }
    function spawn(type, amount, time, delay) {
-      game.newEvent(() => {
-         for (let i = 0; i < amount; i++) {
-            game.newEvent(() => {
-               enemyArray.push(new type(path));
-            }, calculateTime(i * time));
-         }
-      }, calculateTime(delay));
+      for (let i = 0; i < amount; i++) {
+         game.newEvent(() => {
+            enemyArray.push(new type(path));
+         }, calculateTime(delay + i * time));
+      }
    }
    for (const object of json) {
       const { type, amount, delay } = object;

@@ -35,8 +35,11 @@ module.exports = class Enemy {
             this.x = this.lastPath.x;
             this.y = this.lastPath.y;
             if (!this.currentPath) {
-               this.dead = true;
-               break;
+               this.pathIndex = 1;
+               this.x = this.path[0].x;
+               this.y = this.path[0].y;
+               this.calculateVelocity();
+               // this.dead = true; break;
             } else {
                this.calculateVelocity();
             }

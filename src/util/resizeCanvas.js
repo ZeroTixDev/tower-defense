@@ -9,4 +9,5 @@ module.exports = function resizeCanvas(canvas, func = () => {}) {
    canvas.style.left = `${(window.innerWidth - GAME_WIDTH) / 2}px`;
    canvas.style.top = `${(window.innerHeight - GAME_HEIGHT) / 2}px`;
    func();
+   return Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
 };

@@ -22,9 +22,23 @@ module.exports = class Game {
       this.state = new State();
       this.tick = 0;
       this.startTime = window.performance.now();
-      resizeCanvas(this.canvas);
-      spawnEnemy(this.path, require('./map/enemy.json'), this);
-      this.listen('resize', () => resizeCanvas(this.canvas));
+      this.mouse = {
+         x: 0,
+         y: 0,
+      };
+      this.scale = resizeCanvas(this.canvas);
+      this.listen('resize', () => {
+         this.scale = resizeCanvas(this.canvas);
+      });
+      this.listen(
+         'mousemove',
+         (event) => {
+            const bound = this.canvas.getBoundingClientRect();
+            this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
+            this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
+         },
+         this.canvas
+      );
       document.body.appendChild(this.canvas);
    }
    newEvent(func, tick) {
@@ -33,8 +47,8 @@ module.exports = class Game {
       }
       this.events[tick].push(func);
    }
-   listen(type, func) {
-      window.addEventListener(type, func.bind(this));
+   listen(type, func, element = window) {
+      element.addEventListener(type, func.bind(this));
    }
    stop() {
       if (this.afr) {
@@ -42,7 +56,11 @@ module.exports = class Game {
       }
    }
    start() {
-      (function run() {
+      spawnEnemy(this.path, require('./map/enemy.json'), this);
+      this.lastTime = 0;
+      (function run(time = 0) {
+         this.delta = (time - this.lastTime) / 1000;
+         this.lastTime = time;
          this.update();
          this.render();
          this.afr = requestAnimationFrame(run.bind(this));
@@ -52,7 +70,7 @@ module.exports = class Game {
       this.ctx.fillStyle = BACKGROUND_COLOR;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.pathObject.render(this.ctx, this.camera);
-      this.state.render(this.ctx, this.camera);
+      this.state.render(this.ctx, this.camera, this.path);
    }
    simulate() {
       this.state.simulate();
@@ -60,6 +78,7 @@ module.exports = class Game {
    update() {
       const expectedTick = currentTick(this.startTime);
       let amount = 0;
+      this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
       while (this.tick < expectedTick) {
          if (this.events[this.tick]) {
             for (const func of this.events[this.tick]) {

@@ -40,6 +40,6 @@ module.exports = merge(config, {
       open: true,
       compress: true,
       port: 80,
-      openPage: '/editor',
+      openPage: 'webpack-dev-server',
    },
 });

@@ -10,7 +10,7 @@ module.exports = merge(common, {
    devServer: {
       historyApiFallback: true,
       contentBase: paths.build,
-      openPage: '/game',
+      openPage: 'webpack-dev-server',
       open: true,
       compress: true,
       port: 80,
