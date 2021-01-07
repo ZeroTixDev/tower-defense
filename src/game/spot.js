@@ -12,7 +12,7 @@ module.exports = class Spot {
       ctx.fillStyle = SPOT_COLOR;
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
-      ctx.arc(pos.x, pos.y, this.size / 2, 0, Math.PI * 2);
+      ctx.arc(pos.x, pos.y, (this.size / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
 };

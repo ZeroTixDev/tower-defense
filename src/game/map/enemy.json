@@ -2,13 +2,13 @@
 	{
 		"type": "basic",
 		"amount": 10,
-		"time-in-between-ms": 400,
-		"delay": 1200
+		"time-in-between-ms": 500,
+		"delay": 2000
 	},
 	{
 		"type": "fast",
 		"amount": 5,
 		"delay": 0,
-		"time-in-between-ms": 300
+		"time-in-between-ms": 400
 	}
 ]

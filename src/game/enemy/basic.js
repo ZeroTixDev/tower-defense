@@ -14,6 +14,7 @@ module.exports = class Enemy {
       this.color = BASIC_ENEMY_COLOR;
       this.accuracy = 5;
       this.calculateVelocity();
+      this.health = 100;
    }
    lerp(start, end, time) {
       return start * (1 - time) + end * time;
@@ -55,7 +56,7 @@ module.exports = class Enemy {
          ctx.fillStyle = fill;
          ctx.beginPath();
          const pos = offset(x, y, camera);
-         ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+         ctx.arc(pos.x, pos.y, radius * camera.scale, 0, Math.PI * 2);
          ctx.fill();
       }
       drawPlayer(this.x, this.y, this.color);

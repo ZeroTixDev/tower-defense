@@ -11,7 +11,11 @@ const FAST_ENEMY_COLOR = '#19d4ab';
 const BASIC_ENEMY_COLOR = '#2d2e2e';
 const PATH_ENDS_COLOR = '#470703';
 const PATH_ENDS_SIZE = 70;
-const SPOT_COLOR = '#333333';
+const SPOT_COLOR = '#212121';
+const CONTROLS = {
+   i: 'zoomin',
+   o: 'zoomout',
+};
 
 module.exports = {
    GAME_WIDTH,
@@ -26,4 +30,5 @@ module.exports = {
    PATH_ENDS_COLOR,
    PATH_ENDS_SIZE,
    SPOT_COLOR,
+   CONTROLS,
 };

@@ -27,11 +27,11 @@ module.exports = class State {
       ctx.fillStyle = PATH_ENDS_COLOR;
       ctx.beginPath();
       const start = offset(path[0].x, path[0].y, camera);
-      ctx.arc(start.x, start.y, PATH_ENDS_SIZE / 2, 0, Math.PI * 2);
+      ctx.arc(start.x, start.y, (PATH_ENDS_SIZE / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
       const end = offset(path[path.length - 1].x, path[path.length - 1].y, camera);
-      ctx.arc(end.x, end.y, PATH_ENDS_SIZE / 2, 0, Math.PI * 2);
+      ctx.arc(end.x, end.y, (PATH_ENDS_SIZE / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
 };

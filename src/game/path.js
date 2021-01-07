@@ -28,7 +28,7 @@ module.exports = class Path {
       ctx.beginPath();
       this.lineToPaths(ctx, camera);
       ctx.strokeStyle = PATH_INSIDE_COLOR;
-      ctx.lineWidth = PATH_SIZE * 0.8;
+      ctx.lineWidth = PATH_SIZE * 0.8 * camera.scale;
       ctx.stroke();
    }
 };

@@ -5,10 +5,9 @@ const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
 const Spot = require('./spot');
-const { BACKGROUND_COLOR, SIMULATION_RATE } = require('../util/constants');
+const { BACKGROUND_COLOR, SIMULATION_RATE, CONTROLS } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const spawnEnemy = require('../util/spawnEnemy');
-const offset = require('../util/offset');
 
 module.exports = class Game {
    constructor() {
@@ -38,35 +37,29 @@ module.exports = class Game {
          this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
          this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
       });
-      /* debug to make spots
-      this.spot = {
-         x: 0,
-         y: 0,
-      };
-      this.listen('keydown', (event) => {
-         if (event.repeat) return;
-         if (event.code === 'KeyW') {
-            this.spot.y -= 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyS') {
-            this.spot.y += 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyA') {
-            this.spot.x -= 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyD') {
-            this.spot.x += 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'Space') {
-            console.log(this.spot);
-         }
-      });
-      */
+      this.controls = CONTROLS;
+      window.addEventListener('keydown', this.trackKeys.bind(this));
+      window.addEventListener('keyup', this.trackKeys.bind(this));
       document.body.appendChild(this.canvas);
+   }
+   trackKeys(event) {
+      if (event.repeat) return;
+      if (this.controls[event.key.toLowerCase()]) {
+         switch (this.controls[event.key.toLowerCase()]) {
+            case 'zoomin':
+               if (event.type === 'keyup') {
+                  this.camera.zoomIn();
+                  console.log(this.camera.scale);
+               }
+               break;
+            case 'zoomout':
+               if (event.type === 'keyup') {
+                  this.camera.zoomOut();
+                  console.log(this.camera.scale);
+               }
+               break;
+         }
+      }
    }
    makeSpots() {
       const spots = require('./map/spot.json');
@@ -130,3 +123,32 @@ module.exports = class Game {
       }
    }
 };
+/* debug to make spots
+      this.spot = {
+         x: 0,
+         y: 0,
+      };
+      this.listen('keydown', (event) => {
+         if (event.repeat) return;
+         if (event.code === 'KeyW') {
+            this.spot.y -= 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyS') {
+            this.spot.y += 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyA') {
+            this.spot.x -= 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'KeyD') {
+            this.spot.x += 20;
+            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
+         }
+         if (event.code === 'Space') {
+            console.log(this.spot);
+         }
+      });
+      > inside constructor
+      */
