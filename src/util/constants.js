@@ -11,16 +11,11 @@ const FAST_ENEMY_COLOR = '#19d4ab';
 const BASIC_ENEMY_COLOR = '#2d2e2e';
 const PATH_ENDS_COLOR = '#470703';
 const PATH_ENDS_SIZE = 70;
-const SPOT_COLOR = '#212121';
+const SPOT_COLOR = 'rgb(33, 33, 33)';
+const SPOT_SIZE = 65;
 const CONTROLS = {
    i: 'zoomin',
    o: 'zoomout',
-   m: 'switchmode',
-   k: 'static',
-   w: 'up',
-   s: 'down',
-   a: 'left',
-   d: 'right',
 };
 
 module.exports = {
@@ -36,5 +31,6 @@ module.exports = {
    PATH_ENDS_COLOR,
    PATH_ENDS_SIZE,
    SPOT_COLOR,
+   SPOT_SIZE,
    CONTROLS,
 };

@@ -1,13 +1,14 @@
 'use strict';
 
-const { SPOT_COLOR } = require('../util/constants');
+const { SPOT_COLOR, SPOT_SIZE } = require('../util/constants');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
       this.x = x;
       this.y = y;
-      this.size = 50;
+      this.size = SPOT_SIZE;
    }
+   update(mouse, camera) {}
    render(ctx, camera) {
       ctx.fillStyle = SPOT_COLOR;
       ctx.beginPath();

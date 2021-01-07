@@ -8,13 +8,16 @@ module.exports = class State {
       this.enemy = [];
       this.spots = [];
    }
-   simulate() {
+   simulate(mouse, camera) {
       for (let i = this.enemy.length - 1; i >= 0; i--) {
          const enemy = this.enemy[i];
          enemy.update();
          if (enemy.dead) {
             this.enemy.splice(i, 1);
          }
+      }
+      for (const spot of this.spots) {
+         spot.update(mouse, camera);
       }
    }
    render(ctx, camera, path) {

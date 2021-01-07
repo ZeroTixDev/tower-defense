@@ -8,13 +8,6 @@ module.exports = class Camera {
       this.scale = 0.8;
       this.scalingBounds = [0.2, 20];
       this.speed = speed;
-      this.up = false;
-      this.down = false;
-      this.left = false;
-      this.right = false;
-      this.xv = 0;
-      this.yv = 0;
-      this.friction = 0.8;
    }
    zoomIn() {
       this.scale += 0.2;
@@ -25,39 +18,11 @@ module.exports = class Camera {
       this.scale = Math.max(this.scalingBounds[0], Math.round(this.scale));
    }
    interp(x, y, delta) {
-      if (this.static) {
-         this.x = GAME_WIDTH / 2;
-         this.y = GAME_HEIGHT / 2;
-      } else {
-         if (delta > 1) {
-            this.x += (x - this.x) * 0.6;
-            this.y += (y - this.y) * 0.6;
-         } else {
-            this.x += (x - this.x) * 0.6 * delta * this.speed;
-            this.y += (y - this.y) * 0.6 * delta * this.speed;
-         }
-      }
-   }
-   update(delta) {
-      if (this.static) {
-         this.x = GAME_WIDTH / 2;
-         this.y = GAME_HEIGHT / 2;
-      } else {
-         console.log('updating not static');
-         if (this.up && !this.down) {
-            this.yv -= this.speed * delta * 60;
-         } else if (this.down && !this.up) {
-            this.yv += this.speed * delta * 60;
-         }
-         if (this.left && !this.right) {
-            this.xv -= this.speed * delta * 60;
-         } else if (this.right && !this.left) {
-            this.xv += this.speed * delta * 60;
-         }
-         this.xv *= Math.pow(this.friction, delta * 60);
-         this.yv *= Math.pow(this.friction, delta * 60);
-         this.x += this.xv;
-         this.y += this.yv;
+      if (delta < 1) {
+         this.x += (x - this.x) * 0.45 * delta * this.speed;
+         this.y += (y - this.y) * 0.45 * delta * this.speed;
+         this.x += (GAME_WIDTH / 2 - this.x) * 0.95 * delta * this.speed * 5;
+         this.y += (GAME_HEIGHT / 2 - this.y) * 0.95 * delta * this.speed * 5;
       }
    }
    setTo(x, y) {
