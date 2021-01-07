@@ -28,6 +28,7 @@ module.exports = class Game {
          x: 0,
          y: 0,
       };
+      this.mode = 'mouse';
       this.scale = resizeCanvas(this.canvas);
       this.listen('resize', () => {
          this.scale = resizeCanvas(this.canvas);
@@ -58,6 +59,27 @@ module.exports = class Game {
                   console.log(this.camera.scale);
                }
                break;
+            case 'up':
+               this.camera.up = event.type === 'keydown';
+               break;
+            case 'down':
+               this.camera.down = event.type === 'keydown';
+               break;
+            case 'left':
+               this.camera.left = event.type === 'keydown';
+               break;
+            case 'right':
+               this.camera.right = event.type === 'keydown';
+               break;
+            case 'switchmode':
+               if (event.type === 'keyup') {
+                  if (this.mode === 'mouse') {
+                     this.mode = 'wasd';
+                  } else {
+                     this.mode = 'mouse';
+                  }
+                  break;
+               }
          }
       }
    }
@@ -104,7 +126,11 @@ module.exports = class Game {
    update() {
       const expectedTick = currentTick(this.startTime);
       let amount = 0;
-      this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
+      if (this.mode === 'wasd') {
+         this.camera.update(this.delta);
+      } else {
+         this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
+      }
       while (this.tick < expectedTick) {
          if (this.events[this.tick]) {
             for (const func of this.events[this.tick]) {

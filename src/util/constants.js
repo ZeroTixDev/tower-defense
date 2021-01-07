@@ -15,6 +15,11 @@ const SPOT_COLOR = '#212121';
 const CONTROLS = {
    i: 'zoomin',
    o: 'zoomout',
+   m: 'switchmode',
+   w: 'up',
+   s: 'down',
+   a: 'left',
+   d: 'right',
 };
 
 module.exports = {

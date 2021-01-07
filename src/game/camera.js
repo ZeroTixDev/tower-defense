@@ -8,6 +8,13 @@ module.exports = class Camera {
       this.scale = 1;
       this.scalingBounds = [0.2, 20];
       this.speed = speed;
+      this.up = false;
+      this.down = false;
+      this.left = false;
+      this.right = false;
+      this.xv = 0;
+      this.yv = 0;
+      this.friction = 0.8;
    }
    zoomIn() {
       this.scale += 0.2;
@@ -25,6 +32,22 @@ module.exports = class Camera {
          this.x += (x - this.x) * 0.6 * delta * this.speed;
          this.y += (y - this.y) * 0.6 * delta * this.speed;
       }
+   }
+   update(delta) {
+      if (this.up && !this.down) {
+         this.yv -= this.speed * delta * 60;
+      } else if (this.down && !this.up) {
+         this.yv += this.speed * delta * 60;
+      }
+      if (this.left && !this.right) {
+         this.xv -= this.speed * delta * 60;
+      } else if (this.right && !this.left) {
+         this.xv += this.speed * delta * 60;
+      }
+      this.xv *= Math.pow(this.friction, delta * 60);
+      this.yv *= Math.pow(this.friction, delta * 60);
+      this.x += this.xv;
+      this.y += this.yv;
    }
    setTo(x, y) {
       this.x = x;
