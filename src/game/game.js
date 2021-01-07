@@ -29,6 +29,7 @@ module.exports = class Game {
          y: 0,
       };
       this.mode = 'mouse';
+      this.static = false;
       this.scale = resizeCanvas(this.canvas);
       this.listen('resize', () => {
          this.scale = resizeCanvas(this.canvas);
@@ -80,6 +81,11 @@ module.exports = class Game {
                   }
                   break;
                }
+            case 'static':
+               if (event.type === 'keyup') {
+                  this.camera.static = !this.camera.static;
+               }
+               break;
          }
       }
    }

@@ -16,6 +16,7 @@ const CONTROLS = {
    i: 'zoomin',
    o: 'zoomout',
    m: 'switchmode',
+   k: 'static',
    w: 'up',
    s: 'down',
    a: 'left',
