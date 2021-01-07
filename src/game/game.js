@@ -38,8 +38,11 @@ module.exports = class Game {
          this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
       });
       this.controls = CONTROLS;
-      window.addEventListener('keydown', this.trackKeys.bind(this));
-      window.addEventListener('keyup', this.trackKeys.bind(this));
+      this.listen('keydown', this.trackKeys.bind(this));
+      this.listen('keyup', this.trackKeys.bind(this));
+      this.listen('mousedown', () => {
+         console.log(this.mouse);
+      });
       document.body.appendChild(this.canvas);
    }
    trackKeys(event) {
