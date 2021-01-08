@@ -9,12 +9,24 @@ module.exports = class State {
       this.spots = [];
    }
    simulate(mouse, camera) {
+      let enemyOnCursor = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {
          const enemy = this.enemy[i];
          enemy.update();
+         const offsetPos = offset(enemy.x, enemy.y, camera);
+         const distX = mouse.x - offsetPos.x;
+         const distY = mouse.y - offsetPos.y;
+         const distance = Math.sqrt(distX * distX + distY * distY);
+         if (distance < enemy.radius * 2) {
+            enemyOnCursor = i;
+         }
+         enemy.showStats = false;
          if (enemy.dead) {
             this.enemy.splice(i, 1);
          }
+      }
+      if (enemyOnCursor != null) {
+         this.enemy[enemyOnCursor].showStats = true;
       }
       for (const spot of this.spots) {
          spot.update(mouse, camera);

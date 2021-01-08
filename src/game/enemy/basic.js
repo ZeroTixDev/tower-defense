@@ -15,7 +15,8 @@ module.exports = class Enemy {
       this.accuracy = 5;
       this.calculateVelocity();
       this.health = 100;
-      this.showStats = true;
+      this.showStats = false;
+      this.type = 'Basic';
    }
    lerp(start, end, time) {
       return start * (1 - time) + end * time;
@@ -58,11 +59,26 @@ module.exports = class Enemy {
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
-   showEnemyStats() {}
+   showEnemyStats(ctx, camera) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      const pos = offset(this.x, this.y, camera);
+      const width = 100;
+      const height = 75;
+      ctx.fillRect(pos.x - width / 2, pos.y, width, height);
+      ctx.font = `${25 * camera.scale}px sans-serif`;
+      ctx.fillStyle = 'red';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${Math.round(this.health)}`, pos.x, pos.y);
+      ctx.font = `${20 * camera.scale}px sans-serif`;
+      ctx.fillStyle = 'black';
+      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + height / 3));
+      ctx.fillText(`speed: ${Math.round(this.speed * 4)}`, pos.x, Math.round(pos.y + height - height / 3));
+   }
    render(ctx, camera) {
       this.drawPlayer(ctx, this.color, camera);
       if (this.showStats) {
-         this.showEnemyStats();
+         this.showEnemyStats(ctx, camera);
       }
    }
    get lastPath() {
