@@ -7,6 +7,8 @@ module.exports = class State {
       this.towers = [];
       this.enemy = [];
       this.spots = [];
+      this.wave = 1;
+      this.waveLocation = { x: 0, y: 0 };
    }
    intersect(pos, mouse, radius, camera) {
       const offsetPos = offset(pos.x, pos.y, camera);
@@ -56,13 +58,7 @@ module.exports = class State {
          }
       }
    }
-   render(ctx, camera, path) {
-      for (const enemy of this.enemy) {
-         enemy.render(ctx, camera);
-      }
-      for (const spot of this.spots) {
-         spot.render(ctx, camera);
-      }
+   drawPathEnds(ctx, camera, path) {
       ctx.fillStyle = PATH_ENDS_COLOR;
       ctx.beginPath();
       const start = offset(path[0].x, path[0].y, camera);
@@ -72,5 +68,21 @@ module.exports = class State {
       const end = offset(path[path.length - 1].x, path[path.length - 1].y, camera);
       ctx.arc(end.x, end.y, (PATH_ENDS_SIZE / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
+   }
+   drawWaveText(ctx, camera) {
+      const pos = offset(this.waveLocation.x, this.waveLocation.y, camera);
+      ctx.font = '40px sans-serif';
+      ctx.fillStyle = 'white';
+      ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
+   }
+   render(ctx, camera, path) {
+      for (const enemy of this.enemy) {
+         enemy.render(ctx, camera);
+      }
+      for (const spot of this.spots) {
+         spot.render(ctx, camera);
+      }
+      this.drawPathEnds(ctx, camera, path);
+      this.drawWaveText(ctx, camera);
    }
 };

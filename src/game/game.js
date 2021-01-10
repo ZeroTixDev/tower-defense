@@ -16,12 +16,14 @@ module.exports = class Game {
       this.events = Object.create(null);
       this.fov = 0.1;
       this.camera = new Camera();
-      this.path = require('./map/path.json');
+      this.map = require('./map/map.json');
+      this.path = this.map.path;
       this.pathObject = new Path(this.path);
       this.canvas = document.createElement('canvas');
       this.ctx = this.canvas.getContext('2d');
       this.state = new State();
       this.makeSpots();
+      this.state.waveLocation = this.map.waveLocation;
       this.tick = 0;
       this.startTime = window.performance.now();
       this.mouse = {
@@ -48,7 +50,7 @@ module.exports = class Game {
    trackKeys(event) {
       if (event.repeat) return;
       if (this.controls[event.key.toLowerCase()]) {
-         switch (this.controls[event.key.toLowerCase()]) {
+         /*switch (this.controls[event.key.toLowerCase()]) {
             case 'zoomin':
                if (event.type === 'keyup') {
                   this.camera.zoomIn();
@@ -61,12 +63,11 @@ module.exports = class Game {
                   console.log(this.camera.scale);
                }
                break;
-         }
+         }*/
       }
    }
    makeSpots() {
-      const spots = require('./map/spot.json');
-      for (const spot of spots) {
+      for (const spot of this.map.spots) {
          this.state.spots.push(new Spot(spot.x, spot.y));
       }
    }
@@ -85,7 +86,7 @@ module.exports = class Game {
       }
    }
    start() {
-      spawnEnemy(this.path, require('./map/enemy.json'), this);
+      spawnEnemy(this.path, this.map.enemy, this);
       this.lastTime = 0;
       (function run(time = 0) {
          this.delta = (time - this.lastTime) / 1000;
@@ -116,6 +117,7 @@ module.exports = class Game {
             for (const func of this.events[this.tick]) {
                func();
             }
+            delete this.events[this.tick];
          }
          this.simulate();
          if (amount >= SIMULATION_RATE * 2) {
@@ -127,6 +129,7 @@ module.exports = class Game {
       }
    }
 };
+
 /* debug to make spots
       this.spot = {
          x: 0,
