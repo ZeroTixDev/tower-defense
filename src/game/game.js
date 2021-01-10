@@ -41,7 +41,7 @@ module.exports = class Game {
       this.listen('keydown', this.trackKeys.bind(this));
       this.listen('keyup', this.trackKeys.bind(this));
       this.listen('mousedown', () => {
-         console.log(this.mouse);
+         this.state.handleMouseDown(this.mouse, this.camera);
       });
       document.body.appendChild(this.canvas);
    }
@@ -104,6 +104,9 @@ module.exports = class Game {
    simulate() {
       this.state.simulate(this.mouse, this.camera);
    }
+   panic() {
+      this.tick = currentTick(this.startTime);
+   }
    update() {
       const expectedTick = currentTick(this.startTime);
       let amount = 0;
@@ -114,12 +117,9 @@ module.exports = class Game {
                func();
             }
          }
-         if (amount <= SIMULATION_RATE) {
-            this.simulate();
-         }
-         if (amount >= SIMULATION_RATE * 120) {
-            alert('You left the tab for too long. Please refresh.');
-            window.location.reload();
+         this.simulate();
+         if (amount >= SIMULATION_RATE * 2) {
+            this.panic();
             break;
          }
          this.tick++;
