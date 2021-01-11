@@ -4,12 +4,13 @@ const GAME_WIDTH = 1600;
 const GAME_HEIGHT = 900;
 const BACKGROUND_COLOR = 'black';
 const LINE_DISTANCE = 50;
-const PATH_SIZE = 70;
+const PATH_SIZE = 75;
 const PATH_INSIDE_COLOR = 'white';
 const SIMULATION_RATE = 30;
 const FAST_ENEMY_COLOR = '#19d4ab';
 const BASIC_ENEMY_COLOR = '#2d2e2e';
-const PATH_ENDS_COLOR = '#470703';
+const STRONG_ENEMY_COLOR = '#73020f';
+const PATH_ENDS_COLOR = '#d40018';
 const PATH_ENDS_SIZE = 70;
 const SPOT_COLOR = '33';
 const SPOT_SIZE = 65;
@@ -33,6 +34,7 @@ module.exports = {
    FAST_ENEMY_COLOR,
    BASIC_ENEMY_COLOR,
    PATH_INSIDE_COLOR,
+   STRONG_ENEMY_COLOR,
    PATH_ENDS_COLOR,
    PATH_ENDS_SIZE,
    SPOT_COLOR,

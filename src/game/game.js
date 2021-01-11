@@ -72,10 +72,10 @@ module.exports = class Game {
       }
    }
    newEvent(func, tick) {
-      if (this.events[tick] === undefined) {
-         this.events[tick] = [];
+      if (this.events[Math.round(tick)] === undefined) {
+         this.events[Math.round(tick)] = [];
       }
-      this.events[tick].push(func);
+      this.events[Math.round(tick)].push(func);
    }
    listen(type, func, element = window) {
       element.addEventListener(type, func.bind(this));

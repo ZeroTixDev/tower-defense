@@ -76,11 +76,11 @@ module.exports = class State {
       ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
    }
    render(ctx, camera, path) {
-      for (const enemy of this.enemy) {
-         enemy.render(ctx, camera);
-      }
       for (const spot of this.spots) {
          spot.render(ctx, camera);
+      }
+      for (const enemy of this.enemy) {
+         enemy.render(ctx, camera);
       }
       this.drawPathEnds(ctx, camera, path);
       this.drawWaveText(ctx, camera);

@@ -2,4 +2,5 @@
 
 const Basic = require('./basic');
 const Fast = require('./fast');
-module.exports = { Basic, Fast };
+const Strong = require('./strong');
+module.exports = { Basic, Fast, Strong };

@@ -5,14 +5,13 @@ const currentTick = require('./currentTick');
 const { SIMULATION_RATE } = require('./constants');
 
 module.exports = function spawnEnemy(path, json, game) {
-   const enemyArray = game.state.enemy;
    function calculateTime(ms) {
       return currentTick(game.startTime) + (ms / 1000) * SIMULATION_RATE;
    }
    function spawn(type, amount, time, delay) {
-      for (let i = 0; i < amount; i++) {
+      for (let i = 1; i < amount + 1; i++) {
          game.newEvent(() => {
-            enemyArray.push(new type(path));
+            game.state.enemy.push(new type(path));
          }, calculateTime(delay + i * time));
       }
    }
@@ -22,6 +21,8 @@ module.exports = function spawnEnemy(path, json, game) {
          spawn(enemy.Basic, amount, object['time-in-between-ms'], delay);
       } else if (type === 'fast') {
          spawn(enemy.Fast, amount, object['time-in-between-ms'], delay);
+      } else if (type === 'strong') {
+         spawn(enemy.Strong, amount, object['time-in-between-ms'], delay);
       }
    }
 };
