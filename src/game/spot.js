@@ -1,6 +1,6 @@
 'use strict';
 
-const { SPOT_COLOR, SPOT_SIZE } = require('../util/constants');
+const { SPOT_COLOR, SPOT_SIZE, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT } = require('../util/constants');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
@@ -38,11 +38,11 @@ module.exports = class Spot {
       ctx.textBaseline = 'middle';
       ctx.font = '40px Arial';
       if (this.showData === 'down') {
-         ctx.fillRect(pos.x - 100, pos.y, 200, 100);
+         ctx.fillRect(pos.x - TOWER_DISPLAY_WIDTH / 2, pos.y, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT);
          ctx.fillStyle = 'black';
          ctx.fillText(`TOWERS`, pos.x, pos.y + 50);
       } else if (this.showData === 'up') {
-         ctx.fillRect(pos.x - 100, pos.y, 200, -100);
+         ctx.fillRect(pos.x - TOWER_DISPLAY_WIDTH / 2, pos.y, TOWER_DISPLAY_WIDTH, -TOWER_DISPLAY_HEIGHT);
          ctx.fillStyle = 'black';
          ctx.fillText(`TOWERS`, pos.x, pos.y - 50);
       }

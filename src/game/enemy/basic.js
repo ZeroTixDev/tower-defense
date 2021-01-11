@@ -1,6 +1,6 @@
 'use strict';
 
-const { BASIC_ENEMY_COLOR } = require('../../util/constants');
+const { BASIC_ENEMY_COLOR, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT } = require('../../util/constants');
 const offset = require('../../util/offset');
 
 module.exports = class Enemy {
@@ -60,20 +60,26 @@ module.exports = class Enemy {
       ctx.fill();
    }
    showEnemyStats(ctx, camera) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = this.color;
       const pos = offset(this.x, this.y, camera);
-      const width = 100;
-      const height = 75;
-      ctx.fillRect(pos.x - width / 2, pos.y, width, height);
-      ctx.font = `${25 * camera.scale}px sans-serif`;
+      ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
+      ctx.fillStyle = 'white';
+      ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = 'black';
+      ctx.font = `${28 * camera.scale}px sans-serif`;
       ctx.fillStyle = 'red';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(`${Math.round(this.health)}`, pos.x, pos.y);
-      ctx.font = `${20 * camera.scale}px sans-serif`;
       ctx.fillStyle = 'black';
-      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + height / 3));
-      ctx.fillText(`speed: ${Math.round(this.speed * 4)}`, pos.x, Math.round(pos.y + height - height / 3));
+      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + ENEMY_STATS_HEIGHT / 3));
+      ctx.fillText(
+         `speed: ${Math.round(this.speed * 4)}`,
+         pos.x,
+         Math.round(pos.y + ENEMY_STATS_HEIGHT - ENEMY_STATS_HEIGHT / 3)
+      );
    }
    render(ctx, camera) {
       this.drawPlayer(ctx, this.color, camera);

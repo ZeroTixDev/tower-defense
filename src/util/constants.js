@@ -17,6 +17,11 @@ const CONTROLS = {
    i: 'zoomin',
    o: 'zoomout',
 };
+const TOWER_ROTATE_SPEED = 5;
+const TOWER_DISPLAY_WIDTH = 350;
+const TOWER_DISPLAY_HEIGHT = 200;
+const ENEMY_STATS_WIDTH = 150;
+const ENEMY_STATS_HEIGHT = 100;
 
 module.exports = {
    GAME_WIDTH,
@@ -33,4 +38,9 @@ module.exports = {
    SPOT_COLOR,
    SPOT_SIZE,
    CONTROLS,
+   TOWER_ROTATE_SPEED,
+   TOWER_DISPLAY_WIDTH,
+   TOWER_DISPLAY_HEIGHT,
+   ENEMY_STATS_WIDTH,
+   ENEMY_STATS_HEIGHT,
 };
