@@ -1,10 +1,17 @@
 'use strict';
 
-const { BASIC_ENEMY_COLOR, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT } = require('../../util/constants');
+const {
+   BASIC_ENEMY_COLOR,
+   BASIC_ENEMY_SPEED,
+   BASIC_ENEMY_SIZE,
+   BASIC_ENEMY_HEALTH,
+   ENEMY_STATS_WIDTH,
+   ENEMY_STATS_HEIGHT,
+} = require('../../util/constants');
 const offset = require('../../util/offset');
 
 module.exports = class Enemy {
-   constructor(path, speed = 5, size = 50) {
+   constructor(path, speed = BASIC_ENEMY_SPEED, size = BASIC_ENEMY_SIZE, health = BASIC_ENEMY_HEALTH) {
       this.pathIndex = 1;
       this.path = path;
       this.x = this.lastPath.x;
@@ -14,7 +21,8 @@ module.exports = class Enemy {
       this.color = BASIC_ENEMY_COLOR;
       this.accuracy = 5;
       this.calculateVelocity();
-      this.health = 100;
+      this.health = health;
+      this.maxHealth = health;
       this.showStats = false;
       this.type = 'Basic';
    }
@@ -52,28 +60,31 @@ module.exports = class Enemy {
    get roundPos() {
       return { x: Math.round(this.x), y: Math.round(this.y) };
    }
-   drawPlayer(ctx, fill, camera) {
+   drawEnemy(ctx, fill, camera) {
       ctx.fillStyle = fill;
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = 'red';
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      const width = 50;
+      ctx.fillRect(pos.x - width / 2, pos.y - this.radius - 5, width * (this.health / this.maxHealth), 10);
+      ctx.strokeRect(pos.x - width / 2, pos.y - this.radius - 5, width, 10);
    }
    showEnemyStats(ctx, camera) {
       ctx.globalAlpha = 0.5;
       ctx.fillStyle = this.color;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
       const pos = offset(this.x, this.y, camera);
       ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
       ctx.fillStyle = 'white';
       ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
       ctx.globalAlpha = 1;
       ctx.fillStyle = 'black';
-      ctx.font = `${28 * camera.scale}px sans-serif`;
-      ctx.fillStyle = 'red';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${Math.round(this.health)}`, pos.x, pos.y);
-      ctx.fillStyle = 'black';
+      ctx.font = `${28 * camera.scale}px Arial`;
       ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + ENEMY_STATS_HEIGHT / 3));
       ctx.fillText(
          `speed: ${Math.round(this.speed * 4)}`,
@@ -82,7 +93,7 @@ module.exports = class Enemy {
       );
    }
    render(ctx, camera) {
-      this.drawPlayer(ctx, this.color, camera);
+      this.drawEnemy(ctx, this.color, camera);
    }
    get lastPath() {
       return this.path[this.pathIndex - 1];
