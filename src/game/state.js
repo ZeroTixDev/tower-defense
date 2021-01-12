@@ -33,15 +33,16 @@ module.exports = class State {
          const enemy = this.enemy[i];
          enemy.update();
          enemy.showStats = false;
+         if (enemy.delete) {
+            this.enemy.splice(i, 1);
+            continue;
+         }
          if (
             !hasTowerMenuOpen &&
             enemyOnMouse === null &&
             this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius, camera)
          ) {
             enemyOnMouse = i;
-         }
-         if (enemy.dead) {
-            this.enemy.splice(i, 1);
          }
       }
       if (enemyOnMouse != null) {
@@ -80,7 +81,7 @@ module.exports = class State {
    drawWaveText(ctx, camera) {
       const pos = offset(this.waveLocation.x, this.waveLocation.y, camera);
       ctx.font = '40px sans-serif';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = '#9e9170';
       ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
    }
    render(ctx, camera, path) {

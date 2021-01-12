@@ -7,6 +7,7 @@ const {
    BASIC_ENEMY_HEALTH,
    ENEMY_STATS_WIDTH,
    ENEMY_STATS_HEIGHT,
+   SIMULATION_RATE,
 } = require('../../util/constants');
 const offset = require('../../util/offset');
 
@@ -24,7 +25,11 @@ module.exports = class Enemy {
       this.health = health;
       this.maxHealth = health;
       this.showStats = false;
+      this.deadTimer = 0;
       this.type = 'Basic';
+   }
+   get dead() {
+      return this.health <= 0;
    }
    lerp(start, end, time) {
       return start * (1 - time) + end * time;
@@ -38,6 +43,14 @@ module.exports = class Enemy {
       this.yv = (this.speed * Math.sin(this.angle)) / this.accuracy;
    }
    update() {
+      if (Math.random() < 0.4) this.health--;
+      if (this.dead) {
+         this.deadTimer++;
+         if (this.deadTimer > SIMULATION_RATE) {
+            this.delete = true;
+         }
+         return;
+      }
       for (let i = 0; i < this.accuracy; i++) {
          this.x += this.xv;
          this.y += this.yv;
@@ -62,6 +75,9 @@ module.exports = class Enemy {
    }
    drawEnemy(ctx, fill, camera) {
       ctx.fillStyle = fill;
+      if (this.dead) {
+         ctx.globalAlpha = 1 - this.deadTimer / SIMULATION_RATE;
+      }
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
@@ -69,11 +85,14 @@ module.exports = class Enemy {
       ctx.fillStyle = 'red';
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 2;
+      ctx.globalAlpha = 1;
+      if (this.dead) return;
       const width = 50;
       ctx.fillRect(pos.x - width / 2, pos.y - this.radius - 5, width * (this.health / this.maxHealth), 10);
       ctx.strokeRect(pos.x - width / 2, pos.y - this.radius - 5, width, 10);
    }
    showEnemyStats(ctx, camera) {
+      if (this.dead) return;
       ctx.globalAlpha = 0.5;
       ctx.fillStyle = this.color;
       ctx.textAlign = 'center';
