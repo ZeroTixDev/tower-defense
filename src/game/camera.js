@@ -1,6 +1,8 @@
 'use strict';
 
 const { GAME_WIDTH, GAME_HEIGHT } = require('../util/constants');
+const round = require('../util/round');
+
 module.exports = class Camera {
    constructor(x = GAME_WIDTH / 2, y = GAME_HEIGHT / 2, speed = 2.5) {
       this.x = x;
@@ -12,19 +14,14 @@ module.exports = class Camera {
       this.yv = 0;
       this.friction = 0.6;
    }
-   roundTo(value, decimals) {
-      return Math.round(value * 10 ** decimals) / 10 ** decimals;
-   }
    zoomIn() {
       this.scale += 0.2;
       // this.scale = Math.min(this.scalingBounds[1], Math.round(this.scale));
-      this.scale =
-         this.roundTo(this.scale, 2) >= this.scalingBounds[1] ? this.scalingBounds[0] : this.roundTo(this.scale, 2);
+      this.scale = round(this.scale, 2) >= this.scalingBounds[1] ? this.scalingBounds[0] : round(this.scale, 2);
    }
    zoomOut() {
       this.scale -= 0.2;
-      this.scale =
-         this.roundTo(this.scale, 2) <= this.scalingBounds[0] ? this.scalingBounds[0] : this.roundTo(this.scale, 2);
+      this.scale = round(this.scale, 2) <= this.scalingBounds[0] ? this.scalingBounds[0] : round(this.scale, 2);
       // this.scale = Math.max(this.scalingBounds[0], Math.round(this.scale));
    }
    interp(x, y, delta) {

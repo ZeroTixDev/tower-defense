@@ -2,25 +2,26 @@
 
 const GAME_WIDTH = 1600;
 const GAME_HEIGHT = 900;
-const BACKGROUND_COLOR = 'black';
+const BACKGROUND_COLOR = '#dbd2ba';
 const LINE_DISTANCE = 50;
 const PATH_SIZE = 75;
-const PATH_INSIDE_COLOR = 'white';
+const PATH_INSIDE_COLOR = '#bda562';
+const PATH_STROKE_COLOR = '#8f7328';
 const SIMULATION_RATE = 30;
 const FAST_ENEMY_COLOR = '#19d4ab';
 const BASIC_ENEMY_COLOR = '#2d2e2e';
 const STRONG_ENEMY_COLOR = '#73020f';
 const PATH_ENDS_COLOR = '#d40018';
 const PATH_ENDS_SIZE = 70;
-const SPOT_COLOR = '33'; // this is a number because the spot class handles it like rgb(33, 33, 33) lol just to stop confusion
+const SPOT_COLOR = '140'; // this is a number because the spot class handles it like rgb(33, 33, 33) lol just to stop confusion
 const SPOT_SIZE = 65;
 const CONTROLS = {
    i: 'zoomin',
    o: 'zoomout',
 };
 const TOWER_ROTATE_SPEED = 5;
-const TOWER_DISPLAY_WIDTH = 350;
-const TOWER_DISPLAY_HEIGHT = 200;
+const TOWER_DISPLAY_WIDTH = 300;
+const TOWER_DISPLAY_HEIGHT = 100;
 const TOWER_BARREL_WIDTH = 35;
 const TOWER_BARREL_HEIGHT = 20;
 const ENEMY_STATS_WIDTH = 150;
@@ -42,6 +43,7 @@ module.exports = {
    BACKGROUND_COLOR,
    LINE_DISTANCE,
    PATH_SIZE,
+   PATH_STROKE_COLOR,
    SIMULATION_RATE,
    FAST_ENEMY_COLOR,
    BASIC_ENEMY_COLOR,

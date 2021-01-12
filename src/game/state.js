@@ -6,6 +6,7 @@ module.exports = class State {
    constructor() {
       this.enemy = [];
       this.spots = [];
+      this.bullet = [];
       this.wave = 1;
       this.waveLocation = { x: 0, y: 0 };
    }
@@ -20,12 +21,23 @@ module.exports = class State {
       return distance < radius * 2;
    }
    simulate(mouse, camera) {
+      let hasTowerMenuOpen = false;
+      for (const spot of this.spots) {
+         spot.update(mouse, camera, this);
+         if (spot.showData) {
+            hasTowerMenuOpen = true;
+         }
+      }
       let enemyOnMouse = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {
          const enemy = this.enemy[i];
          enemy.update();
          enemy.showStats = false;
-         if (enemyOnMouse === null && this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius, camera)) {
+         if (
+            !hasTowerMenuOpen &&
+            enemyOnMouse === null &&
+            this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius, camera)
+         ) {
             enemyOnMouse = i;
          }
          if (enemy.dead) {
@@ -34,9 +46,6 @@ module.exports = class State {
       }
       if (enemyOnMouse != null) {
          this.enemy[enemyOnMouse].showStats = true;
-      }
-      for (const spot of this.spots) {
-         spot.update(mouse, camera);
       }
    }
    handleMouseDown(mouse, camera) {
@@ -75,13 +84,29 @@ module.exports = class State {
       ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
    }
    render(ctx, camera, path) {
-      for (const spot of this.spots) {
+      let showSpotIndex = null;
+      for (let i = 0; i < this.spots.length; i++) {
+         const spot = this.spots[i];
          spot.render(ctx, camera);
+         if (spot.showData) {
+            showSpotIndex = i;
+         }
       }
-      for (const enemy of this.enemy) {
+      let showEnemyStatsIndex = null;
+      for (let i = 0; i < this.enemy.length; i++) {
+         const enemy = this.enemy[i];
          enemy.render(ctx, camera);
+         if (enemy.showStats) {
+            showEnemyStatsIndex = i;
+         }
       }
-      this.drawPathEnds(ctx, camera, path);
+      if (showEnemyStatsIndex != null) {
+         this.enemy[showEnemyStatsIndex].showEnemyStats(ctx, camera);
+      }
+      if (showSpotIndex != null) {
+         this.spots[showSpotIndex].drawData(ctx, camera);
+      }
+      // this.drawPathEnds(ctx, camera, path);
       this.drawWaveText(ctx, camera);
    }
 };

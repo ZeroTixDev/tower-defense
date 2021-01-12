@@ -83,9 +83,6 @@ module.exports = class Enemy {
    }
    render(ctx, camera) {
       this.drawPlayer(ctx, this.color, camera);
-      if (this.showStats) {
-         this.showEnemyStats(ctx, camera);
-      }
    }
    get lastPath() {
       return this.path[this.pathIndex - 1];

@@ -13,6 +13,9 @@ const offset = require('../../util/offset');
 function degToRad(deg) {
    return (deg * Math.PI) / 180;
 }
+function radToDeg(rad) {
+   return (rad * 180) / Math.PI;
+}
 module.exports = class Tower {
    constructor(x, y) {
       this.x = x;
@@ -28,7 +31,25 @@ module.exports = class Tower {
       this.angle = this.angle % 360;
    }
    simulate(state) {
-      // do stuff like shoot at enemy
+      let distance = null;
+      for (let i = 0; i < state.enemy.length; i++) {
+         const enemy = state.enemy[i];
+         const distX = enemy.x - this.x;
+         const distY = enemy.y - this.y;
+         const dist = Math.sqrt(distX * distX + distY * distY);
+         if (dist < this.fov / 2 + enemy.radius) {
+            if (distance === null || distance.dist > dist) {
+               distance = { dist, index: i };
+            }
+         }
+      }
+      if (distance != null) {
+         this.angle +=
+            (radToDeg(Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)) -
+               this.angle) *
+            1;
+         this.angle = this.angle % 360;
+      }
    }
    render(ctx, camera) {
       const pos = offset(this.x, this.y, camera);

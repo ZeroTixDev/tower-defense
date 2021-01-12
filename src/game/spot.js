@@ -1,7 +1,7 @@
 'use strict';
 
 const { SPOT_COLOR, SPOT_SIZE, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT } = require('../util/constants');
-const Basic = require('./towers/basic');
+const Basic = require('./tower/basic');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
@@ -17,7 +17,7 @@ module.exports = class Spot {
    get hasTower() {
       return this.tower !== null;
    }
-   update(mouse, camera) {
+   update(mouse, camera, state) {
       const offsetPos = offset(this.x, this.y, camera);
       const distX = mouse.x - offsetPos.x;
       const distY = mouse.y - offsetPos.y;
@@ -30,6 +30,7 @@ module.exports = class Spot {
       }
       if (this.hasTower) {
          this.tower.update();
+         this.tower.simulate(state);
       }
    }
    drawSpot(ctx, camera) {
@@ -37,6 +38,9 @@ module.exports = class Spot {
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 3;
+      ctx.stroke();
       ctx.fill();
    }
    drawTowerData(ctx, camera) {
@@ -71,9 +75,6 @@ module.exports = class Spot {
    }
    render(ctx, camera) {
       this.drawSpot(ctx, camera);
-      if (this.showData) {
-         this.drawData(ctx, camera);
-      }
       if (this.hasTower) {
          this.tower.render(ctx, camera);
       }

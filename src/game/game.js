@@ -119,10 +119,8 @@ module.exports = class Game {
             }
             delete this.events[this.tick];
          }
-         this.simulate();
-         if (amount >= SIMULATION_RATE * 2) {
-            this.panic();
-            break;
+         if (amount <= SIMULATION_RATE * 2) {
+            this.simulate();
          }
          this.tick++;
          amount++;
