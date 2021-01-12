@@ -12,7 +12,7 @@ const BASIC_ENEMY_COLOR = '#2d2e2e';
 const STRONG_ENEMY_COLOR = '#73020f';
 const PATH_ENDS_COLOR = '#d40018';
 const PATH_ENDS_SIZE = 70;
-const SPOT_COLOR = '33';
+const SPOT_COLOR = '33'; // this is a number because the spot class handles it like rgb(33, 33, 33) lol just to stop confusion
 const SPOT_SIZE = 65;
 const CONTROLS = {
    i: 'zoomin',
@@ -21,8 +21,20 @@ const CONTROLS = {
 const TOWER_ROTATE_SPEED = 5;
 const TOWER_DISPLAY_WIDTH = 350;
 const TOWER_DISPLAY_HEIGHT = 200;
+const TOWER_BARREL_WIDTH = 35;
+const TOWER_BARREL_HEIGHT = 20;
 const ENEMY_STATS_WIDTH = 150;
 const ENEMY_STATS_HEIGHT = 100;
+const TOWER_SIZE = 45;
+const BASIC_TOWER_FOV = 400;
+const BASIC_TOWER_COLOR = '#474747';
+const TOWER_TIERS = 4;
+const TOWER_LEVELS = [
+   { name: 'bronze', tiers: 4, color: '33' },
+   { name: 'gold', tiers: 4 },
+   { name: 'diamond', tiers: 4 },
+   { name: 'ruby', tiers: 4 },
+];
 
 module.exports = {
    GAME_WIDTH,
@@ -38,6 +50,7 @@ module.exports = {
    PATH_ENDS_COLOR,
    PATH_ENDS_SIZE,
    SPOT_COLOR,
+   BASIC_TOWER_FOV,
    SPOT_SIZE,
    CONTROLS,
    TOWER_ROTATE_SPEED,
@@ -45,4 +58,10 @@ module.exports = {
    TOWER_DISPLAY_HEIGHT,
    ENEMY_STATS_WIDTH,
    ENEMY_STATS_HEIGHT,
+   TOWER_LEVELS,
+   TOWER_TIERS,
+   BASIC_TOWER_COLOR,
+   TOWER_SIZE,
+   TOWER_BARREL_WIDTH,
+   TOWER_BARREL_HEIGHT,
 };

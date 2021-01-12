@@ -1,6 +1,7 @@
 'use strict';
 
 const { SPOT_COLOR, SPOT_SIZE, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT } = require('../util/constants');
+const Basic = require('./towers/basic');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
@@ -8,9 +9,13 @@ module.exports = class Spot {
       this.y = y;
       this.radius = SPOT_SIZE / 2;
       this.color = SPOT_COLOR;
+      this.tower = Math.random() < 0.5 ? null : new Basic(this.x, this.y);
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
+   }
+   get hasTower() {
+      return this.tower !== null;
    }
    update(mouse, camera) {
       const offsetPos = offset(this.x, this.y, camera);
@@ -23,6 +28,9 @@ module.exports = class Spot {
             this.color = 255;
          }
       }
+      if (this.hasTower) {
+         this.tower.update();
+      }
    }
    drawSpot(ctx, camera) {
       ctx.fillStyle = this.fill;
@@ -31,7 +39,14 @@ module.exports = class Spot {
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
-   drawData(ctx, camera) {
+   drawTowerData(ctx, camera) {
+      ctx.fillStyle = 'rgba(150, 150, 150, 0.2)';
+      const pos = offset(this.x, this.y, camera);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, (this.tower.fov / 2) * camera.scale, 0, Math.PI * 2);
+      ctx.fill();
+   }
+   drawSpotData(ctx, camera) {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       const pos = offset(this.x, this.y, camera);
       ctx.textAlign = 'center';
@@ -47,10 +62,20 @@ module.exports = class Spot {
          ctx.fillText(`TOWERS`, pos.x, pos.y - 50);
       }
    }
+   drawData(ctx, camera) {
+      if (this.hasTower) {
+         this.drawTowerData(ctx, camera);
+      } else {
+         this.drawSpotData(ctx, camera);
+      }
+   }
    render(ctx, camera) {
       this.drawSpot(ctx, camera);
       if (this.showData) {
          this.drawData(ctx, camera);
+      }
+      if (this.hasTower) {
+         this.tower.render(ctx, camera);
       }
    }
 };

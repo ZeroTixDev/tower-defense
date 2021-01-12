@@ -4,7 +4,6 @@ const { PATH_ENDS_COLOR, PATH_ENDS_SIZE, GAME_HEIGHT } = require('../util/consta
 const offset = require('../util/offset');
 module.exports = class State {
    constructor() {
-      this.towers = [];
       this.enemy = [];
       this.spots = [];
       this.wave = 1;
