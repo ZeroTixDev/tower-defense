@@ -8,7 +8,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const plugins = [
    new HtmlWebpackPlugin({
       hash: true,
-      title: 'lol',
+      title: 'Tower Defense',
+      favicon: join(paths.images, 'logo.png'),
       template: join(paths.game, 'template.html'),
       filename: '/index.html',
       publicPath: './',

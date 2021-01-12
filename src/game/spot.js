@@ -22,7 +22,7 @@ module.exports = class Spot {
       const distX = mouse.x - offsetPos.x;
       const distY = mouse.y - offsetPos.y;
       this.color = SPOT_COLOR;
-      if (Math.abs(distX) < 50 && Math.abs(distY) < 50) {
+      if (Math.abs(distX) < 50 && Math.abs(distY) < 50 && !this.hasTower) {
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < this.radius) {
             this.color = 255;

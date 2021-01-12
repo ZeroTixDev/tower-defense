@@ -14,7 +14,8 @@ config.entry = {
 config.plugins = [
    new HtmlWebpackPlugin({
       hash: true,
-      title: 'lol',
+      title: 'Tower Defense',
+      favicon: join(paths.images, 'logo.png'),
       template: join(paths.editor, 'template.html'),
       publicPath: './',
       filename: '/index.html',
