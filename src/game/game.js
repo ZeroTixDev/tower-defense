@@ -25,6 +25,7 @@ module.exports = class Game {
       this.makeSpots();
       this.state.waveLocation = this.map.waveLocation;
       this.tick = 0;
+      this.time = window.performance.now();
       this.startTime = window.performance.now();
       this.mouse = {
          x: 0,
@@ -105,13 +106,15 @@ module.exports = class Game {
    simulate() {
       this.state.simulate(this.mouse, this.camera);
    }
-   panic() {
-      this.tick = currentTick(this.startTime);
-   }
    update() {
-      const expectedTick = currentTick(this.startTime);
-      let amount = 0;
+      let expectedTick = currentTick(this.startTime);
+      if (expectedTick - this.tick > SIMULATION_RATE / 3) {
+         this.startTime += window.performance.now() - this.time;
+         expectedTick = this.tick;
+         this.tick -= 1;
+      }
       this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
+      this.time = window.performance.now();
       while (this.tick < expectedTick) {
          if (this.events[this.tick]) {
             for (const func of this.events[this.tick]) {
@@ -119,11 +122,8 @@ module.exports = class Game {
             }
             delete this.events[this.tick];
          }
-         if (amount <= SIMULATION_RATE * 2) {
-            this.simulate();
-         }
+         this.simulate();
          this.tick++;
-         amount++;
       }
    }
 };

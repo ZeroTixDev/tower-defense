@@ -42,8 +42,7 @@ module.exports = class Enemy {
       this.xv = (this.speed * Math.cos(this.angle)) / this.accuracy;
       this.yv = (this.speed * Math.sin(this.angle)) / this.accuracy;
    }
-   update() {
-      if (Math.random() < 0.4) this.health--;
+   update(state) {
       if (this.dead) {
          this.deadTimer++;
          if (this.deadTimer > SIMULATION_RATE) {
@@ -67,6 +66,16 @@ module.exports = class Enemy {
             } else {
                this.calculateVelocity();
             }
+         }
+      }
+      for (let i = state.bullet.length - 1; i >= 0; i--) {
+         const bullet = state.bullet[i];
+         const distX = bullet.x - this.x;
+         const distY = bullet.y - this.y;
+         const distance = Math.sqrt(distX * distX + distY * distY);
+         if (distance < bullet.radius + this.radius) {
+            this.health -= bullet.damage;
+            state.bullet.splice(i, 1);
          }
       }
    }

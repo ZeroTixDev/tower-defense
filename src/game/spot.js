@@ -29,7 +29,6 @@ module.exports = class Spot {
          }
       }
       if (this.hasTower) {
-         this.tower.update();
          this.tower.simulate(state);
       }
    }

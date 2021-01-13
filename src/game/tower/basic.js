@@ -7,8 +7,12 @@ const {
    TOWER_ROTATE_SPEED,
    BASIC_TOWER_COLOR,
    BASIC_TOWER_FOV,
+   BASIC_TOWER_RELOAD_TIME,
+   SIMULATION_RATE,
+   BASIC_BULLET_SPEED,
 } = require('../../util/constants');
 const offset = require('../../util/offset');
+const Bullet = require('../bullet/basic');
 
 function degToRad(deg) {
    return (deg * Math.PI) / 180;
@@ -17,7 +21,7 @@ function radToDeg(rad) {
    return (rad * 180) / Math.PI;
 }
 module.exports = class Tower {
-   constructor(x, y) {
+   constructor(x, y, reload = BASIC_TOWER_RELOAD_TIME) {
       this.x = x;
       this.y = y;
       this.angle = Math.round(Math.random() * 360);
@@ -25,6 +29,8 @@ module.exports = class Tower {
       this.radius = TOWER_SIZE / 2;
       this.color = BASIC_TOWER_COLOR;
       this.fov = BASIC_TOWER_FOV;
+      this.reload = Math.round(reload * SIMULATION_RATE);
+      this.tick = 0;
    }
    update() {
       this.angle += this.rotateSpeed;
@@ -44,12 +50,18 @@ module.exports = class Tower {
          }
       }
       if (distance != null) {
-         this.angle +=
-            (radToDeg(Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)) -
-               this.angle) *
-            1;
+         this.angle = radToDeg(
+            Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)
+         );
          this.angle = this.angle % 360;
+         if (this.tick % this.reload === 0) {
+            state.bullet.push(new Bullet(this.x, this.y, BASIC_BULLET_SPEED, degToRad(this.angle)));
+         }
+      } else {
+         this.update();
       }
+      this.locked--;
+      this.tick++;
    }
    render(ctx, camera) {
       const pos = offset(this.x, this.y, camera);

@@ -2,12 +2,15 @@
 
 const { PATH_ENDS_COLOR, PATH_ENDS_SIZE, GAME_HEIGHT } = require('../util/constants');
 const offset = require('../util/offset');
+const { money } = require('./gui/all');
+
 module.exports = class State {
    constructor() {
       this.enemy = [];
       this.spots = [];
       this.bullet = [];
       this.wave = 1;
+      this.money = 100;
       this.waveLocation = { x: 0, y: 0 };
    }
    intersect(pos, mouse, radius, camera) {
@@ -21,6 +24,14 @@ module.exports = class State {
       return distance < radius * 2;
    }
    simulate(mouse, camera) {
+      this.money += Math.round(Math.random() * 50);
+      for (let i = this.bullet.length - 1; i >= 0; i--) {
+         const bullet = this.bullet[i];
+         bullet.update();
+         if (bullet.offScreen) {
+            this.bullet.splice(i, 1);
+         }
+      }
       let hasTowerMenuOpen = false;
       for (const spot of this.spots) {
          spot.update(mouse, camera, this);
@@ -31,7 +42,7 @@ module.exports = class State {
       let enemyOnMouse = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {
          const enemy = this.enemy[i];
-         enemy.update();
+         enemy.update(this);
          enemy.showStats = false;
          if (enemy.delete) {
             this.enemy.splice(i, 1);
@@ -84,7 +95,13 @@ module.exports = class State {
       ctx.fillStyle = '#9e9170';
       ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
    }
+   drawGUI(ctx, camera) {
+      money(ctx, camera, this.money);
+   }
    render(ctx, camera, path) {
+      for (const bullet of this.bullet) {
+         bullet.render(ctx, camera);
+      }
       let showSpotIndex = null;
       for (let i = 0; i < this.spots.length; i++) {
          const spot = this.spots[i];
@@ -108,6 +125,7 @@ module.exports = class State {
          this.spots[showSpotIndex].drawData(ctx, camera);
       }
       // this.drawPathEnds(ctx, camera, path);
-      this.drawWaveText(ctx, camera);
+      // this.drawWaveText(ctx, camera);
+      this.drawGUI(ctx, camera);
    }
 };
