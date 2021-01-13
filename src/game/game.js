@@ -20,6 +20,13 @@ module.exports = class Game {
       this.path = this.map.path;
       this.pathObject = new Path(this.path);
       this.canvas = document.createElement('canvas');
+      this.GUI = {
+         canvas: document.createElement('canvas'),
+         last: {
+            money: null,
+         },
+      };
+      this.GUI.ctx = this.GUI.canvas.getContext('2d');
       this.ctx = this.canvas.getContext('2d');
       this.state = new State();
       this.makeSpots();
@@ -31,9 +38,9 @@ module.exports = class Game {
          x: 0,
          y: 0,
       };
-      this.scale = resizeCanvas(this.canvas);
+      this.resize();
       this.listen('resize', () => {
-         this.scale = resizeCanvas(this.canvas);
+         this.resize();
       });
       this.listen('mousemove', (event) => {
          const bound = this.canvas.getBoundingClientRect();
@@ -47,6 +54,11 @@ module.exports = class Game {
          this.state.handleMouseDown(this.mouse, this.camera);
       });
       document.body.appendChild(this.canvas);
+      document.body.appendChild(this.GUI.canvas);
+   }
+   resize() {
+      this.scale = resizeCanvas(this.canvas);
+      resizeCanvas(this.GUI.canvas);
    }
    trackKeys(event) {
       if (event.repeat) return;
@@ -101,7 +113,7 @@ module.exports = class Game {
       this.ctx.fillStyle = BACKGROUND_COLOR;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.pathObject.render(this.ctx, this.camera);
-      this.state.render(this.ctx, this.camera, this.path);
+      this.state.render(this.ctx, this.camera, this.GUI);
    }
    simulate() {
       this.state.simulate(this.mouse, this.camera);

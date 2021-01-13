@@ -97,7 +97,7 @@ module.exports = class Enemy {
       ctx.globalAlpha = 1;
       if (this.dead) return;
       const width = 50;
-      ctx.fillRect(pos.x - width / 2, pos.y - this.radius - 5, width * (this.health / this.maxHealth), 10);
+      ctx.fillRect(pos.x - width / 2, pos.y - this.radius - 5, Math.round(width * (this.health / this.maxHealth)), 10);
       ctx.strokeRect(pos.x - width / 2, pos.y - this.radius - 5, width, 10);
    }
    showEnemyStats(ctx, camera) {

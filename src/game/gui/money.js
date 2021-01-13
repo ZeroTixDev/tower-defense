@@ -10,7 +10,11 @@ function formatMoney(money) {
       return `${round(money / 1000, 1)} K`;
    } // i can add more later
 }
-module.exports = function render(ctx, camera, money) {
+module.exports = function render(GUI, camera, money) {
+   if (GUI.last.money === money) return;
+   GUI.last.money = money;
+   const ctx = GUI.ctx;
+   ctx.clearRect(0, 0, GUI.canvas.width, GUI.canvas.height);
    ctx.fillStyle = '#80db74';
    ctx.strokeStyle = '#187d0b';
    ctx.lineWidth = 10 * camera.scale;

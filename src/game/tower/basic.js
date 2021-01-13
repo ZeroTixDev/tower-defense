@@ -55,7 +55,9 @@ module.exports = class Tower {
          );
          this.angle = this.angle % 360;
          if (this.tick % this.reload === 0) {
-            state.bullet.push(new Bullet(this.x, this.y, BASIC_BULLET_SPEED, degToRad(this.angle)));
+            state.bullet.push(
+               new Bullet(this.x, this.y, BASIC_BULLET_SPEED, degToRad(this.angle), this.radius / 4, this.fov / 2)
+            );
          }
       } else {
          this.update();

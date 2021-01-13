@@ -24,11 +24,10 @@ module.exports = class State {
       return distance < radius * 2;
    }
    simulate(mouse, camera) {
-      this.money += Math.round(Math.random() * 50);
       for (let i = this.bullet.length - 1; i >= 0; i--) {
          const bullet = this.bullet[i];
          bullet.update();
-         if (bullet.offScreen) {
+         if (bullet.delete) {
             this.bullet.splice(i, 1);
          }
       }
@@ -56,7 +55,7 @@ module.exports = class State {
             enemyOnMouse = i;
          }
       }
-      if (enemyOnMouse != null) {
+      if (enemyOnMouse != null && this.enemy[enemyOnMouse]) {
          this.enemy[enemyOnMouse].showStats = true;
       }
    }
@@ -98,7 +97,7 @@ module.exports = class State {
    drawGUI(ctx, camera) {
       money(ctx, camera, this.money);
    }
-   render(ctx, camera, path) {
+   render(ctx, camera, GUI) {
       for (const bullet of this.bullet) {
          bullet.render(ctx, camera);
       }
@@ -126,6 +125,6 @@ module.exports = class State {
       }
       // this.drawPathEnds(ctx, camera, path);
       // this.drawWaveText(ctx, camera);
-      this.drawGUI(ctx, camera);
+      this.drawGUI(GUI, camera);
    }
 };
