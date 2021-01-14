@@ -42,6 +42,7 @@ module.exports = class Tower {
          const enemy = state.enemy[i];
          const distX = enemy.x - this.x;
          const distY = enemy.y - this.y;
+         if (enemy.dead) continue;
          const dist = Math.sqrt(distX * distX + distY * distY);
          if (dist < this.fov / 2 + enemy.radius) {
             if (distance === null || distance.dist > dist) {
