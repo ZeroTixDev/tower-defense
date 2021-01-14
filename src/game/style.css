@@ -32,7 +32,7 @@ canvas {
 	flex-direction:column;
 	margin: 10px;
 }
-.button-container button {
+button {
 	border: 10px solid #573700;
 	cursor: pointer;
 	padding: 10px;
@@ -46,7 +46,7 @@ canvas {
 	font-weight: bold;
 	color: #573700;
 }
-.menu .button-container a {
+a {
 	display: block;
 }
 .menu .help {
@@ -56,4 +56,9 @@ canvas {
 }
 .hidden {
 	display: none;
+}
+.credits {
+	position:absolute;
+	left: 10px;
+	bottom: 10px;
 }
