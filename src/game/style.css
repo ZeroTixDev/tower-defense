@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Potta+One&display=swap');
 * {
 	margin:0;
 	padding:0;
@@ -5,9 +6,54 @@
 }
 body {
 	background-color: #cfc3a5;
+	font-family: 'Potta One', cursive;
+	font-size: 16px;
 }
 canvas {
 	position:absolute;
 	left:0;
 	top:0;
+}
+.menu {
+	display: flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items: center;
+	min-height:100vh;
+}
+.menu h1 {
+	color: #5e3c00;
+	font-size:5rem;
+}
+.button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction:column;
+	margin: 10px;
+}
+.button-container button {
+	border: 10px solid #573700;
+	cursor: pointer;
+	padding: 10px;
+	background-color: #b37710;
+	margin: 10px;
+	border-radius: 10px;
+	width: 200px;
+	height: 75px;
+	text-align:center;
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: #573700;
+}
+.menu .button-container a {
+	display: block;
+}
+.menu .help {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.hidden {
+	display: none;
 }

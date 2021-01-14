@@ -11,8 +11,20 @@ const plugins = [
       title: 'Tower Defense',
       favicon: join(paths.images, 'logo.png'),
       template: join(paths.game, 'template.html'),
-      filename: '/index.html',
+      filename: './index.html',
       publicPath: './',
+      minify: {
+         removeComments: true,
+         collapseWhitespace: true,
+      },
+   }),
+   new HtmlWebpackPlugin({
+      hash: true,
+      title: 'Tower Defense',
+      favicon: join(paths.images, 'logo.png'),
+      template: join(paths.editor, 'template.html'),
+      publicPath: './',
+      filename: './editor.html',
       minify: {
          removeComments: true,
          collapseWhitespace: true,
@@ -22,13 +34,11 @@ const plugins = [
    new WebpackBar(),
 ];
 module.exports = {
-   entry: {
-      game: { import: join(paths.game, 'index.js'), filename: '[name].[contenthash].bundle.js' },
-   },
+   entry: join(paths.game, 'index.js'),
    mode: 'development',
    devtool: 'source-map',
    output: {
-      path: join(paths.build, '/game'),
+      path: paths.build,
       publicPath: '/',
       filename: '[name].[contenthash].bundle.js',
    },
