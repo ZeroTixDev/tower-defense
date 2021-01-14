@@ -44,7 +44,7 @@ module.exports = class State {
          enemy.update(this);
          enemy.showStats = false;
          if (enemy.delete) {
-            this.state.money += Math.round(Math.random() * 50);
+            this.money += Math.round(Math.random() * 50);
             this.enemy.splice(i, 1);
             continue;
          }
