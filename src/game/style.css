@@ -46,6 +46,9 @@ button {
 	font-weight: bold;
 	color: #573700;
 }
+button:hover {
+	background: #a0600c
+}
 a {
 	display: block;
 }
