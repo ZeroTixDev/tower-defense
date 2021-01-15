@@ -7,4 +7,5 @@ module.exports = {
    game: path.resolve(__dirname, '../src/game'),
    editor: path.resolve(__dirname, '../src/editor'),
    images: path.resolve(__dirname, '../assets/images'),
+   src: path.resolve(__dirname, '../src'),
 };

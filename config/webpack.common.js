@@ -22,6 +22,18 @@ const plugins = [
       hash: true,
       title: 'Tower Defense',
       favicon: join(paths.images, 'logo.png'),
+      template: join(paths.src, '404.html'),
+      filename: './404.html',
+      publicPath: './',
+      minify: {
+         removeComments: true,
+         collapseWhitespace: true,
+      },
+   }),
+   new HtmlWebpackPlugin({
+      hash: true,
+      title: 'Tower Defense',
+      favicon: join(paths.images, 'logo.png'),
       template: join(paths.editor, 'template.html'),
       publicPath: './',
       filename: './editor.html',
