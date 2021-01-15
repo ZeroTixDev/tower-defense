@@ -7,7 +7,8 @@
     "start": "webpack serve --config config/webpack.prod.js",
     "build": "webpack --config config/webpack.prod.js & webpack --config config/webpack.prod-editor.js",
     "game": "webpack serve --config config/webpack.dev.js",
-    "editor": "webpack serve --config config/webpack.dev-editor.js"
+    "editor": "webpack serve --config config/webpack.dev-editor.js",
+    "deploy": "firebase deploy --only hosting:tower-defense-site"
   },
   "keywords": [],
   "author": "",
