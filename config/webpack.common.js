@@ -20,8 +20,7 @@ const plugins = [
    }),
    new HtmlWebpackPlugin({
       hash: true,
-      title: 'Tower Defense',
-      favicon: join(paths.images, 'logo.png'),
+      title: '404',
       template: join(paths.src, '404.html'),
       filename: './404.html',
       publicPath: './',

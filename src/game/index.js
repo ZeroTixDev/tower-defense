@@ -10,4 +10,4 @@ dom.playButton.addEventListener('mousedown', () => {
    game.start();
 });
 
-console.log('hi script kiddie');
+console.log('hello');
