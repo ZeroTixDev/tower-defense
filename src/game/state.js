@@ -62,7 +62,7 @@ module.exports = class State {
             !hasTowerMenuOpen &&
             hoverTowerIndex === null &&
             enemyOnMouse === null &&
-            this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius * 2, camera)
+            this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius * 3, camera)
          ) {
             enemyOnMouse = i;
          }

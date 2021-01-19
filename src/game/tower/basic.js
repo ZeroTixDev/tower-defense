@@ -11,17 +11,22 @@ function radToDeg(rad) {
    return (rad * 180) / Math.PI;
 }
 module.exports = class Tower {
-   constructor(x, y, reload = BASIC_TOWER.reload_time) {
+   constructor(x, y, object = BASIC_TOWER) {
       this.x = x;
       this.y = y;
       this.angle = Math.round(Math.random() * 360);
-      this.rotateSpeed = BASIC_TOWER.rotate_speed;
-      this.radius = BASIC_TOWER.size / 2;
-      this.color = BASIC_TOWER.color;
-      this.fov = BASIC_TOWER.fov;
-      this.reload = Math.round(reload * GAME.simulation_rate);
-      this.type = BASIC_TOWER.name;
-      this.tick = 0;
+      this.stats = { ...object };
+      this.rotateSpeed = this.stats.rotate_speed;
+      this.radius = this.stats.size / 2;
+      this.color = this.stats.color;
+      this.fov = this.stats.fov;
+      this.reload = Math.round(this.stats.reload_time * GAME.simulation_rate);
+      this.type = this.stats.name;
+      this.tick = Math.round(Math.random() * this.reload);
+      this.bullet = {
+         object: Bullet,
+         stats: BASIC_BULLET,
+      };
    }
    update() {
       this.angle += this.rotateSpeed;
@@ -41,16 +46,23 @@ module.exports = class Tower {
             }
          }
       }
-      if (distance != null) {
+      if (distance != null && this.tick % this.reload === 0) {
          this.angle = radToDeg(
             Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)
          );
          this.angle = this.angle % 360;
-         if (this.tick % this.reload === 0) {
-            state.bullet.push(
-               new Bullet(this.x, this.y, BASIC_BULLET.speed, degToRad(this.angle), this.radius / 4, this.fov / 2)
-            );
-         }
+         state.bullet.push(
+            new this.bullet.object(
+               this.x,
+               this.y,
+               this.bullet.stats.speed,
+               degToRad(this.angle),
+               this.radius / 4,
+               this.fov / 2,
+               this.stats.damage,
+               this.bullet.stats
+            )
+         );
       } else {
          this.update();
       }
@@ -63,17 +75,30 @@ module.exports = class Tower {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const pos = offset(this.x, this.y, camera);
-      ctx.fillRect(pos.x - BASIC_TOWER.stats_width / 2, pos.y, BASIC_TOWER.stats_width, BASIC_TOWER.stats_height);
+      if (pos.y > GAME.height / 2) {
+         pos.y -= this.stats.stats_height;
+      }
+      ctx.fillRect(pos.x - this.stats.stats_width / 2, pos.y, this.stats.stats_width, this.stats.stats_height);
       ctx.fillStyle = 'white';
-      ctx.fillRect(pos.x - BASIC_TOWER.stats_width / 2, pos.y, BASIC_TOWER.stats_width, BASIC_TOWER.stats_height);
+      ctx.fillRect(pos.x - this.stats.stats_width / 2, pos.y, this.stats.stats_width, this.stats.stats_height);
       ctx.globalAlpha = 1;
       ctx.fillStyle = 'black';
-      ctx.font = `${28 * camera.scale}px Arial`;
-      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + BASIC_TOWER.stats_height / 3));
+      ctx.font = `${24 * camera.scale}px Arial`;
+      ctx.fillText(`Type: ${this.type}`, pos.x, Math.round(pos.y + this.stats.stats_height / 5));
       ctx.fillText(
-         `DPS: ${Math.round(BASIC_TOWER.damage / BASIC_TOWER.reload_time)}`,
+         `Damage Per Shot: ${Math.round(this.stats.damage)}`,
          pos.x,
-         Math.round(pos.y + BASIC_TOWER.stats_height - BASIC_TOWER.stats_height / 3)
+         Math.round(pos.y + (this.stats.stats_height / 5) * 2)
+      );
+      ctx.fillText(
+         `Reload Time: ${Math.round(this.stats.reload_time)}s`,
+         pos.x,
+         Math.round(pos.y + (this.stats.stats_height / 5) * 3)
+      );
+      ctx.fillText(
+         `Field Of View: ${Math.round(this.stats.fov)}`,
+         pos.x,
+         Math.round(pos.y + (this.stats.stats_height / 5) * 4)
       );
    }
    render(ctx, camera) {
@@ -85,7 +110,7 @@ module.exports = class Tower {
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * camera.scale, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillRect(0, -BASIC_TOWER.barrel_height / 2, BASIC_TOWER.barrel_width, BASIC_TOWER.barrel_height);
+      ctx.fillRect(0, -this.stats.barrel_height / 2, this.stats.barrel_width, this.stats.barrel_height);
       ctx.restore();
    }
 };

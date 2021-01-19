@@ -1,7 +1,7 @@
 'use strict';
 
 const { SPOT, TOWER } = require('../util/constants');
-const Basic = require('./tower/basic');
+const { Basic, Pounder } = require('./tower/all');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
@@ -9,7 +9,8 @@ module.exports = class Spot {
       this.y = y;
       this.radius = SPOT.size / 2;
       this.color = SPOT.color;
-      this.tower = Math.random() < 0.5 ? null : new Basic(this.x, this.y);
+      this.tower =
+         Math.random() < 0.5 ? (Math.random() < 0.5 ? null : new Pounder(this.x, this.y)) : new Basic(this.x, this.y);
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
@@ -25,7 +26,7 @@ module.exports = class Spot {
       if (Math.abs(distX) < 50 && Math.abs(distY) < 50 && !this.hasTower) {
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < this.radius) {
-            this.color = 255;
+            this.color = SPOT.color - 25;
          }
       }
       if (this.hasTower) {
@@ -62,31 +63,19 @@ module.exports = class Spot {
       ctx.font = '40px Arial';
       ctx.strokeStyle = '#573700';
       ctx.lineWidth = 10;
-      if (this.showData === 'down') {
-         ctx.fillRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
-         ctx.globalAlpha = 1;
-         ctx.strokeRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
-         // draw three towers rects
-         ctx.strokeRect(
-            Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
-            pos.y,
-            TOWER.display_width / 3,
-            TOWER.display_height
-         );
-         // draw some circles as towers unfinished
-      } else if (this.showData === 'up') {
-         ctx.fillRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, -TOWER.display_height);
-         ctx.globalAlpha = 1;
-         ctx.strokeRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, -TOWER.display_height);
-         // draw three [1 since we dont have to draw the first one ] towers rects
-         ctx.strokeRect(
-            Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
-            pos.y,
-            TOWER.display_width / 3,
-            -TOWER.display_height
-         );
-         // draw some circles as towers unfinsihed
+      if (this.showData === 'up') {
+         pos.y -= TOWER.display_height;
       }
+      ctx.fillRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
+      ctx.globalAlpha = 1;
+      ctx.strokeRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
+      // draw three towers rects
+      ctx.strokeRect(
+         Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
+         pos.y,
+         TOWER.display_width / 3,
+         TOWER.display_height
+      );
    }
    drawData(ctx, camera) {
       if (this.hasTower) {

@@ -73,8 +73,8 @@ const TOWER = {
    rotate_speed: 2.5,
    display_width: 290,
    display_height: 90,
-   stats_width: 150,
-   stats_height: 100,
+   stats_width: 200,
+   stats_height: 150,
    barrel_width: 35,
    barrel_height: 20,
    size: 45,
@@ -93,11 +93,24 @@ const TOWER = {
 const BASIC_TOWER = Object.assign(
    { ...TOWER },
    {
-      fov: 400,
+      fov: 600,
       damage: 15,
       reload_time: 0.5,
       color: '#474747',
       name: 'Basic',
+   }
+);
+
+const POUNDER_TOWER = Object.assign(
+   { ...TOWER },
+   {
+      fov: 500,
+      damage: 80,
+      reload_time: 2,
+      color: '#0a591a',
+      name: 'Pounder',
+      size: 45,
+      barrel_height: 35,
    }
 );
 
@@ -110,19 +123,31 @@ const BULLET = {
    speed: 8,
    size: 20,
    color: 'black',
+   name: 'Default',
 };
 const BASIC_BULLET = Object.assign(
    { ...BULLET },
    {
-      speed: 8,
+      speed: 10,
       size: 20,
       color: '#323232',
+      name: 'Basic',
+   }
+);
+
+const POUNDER_BULLET = Object.assign(
+   { ...BULLET },
+   {
+      speed: 7,
+      size: 50,
+      color: '#0b4d18',
+      name: 'Pounder',
    }
 );
 // const GAME_WIDTH = 1600;
 // const GAME_HEIGHT = 900;
 // const BACKGROUND_COLOR = '#dbd2ba';
-const LINE_DISTANCE = 50; // idk we'll see
+// const LINE_DISTANCE = 50;
 // const PATH_SIZE = 75;
 // const PATH_INSIDE_COLOR = '#bda562';
 // const PATH_STROKE_COLOR = '#8f7328';
@@ -178,7 +203,9 @@ module.exports = {
    FAST_ENEMY,
    STRONG_ENEMY,
    BASIC_TOWER,
+   POUNDER_TOWER,
    MONEY,
    BASIC_BULLET,
+   POUNDER_BULLET,
    TOWER,
 };

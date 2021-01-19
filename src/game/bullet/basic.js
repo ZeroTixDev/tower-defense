@@ -1,23 +1,24 @@
 'use strict';
 const offset = require('../../util/offset');
-const { BASIC_BULLET, BASIC_TOWER, GAME } = require('../../util/constants');
+const { GAME } = require('../../util/constants');
+
 module.exports = class Bullet {
-   constructor(x, y, speed, angle, turretDistance, range, radius = BASIC_BULLET.size / 2) {
+   constructor(x, y, speed, angle, turretDistance, range, damage, stats) {
       this.x = x;
       this.y = y;
       this.speed = speed;
       this.angle = angle;
       this.xv = Math.cos(this.angle) * this.speed;
       this.yv = Math.sin(this.angle) * this.speed;
-      this.color = BASIC_BULLET.color;
-      this.radius = radius;
-      this.type = BASIC_TOWER.name;
+      this.color = stats.color;
+      this.radius = stats.size / 2;
+      this.type = stats.name;
       this.x += this.xv * turretDistance;
       this.y += this.yv * turretDistance;
       this.range = range;
       this.traveled = 0;
       this.opacity = 1;
-      this.damage = BASIC_TOWER.damage;
+      this.damage = damage;
    }
    get offScreen() {
       return (
