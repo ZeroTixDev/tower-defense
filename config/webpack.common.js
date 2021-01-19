@@ -21,6 +21,7 @@ const plugins = [
    new HtmlWebpackPlugin({
       hash: true,
       title: '404',
+      inject: false,
       template: join(paths.src, '404.html'),
       filename: './404.html',
       publicPath: './',

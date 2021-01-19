@@ -1,12 +1,12 @@
 'use strict';
 
 const Basic = require('./basic');
-const { FAST_ENEMY_COLOR, FAST_ENEMY_SPEED, FAST_ENEMY_SIZE, FAST_ENEMY_HEALTH } = require('../../util/constants');
+const { FAST_ENEMY } = require('../../util/constants');
 
 module.exports = class Enemy extends Basic {
-   constructor(path, speed = FAST_ENEMY_SPEED, size = FAST_ENEMY_SIZE, health = FAST_ENEMY_HEALTH) {
+   constructor(path, speed = FAST_ENEMY.speed, size = FAST_ENEMY.size, health = FAST_ENEMY.health) {
       super(path, speed, size, health);
-      this.color = FAST_ENEMY_COLOR;
-      this.type = 'Fast';
+      this.color = FAST_ENEMY.color;
+      this.type = FAST_ENEMY.name;
    }
 };

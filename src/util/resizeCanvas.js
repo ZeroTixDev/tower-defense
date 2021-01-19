@@ -1,13 +1,13 @@
 'use strict';
-const { GAME_WIDTH, GAME_HEIGHT } = require('./constants');
+const { GAME } = require('./constants');
 
 module.exports = function resizeCanvas(canvas, func = () => {}) {
    if (!canvas) return;
-   if (canvas.width !== GAME_WIDTH) canvas.width = GAME_WIDTH;
-   if (canvas.height !== GAME_HEIGHT) canvas.height = GAME_HEIGHT;
-   canvas.style.transform = `scale(${Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT)})`;
-   canvas.style.left = `${(window.innerWidth - GAME_WIDTH) / 2}px`;
-   canvas.style.top = `${(window.innerHeight - GAME_HEIGHT) / 2}px`;
+   if (canvas.width !== GAME.width) canvas.width = GAME.width;
+   if (canvas.height !== GAME.height) canvas.height = GAME.height;
+   canvas.style.transform = `scale(${Math.min(window.innerWidth / GAME.width, window.innerHeight / GAME.height)})`;
+   canvas.style.left = `${(window.innerWidth - GAME.width) / 2}px`;
+   canvas.style.top = `${(window.innerHeight - GAME.height) / 2}px`;
    func();
-   return Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
+   return Math.min(window.innerWidth / GAME.width, window.innerHeight / GAME.height);
 };

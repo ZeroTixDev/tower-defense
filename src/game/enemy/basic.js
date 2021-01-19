@@ -1,32 +1,24 @@
 'use strict';
 
-const {
-   BASIC_ENEMY_COLOR,
-   BASIC_ENEMY_SPEED,
-   BASIC_ENEMY_SIZE,
-   BASIC_ENEMY_HEALTH,
-   ENEMY_STATS_WIDTH,
-   ENEMY_STATS_HEIGHT,
-   SIMULATION_RATE,
-} = require('../../util/constants');
+const { BASIC_ENEMY, GAME } = require('../../util/constants');
 const offset = require('../../util/offset');
 
 module.exports = class Enemy {
-   constructor(path, speed = BASIC_ENEMY_SPEED, size = BASIC_ENEMY_SIZE, health = BASIC_ENEMY_HEALTH) {
+   constructor(path, speed = BASIC_ENEMY.speed, size = BASIC_ENEMY.size, health = BASIC_ENEMY.health) {
       this.pathIndex = 1;
       this.path = path;
       this.x = this.lastPath.x;
       this.y = this.lastPath.y;
       this.radius = size / 2;
       this.speed = speed;
-      this.color = BASIC_ENEMY_COLOR;
+      this.color = BASIC_ENEMY.color;
       this.accuracy = 5;
       this.calculateVelocity();
       this.health = health;
       this.maxHealth = health;
       this.showStats = false;
       this.deadTimer = 0;
-      this.type = 'Basic';
+      this.type = BASIC_ENEMY.name;
    }
    get dead() {
       return this.health <= 0;
@@ -45,7 +37,7 @@ module.exports = class Enemy {
    update(state) {
       if (this.dead) {
          this.deadTimer++;
-         if (this.deadTimer > SIMULATION_RATE) {
+         if (this.deadTimer > GAME.simulation_rate) {
             this.delete = true;
          }
          return;
@@ -85,7 +77,7 @@ module.exports = class Enemy {
    drawEnemy(ctx, fill, camera) {
       ctx.fillStyle = fill;
       if (this.dead) {
-         ctx.globalAlpha = 1 - this.deadTimer / SIMULATION_RATE;
+         ctx.globalAlpha = 1 - this.deadTimer / GAME.simulation_rate;
       }
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
@@ -107,17 +99,17 @@ module.exports = class Enemy {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const pos = offset(this.x, this.y, camera);
-      ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
+      ctx.fillRect(pos.x - BASIC_ENEMY.stats_width / 2, pos.y, BASIC_ENEMY.stats_width, BASIC_ENEMY.stats_height);
       ctx.fillStyle = 'white';
-      ctx.fillRect(pos.x - ENEMY_STATS_WIDTH / 2, pos.y, ENEMY_STATS_WIDTH, ENEMY_STATS_HEIGHT);
+      ctx.fillRect(pos.x - BASIC_ENEMY.stats_width / 2, pos.y, BASIC_ENEMY.stats_width, BASIC_ENEMY.stats_height);
       ctx.globalAlpha = 1;
       ctx.fillStyle = 'black';
       ctx.font = `${28 * camera.scale}px Arial`;
-      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + ENEMY_STATS_HEIGHT / 3));
+      ctx.fillText(`type: ${this.type}`, pos.x, Math.round(pos.y + BASIC_ENEMY.stats_height / 3));
       ctx.fillText(
          `speed: ${Math.round(this.speed * 4)}`,
          pos.x,
-         Math.round(pos.y + ENEMY_STATS_HEIGHT - ENEMY_STATS_HEIGHT / 3)
+         Math.round(pos.y + BASIC_ENEMY.stats_height - BASIC_ENEMY.stats_height / 3)
       );
    }
    render(ctx, camera) {

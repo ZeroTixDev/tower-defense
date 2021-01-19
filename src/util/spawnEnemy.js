@@ -2,11 +2,11 @@
 
 const enemy = require('../game/enemy/all');
 const currentTick = require('./currentTick');
-const { SIMULATION_RATE } = require('./constants');
+const { GAME } = require('./constants');
 
 module.exports = function spawnEnemy(path, json, game) {
    function calculateTime(ms) {
-      return currentTick(game.startTime) + (ms / 1000) * SIMULATION_RATE;
+      return currentTick(game.startTime) + (ms / 1000) * GAME.simulation_rate;
    }
    function spawn(type, amount, time, delay) {
       for (let i = 1; i < amount + 1; i++) {

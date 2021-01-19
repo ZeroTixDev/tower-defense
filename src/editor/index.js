@@ -2,7 +2,7 @@
 
 require('./style.css');
 
-const { BACKGROUND_COLOR, GAME_WIDTH, GAME_HEIGHT } = require('../util/constants');
+const { GAME } = require('../util/constants');
 // const loadImage = require('../util/loadImage');
 const drawCursor = require('..//util/drawCursor');
 const resizeCanvas = require('../util/resizeCanvas');
@@ -23,13 +23,13 @@ listen(
    },
    canvas
 );
-let scale = Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
+let scale = Math.min(window.innerWidth / GAME.width, window.innerHeight / GAME.height);
 resizeCanvas(canvas, () => {
-   scale = Math.min(window.innerWidth / GAME_WIDTH, window.innerHeight / GAME_HEIGHT);
+   scale = Math.min(window.innerWidth / GAME.width, window.innerHeight / GAME.height);
 });
 document.body.appendChild(canvas);
 function render() {
-   ctx.fillStyle = BACKGROUND_COLOR;
+   ctx.fillStyle = GAME.background_color;
    ctx.fillRect(0, 0, canvas.width, canvas.height);
    drawCursor({ mouse, ctx });
 }

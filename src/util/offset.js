@@ -1,9 +1,9 @@
 'use strict';
-const { GAME_WIDTH, GAME_HEIGHT } = require('./constants');
+const { GAME } = require('./constants');
 
 module.exports = function offset(x, y, camera) {
    return {
-      x: Math.round((x - camera.x) * camera.scale + GAME_WIDTH / 2),
-      y: Math.round((y - camera.y) * camera.scale + GAME_HEIGHT / 2),
+      x: Math.round((x - camera.x) * camera.scale + GAME.width / 2),
+      y: Math.round((y - camera.y) * camera.scale + GAME.height / 2),
    };
 };

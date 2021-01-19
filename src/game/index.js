@@ -9,5 +9,3 @@ dom.playButton.addEventListener('mousedown', () => {
    const game = new Game();
    game.start();
 });
-
-console.log('hello');

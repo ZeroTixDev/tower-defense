@@ -1,10 +1,10 @@
 'use strict';
 
-const { GAME_WIDTH, GAME_HEIGHT, SIMULATION_RATE } = require('../util/constants');
+const { GAME } = require('../util/constants');
 const round = require('../util/round');
 
 module.exports = class Camera {
-   constructor(x = GAME_WIDTH / 2, y = GAME_HEIGHT / 2, speed = 2.5) {
+   constructor(x = GAME.width / 2, y = GAME.height / 2, speed = 2.5) {
       this.x = x;
       this.y = y;
       this.scale = 0.8;
@@ -28,10 +28,10 @@ module.exports = class Camera {
       if (delta < 1 / 30) {
          this.xv += (x - this.x) * 0.45 * delta * this.speed;
          this.yv += (y - this.y) * 0.45 * delta * this.speed;
-         this.xv += (GAME_WIDTH / 2 - this.x) * 0.9 * delta * this.speed * 5;
-         this.yv += (GAME_HEIGHT / 2 - this.y) * 0.9 * delta * this.speed * 5;
-         this.xv *= Math.pow(this.friction, delta * SIMULATION_RATE);
-         this.yv *= Math.pow(this.friction, delta * SIMULATION_RATE);
+         this.xv += (GAME.width / 2 - this.x) * 0.9 * delta * this.speed * 5;
+         this.yv += (GAME.height / 2 - this.y) * 0.9 * delta * this.speed * 5;
+         this.xv *= Math.pow(this.friction, delta * GAME.simulation_rate);
+         this.yv *= Math.pow(this.friction, delta * GAME.simulation_rate);
          this.x += this.xv;
          this.y += this.yv;
       }

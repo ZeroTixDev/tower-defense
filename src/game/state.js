@@ -1,6 +1,6 @@
 'use strict';
 
-const { PATH_ENDS_COLOR, PATH_ENDS_SIZE, GAME_HEIGHT } = require('../util/constants');
+const { GAME, PATH } = require('../util/constants');
 const offset = require('../util/offset');
 const { money } = require('./gui/all');
 
@@ -21,7 +21,7 @@ module.exports = class State {
          return false;
       }
       const distance = Math.sqrt(distX * distX + distY * distY);
-      return distance < radius * 2;
+      return distance < radius;
    }
    simulate(mouse, camera) {
       for (let i = this.bullet.length - 1; i >= 0; i--) {
@@ -32,10 +32,20 @@ module.exports = class State {
          }
       }
       let hasTowerMenuOpen = false;
-      for (const spot of this.spots) {
+      let hoverTowerIndex = null;
+      for (let i = this.spots.length - 1; i >= 0; i--) {
+         const spot = this.spots[i];
          spot.update(mouse, camera, this);
+         spot.showStats = false;
          if (spot.showData) {
             hasTowerMenuOpen = true;
+         }
+         if (
+            hoverTowerIndex === null &&
+            spot.hasTower &&
+            this.intersect({ x: spot.x, y: spot.y }, mouse, spot.radius, camera)
+         ) {
+            hoverTowerIndex = i;
          }
       }
       let enemyOnMouse = null;
@@ -50,14 +60,18 @@ module.exports = class State {
          }
          if (
             !hasTowerMenuOpen &&
+            hoverTowerIndex === null &&
             enemyOnMouse === null &&
-            this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius, camera)
+            this.intersect({ x: enemy.x, y: enemy.y }, mouse, enemy.radius * 2, camera)
          ) {
             enemyOnMouse = i;
          }
       }
       if (enemyOnMouse != null && this.enemy[enemyOnMouse]) {
          this.enemy[enemyOnMouse].showStats = true;
+      }
+      if (hoverTowerIndex != null && this.spots[hoverTowerIndex]) {
+         this.spots[hoverTowerIndex].showStats = true;
       }
    }
    handleMouseDown(mouse, camera) {
@@ -71,7 +85,7 @@ module.exports = class State {
       }
       if (spotOnMouse != null) {
          const spot = this.spots[spotOnMouse];
-         if (spot.y < GAME_HEIGHT / 2 + GAME_HEIGHT / 10) {
+         if (spot.y < GAME.height / 2 + GAME.height / 10) {
             spot.showData = 'down';
          } else {
             spot.showData = 'up';
@@ -79,14 +93,14 @@ module.exports = class State {
       }
    }
    drawPathEnds(ctx, camera, path) {
-      ctx.fillStyle = PATH_ENDS_COLOR;
+      ctx.fillStyle = PATH.ends_color;
       ctx.beginPath();
       const start = offset(path[0].x, path[0].y, camera);
-      ctx.arc(start.x, start.y, (PATH_ENDS_SIZE / 2) * camera.scale, 0, Math.PI * 2);
+      ctx.arc(start.x, start.y, (PATH.ends_size / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
       const end = offset(path[path.length - 1].x, path[path.length - 1].y, camera);
-      ctx.arc(end.x, end.y, (PATH_ENDS_SIZE / 2) * camera.scale, 0, Math.PI * 2);
+      ctx.arc(end.x, end.y, (PATH.ends_size / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
    drawWaveText(ctx, camera) {
@@ -103,18 +117,22 @@ module.exports = class State {
          bullet.render(ctx, camera);
       }
       let showSpotIndex = null;
+      let hoverSpotIndex = null;
       for (let i = 0; i < this.spots.length; i++) {
          const spot = this.spots[i];
          spot.render(ctx, camera);
          if (spot.showData) {
             showSpotIndex = i;
          }
+         if (spot.showStats && spot.hasTower) {
+            hoverSpotIndex = i;
+         }
       }
       let showEnemyStatsIndex = null;
       for (let i = 0; i < this.enemy.length; i++) {
          const enemy = this.enemy[i];
          enemy.render(ctx, camera);
-         if (enemy.showStats) {
+         if (enemy.showStats && hoverSpotIndex === null) {
             showEnemyStatsIndex = i;
          }
       }
@@ -123,6 +141,9 @@ module.exports = class State {
       }
       if (showSpotIndex != null) {
          this.spots[showSpotIndex].drawData(ctx, camera);
+      }
+      if (hoverSpotIndex != null) {
+         this.spots[hoverSpotIndex].showTowerStats(ctx, camera);
       }
       // this.drawPathEnds(ctx, camera, path);
       // this.drawWaveText(ctx, camera);

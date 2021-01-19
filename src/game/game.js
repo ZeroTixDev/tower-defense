@@ -5,7 +5,7 @@ const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
 const Spot = require('./spot');
-const { BACKGROUND_COLOR, SIMULATION_RATE, CONTROLS } = require('../util/constants');
+const { GAME, CONTROLS } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const spawnEnemy = require('../util/spawnEnemy');
 
@@ -14,7 +14,6 @@ module.exports = class Game {
       this.wave = 0;
       this.towers = [];
       this.events = Object.create(null);
-      this.fov = 0.1;
       this.camera = new Camera();
       this.map = require('../../maps/map.json');
       this.path = this.map.path;
@@ -110,7 +109,7 @@ module.exports = class Game {
       }.bind(this)());
    }
    render() {
-      this.ctx.fillStyle = BACKGROUND_COLOR;
+      this.ctx.fillStyle = GAME.background_color;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.pathObject.render(this.ctx, this.camera);
       this.state.render(this.ctx, this.camera, this.GUI);
@@ -120,7 +119,7 @@ module.exports = class Game {
    }
    update() {
       let expectedTick = currentTick(this.startTime);
-      if (expectedTick - this.tick > SIMULATION_RATE / 3) {
+      if (expectedTick - this.tick > GAME.simulation_rate / 3) {
          this.startTime += window.performance.now() - this.time;
          expectedTick = this.tick;
          this.tick -= 1;
@@ -139,33 +138,3 @@ module.exports = class Game {
       }
    }
 };
-
-/* debug to make spots
-      this.spot = {
-         x: 0,
-         y: 0,
-      };
-      this.listen('keydown', (event) => {
-         if (event.repeat) return;
-         if (event.code === 'KeyW') {
-            this.spot.y -= 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyS') {
-            this.spot.y += 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyA') {
-            this.spot.x -= 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'KeyD') {
-            this.spot.x += 20;
-            this.state.spots.push(new Spot(this.spot.x, this.spot.y));
-         }
-         if (event.code === 'Space') {
-            console.log(this.spot);
-         }
-      });
-      > inside constructor
-      */

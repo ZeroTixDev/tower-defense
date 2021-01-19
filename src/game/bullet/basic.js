@@ -1,40 +1,30 @@
 'use strict';
 const offset = require('../../util/offset');
-const {
-   BASIC_BULLET_SIZE,
-   BASIC_BULLET_COLOR,
-   BASIC_TOWER_DAMAGE,
-   GAME_WIDTH,
-   GAME_MARGIN,
-   GAME_HEIGHT,
-   SIMULATION_RATE,
-} = require('../../util/constants');
+const { BASIC_BULLET, BASIC_TOWER, GAME } = require('../../util/constants');
 module.exports = class Bullet {
-   constructor(x, y, speed, angle, turretDistance, range, radius = BASIC_BULLET_SIZE / 2) {
+   constructor(x, y, speed, angle, turretDistance, range, radius = BASIC_BULLET.size / 2) {
       this.x = x;
       this.y = y;
       this.speed = speed;
       this.angle = angle;
       this.xv = Math.cos(this.angle) * this.speed;
       this.yv = Math.sin(this.angle) * this.speed;
-      this.color = BASIC_BULLET_COLOR;
+      this.color = BASIC_BULLET.color;
       this.radius = radius;
-      this.type = 'basic';
+      this.type = BASIC_TOWER.name;
       this.x += this.xv * turretDistance;
       this.y += this.yv * turretDistance;
       this.range = range;
       this.traveled = 0;
       this.opacity = 1;
-   }
-   get damage() {
-      return Math.round(BASIC_TOWER_DAMAGE + Math.random() * 5);
+      this.damage = BASIC_TOWER.damage;
    }
    get offScreen() {
       return (
-         this.x - this.radius < -GAME_MARGIN ||
-         this.x + this.radius > GAME_WIDTH + GAME_MARGIN ||
-         this.y + this.radius > GAME_HEIGHT + GAME_MARGIN ||
-         this.y - this.radius < -GAME_MARGIN
+         this.x - this.radius < -GAME.margin ||
+         this.x + this.radius > GAME.width + GAME.margin ||
+         this.y + this.radius > GAME.height + GAME.margin ||
+         this.y - this.radius < -GAME.margin
       );
    }
    update() {
@@ -42,7 +32,7 @@ module.exports = class Bullet {
       this.y += this.yv;
       this.traveled += this.speed;
       if (this.traveled > this.range / 2) {
-         this.opacity -= 2 / SIMULATION_RATE;
+         this.opacity -= 2 / GAME.simulation_rate;
          if (this.opacity <= 0) {
             this.delete = true;
          }

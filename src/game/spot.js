@@ -1,14 +1,14 @@
 'use strict';
 
-const { SPOT_COLOR, SPOT_SIZE, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT } = require('../util/constants');
+const { SPOT, TOWER } = require('../util/constants');
 const Basic = require('./tower/basic');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
       this.x = x;
       this.y = y;
-      this.radius = SPOT_SIZE / 2;
-      this.color = SPOT_COLOR;
+      this.radius = SPOT.size / 2;
+      this.color = SPOT.color;
       this.tower = Math.random() < 0.5 ? null : new Basic(this.x, this.y);
    }
    get fill() {
@@ -21,7 +21,7 @@ module.exports = class Spot {
       const offsetPos = offset(this.x, this.y, camera);
       const distX = mouse.x - offsetPos.x;
       const distY = mouse.y - offsetPos.y;
-      this.color = SPOT_COLOR;
+      this.color = SPOT.color;
       if (Math.abs(distX) < 50 && Math.abs(distY) < 50 && !this.hasTower) {
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < this.radius) {
@@ -43,26 +43,49 @@ module.exports = class Spot {
       ctx.fill();
    }
    drawTowerData(ctx, camera) {
-      ctx.fillStyle = 'rgba(150, 150, 150, 0.2)';
+      ctx.fillStyle = 'rgba(50, 50, 50, 0.3)';
       const pos = offset(this.x, this.y, camera);
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, (this.tower.fov / 2) * camera.scale, 0, Math.PI * 2);
       ctx.fill();
    }
+   showTowerStats(ctx, camera) {
+      if (!this.hasTower) return;
+      this.tower.showStats(ctx, camera);
+   }
    drawSpotData(ctx, camera) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.fillStyle = '#877a56';
+      ctx.globalAlpha = 0.6;
       const pos = offset(this.x, this.y, camera);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.font = '40px Arial';
+      ctx.strokeStyle = '#573700';
+      ctx.lineWidth = 10;
       if (this.showData === 'down') {
-         ctx.fillRect(pos.x - TOWER_DISPLAY_WIDTH / 2, pos.y, TOWER_DISPLAY_WIDTH, TOWER_DISPLAY_HEIGHT);
-         ctx.fillStyle = 'black';
-         ctx.fillText(`TOWERS`, pos.x, pos.y + 50);
+         ctx.fillRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
+         ctx.globalAlpha = 1;
+         ctx.strokeRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, TOWER.display_height);
+         // draw three towers rects
+         ctx.strokeRect(
+            Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
+            pos.y,
+            TOWER.display_width / 3,
+            TOWER.display_height
+         );
+         // draw some circles as towers unfinished
       } else if (this.showData === 'up') {
-         ctx.fillRect(pos.x - TOWER_DISPLAY_WIDTH / 2, pos.y, TOWER_DISPLAY_WIDTH, -TOWER_DISPLAY_HEIGHT);
-         ctx.fillStyle = 'black';
-         ctx.fillText(`TOWERS`, pos.x, pos.y - 50);
+         ctx.fillRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, -TOWER.display_height);
+         ctx.globalAlpha = 1;
+         ctx.strokeRect(Math.round(pos.x - TOWER.display_width / 2), pos.y, TOWER.display_width, -TOWER.display_height);
+         // draw three [1 since we dont have to draw the first one ] towers rects
+         ctx.strokeRect(
+            Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
+            pos.y,
+            TOWER.display_width / 3,
+            -TOWER.display_height
+         );
+         // draw some circles as towers unfinsihed
       }
    }
    drawData(ctx, camera) {
