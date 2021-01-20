@@ -10,7 +10,7 @@ module.exports = class State {
       this.spots = [];
       this.bullet = [];
       this.wave = 1;
-      this.money = 100;
+      this.money = 500;
       this.waveLocation = { x: 0, y: 0 };
    }
    intersect(pos, mouse, radius, camera) {
@@ -83,7 +83,7 @@ module.exports = class State {
             spotOnMouse = i;
          }
          if (spot.selectedIndex != null) {
-            spot.addTower();
+            spot.addTower(this);
          }
       }
       if (spotOnMouse != null) {

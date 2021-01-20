@@ -1,6 +1,6 @@
 'use strict';
 
-const { SPOT, TOWER } = require('../util/constants');
+const { SPOT, TOWER, POUNDER_TOWER, GUNNER_TOWER, BASIC_TOWER } = require('../util/constants');
 const intersects = require('../util/intersects');
 const { Basic, Pounder, Gunner } = require('./tower/all');
 const offset = require('../util/offset');
@@ -22,14 +22,30 @@ module.exports = class Spot {
    get hasTower() {
       return this.tower !== null;
    }
-   addTower() {
+   addTower(state) {
       if (this.selectedIndex === 0) {
          this.tower = new Basic(this.x, this.y);
+         if (this.tower.stats.cost > state.money) {
+            this.tower = null;
+            return;
+         }
+         state.money -= this.tower.stats.cost;
       } else if (this.selectedIndex === 1) {
          this.tower = new Pounder(this.x, this.y);
+         if (this.tower.stats.cost > state.money) {
+            this.tower = null;
+            return;
+         }
+         state.money -= this.tower.stats.cost;
       } else if (this.selectedIndex === 2) {
          this.tower = new Gunner(this.x, this.y);
+         if (this.tower.stats.cost > state.money) {
+            this.tower = null;
+            return;
+         }
+         state.money -= this.tower.stats.cost;
       }
+      this.selectedIndex = null;
    }
    update(mouse, camera, state) {
       const offsetPos = offset(this.x, this.y, camera);
@@ -109,6 +125,19 @@ module.exports = class Spot {
       ctx.beginPath();
       ctx.arc(Math.round(pos.x + TOWER.display_width / 3), pos.y + TOWER.display_height / 2, 30, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = 'black';
+      ctx.font = `${25 * camera.scale}px Arial`;
+      ctx.fillText(
+         `$${BASIC_TOWER.cost}`,
+         Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 6),
+         pos.y + TOWER.display_height / 2
+      );
+      ctx.fillText(`$${POUNDER_TOWER.cost}`, Math.round(pos.x), pos.y + TOWER.display_height / 2);
+      ctx.fillText(
+         `$${GUNNER_TOWER.cost}`,
+         Math.round(pos.x + TOWER.display_width / 3),
+         pos.y + TOWER.display_height / 2
+      );
       if (!this.mouse) return;
       if (
          intersects(
