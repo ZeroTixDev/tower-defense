@@ -1,2 +1,2 @@
-# started and created by ZeroTix
-# color scheme inspired by (noob) haha0201
+# started and created by ZeroTixDev
+# color scheme inspired by haha0201

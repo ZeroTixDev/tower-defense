@@ -36,6 +36,7 @@ module.exports = class Game {
       this.mouse = {
          x: 0,
          y: 0,
+         down: false,
       };
       this.resize();
       this.listen('resize', () => {
@@ -50,7 +51,11 @@ module.exports = class Game {
       this.listen('keydown', this.trackKeys.bind(this));
       this.listen('keyup', this.trackKeys.bind(this));
       this.listen('mousedown', () => {
+         this.mouse.down = true;
          this.state.handleMouseDown(this.mouse, this.camera);
+      });
+      this.listen('mouseup', () => {
+         this.mouse.down = false;
       });
       document.body.appendChild(this.canvas);
       document.body.appendChild(this.GUI.canvas);

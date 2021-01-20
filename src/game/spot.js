@@ -1,20 +1,20 @@
 'use strict';
 
 const { SPOT, TOWER } = require('../util/constants');
+const intersects = require('../util/intersects');
 const { Basic, Pounder, Gunner } = require('./tower/all');
 const offset = require('../util/offset');
+
 module.exports = class Spot {
    constructor(x, y) {
       this.x = x;
       this.y = y;
       this.radius = SPOT.size / 2;
       this.color = SPOT.color;
-      this.tower =
-         Math.random() < 0.5
-            ? new Gunner(this.x, this.y)
-            : Math.random() > 0.5
-            ? new Pounder(this.x, this.y)
-            : new Basic(this.x, this.y);
+      this.tower = null;
+      this.mouse = null;
+      this.buttons = [];
+      this.selectedIndex = null;
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
@@ -22,11 +22,21 @@ module.exports = class Spot {
    get hasTower() {
       return this.tower !== null;
    }
+   addTower() {
+      if (this.selectedIndex === 0) {
+         this.tower = new Basic(this.x, this.y);
+      } else if (this.selectedIndex === 1) {
+         this.tower = new Pounder(this.x, this.y);
+      } else if (this.selectedIndex === 2) {
+         this.tower = new Gunner(this.x, this.y);
+      }
+   }
    update(mouse, camera, state) {
       const offsetPos = offset(this.x, this.y, camera);
       const distX = mouse.x - offsetPos.x;
       const distY = mouse.y - offsetPos.y;
       this.color = SPOT.color;
+      this.mouse = mouse;
       if (Math.abs(distX) < 50 && Math.abs(distY) < 50 && !this.hasTower) {
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < this.radius) {
@@ -59,6 +69,7 @@ module.exports = class Spot {
       this.tower.showStats(ctx, camera);
    }
    drawSpotData(ctx, camera) {
+      this.selectedIndex = null;
       ctx.fillStyle = '#877a56';
       ctx.globalAlpha = 0.6;
       const pos = offset(this.x, this.y, camera);
@@ -80,6 +91,63 @@ module.exports = class Spot {
          TOWER.display_width / 3,
          TOWER.display_height
       );
+      ctx.fillStyle = '#474747';
+      ctx.beginPath();
+      ctx.arc(
+         Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 6),
+         pos.y + TOWER.display_height / 2,
+         30,
+         0,
+         Math.PI * 2
+      );
+      ctx.fill();
+      ctx.fillStyle = '#0a591a';
+      ctx.beginPath();
+      ctx.arc(Math.round(pos.x), pos.y + TOWER.display_height / 2, 30, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#a1081a';
+      ctx.beginPath();
+      ctx.arc(Math.round(pos.x + TOWER.display_width / 3), pos.y + TOWER.display_height / 2, 30, 0, Math.PI * 2);
+      ctx.fill();
+      if (!this.mouse) return;
+      if (
+         intersects(
+            {
+               x: Math.round(pos.x - TOWER.display_width / 2),
+               y: pos.y,
+               w: TOWER.display_width / 3,
+               h: TOWER.display_height,
+            },
+            this.mouse
+         )
+      ) {
+         this.selectedIndex = 0;
+      } else if (
+         intersects(
+            {
+               x: Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 3),
+               y: pos.y,
+               w: TOWER.display_width / 3,
+               h: TOWER.display_height,
+            },
+            this.mouse
+         )
+      ) {
+         this.selectedIndex = 1;
+      } else if (
+         intersects(
+            {
+               x: Math.round(pos.x - TOWER.display_width / 2 + (TOWER.display_width / 3) * 2),
+               y: pos.y,
+               w: TOWER.display_width / 3,
+               h: TOWER.display_height,
+            },
+            this.mouse
+         )
+      ) {
+         this.selectedIndex = 2;
+      }
+      // doing some update testing but i dont want it part of render ;/
    }
    drawData(ctx, camera) {
       if (this.hasTower) {

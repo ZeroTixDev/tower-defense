@@ -82,6 +82,9 @@ module.exports = class State {
          if (spotOnMouse === null && this.intersect({ x: spot.x, y: spot.y }, mouse, spot.radius, camera)) {
             spotOnMouse = i;
          }
+         if (spot.selectedIndex != null) {
+            spot.addTower();
+         }
       }
       if (spotOnMouse != null) {
          const spot = this.spots[spotOnMouse];
