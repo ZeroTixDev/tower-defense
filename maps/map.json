@@ -14,9 +14,9 @@
 		},
 		{
 			"type": "strong",
-			"amount": 25,
+			"amount": 45,
 			"delay": 6200,
-			"time-in-between-ms": 600
+			"time-in-between-ms": 500
 		}
 	],
 	"path":[

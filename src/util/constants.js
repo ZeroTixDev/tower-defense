@@ -114,6 +114,19 @@ const POUNDER_TOWER = Object.assign(
    }
 );
 
+const GUNNER_TOWER = Object.assign(
+   { ...TOWER },
+   {
+      fov: 450,
+      damage: 4,
+      reload_time: 0.07,
+      color: '#a1081a',
+      name: 'Gunner',
+      size: 50,
+      barrel_height: 40,
+   }
+);
+
 const MONEY = {
    display_width: 200,
    display_height: 75,
@@ -124,6 +137,8 @@ const BULLET = {
    size: 20,
    color: 'black',
    name: 'Default',
+   size_randomness: 0,
+   angle_randomness: null, // (Math.random() - 0.5) / 2
 };
 const BASIC_BULLET = Object.assign(
    { ...BULLET },
@@ -145,6 +160,18 @@ const POUNDER_BULLET = Object.assign(
    }
 );
 
+const GUNNER_BULLET = Object.assign(
+   { ...BULLET },
+   {
+      speed: 7,
+      size: 15,
+      color: '#9e2433',
+      name: 'Gunner',
+      size_randomness: 15,
+      angle_randomness: [0.5, 1],
+   }
+);
+
 module.exports = {
    GAME,
    CONTROLS,
@@ -155,8 +182,10 @@ module.exports = {
    STRONG_ENEMY,
    BASIC_TOWER,
    POUNDER_TOWER,
+   GUNNER_TOWER,
    MONEY,
    BASIC_BULLET,
    POUNDER_BULLET,
+   GUNNER_BULLET,
    TOWER,
 };

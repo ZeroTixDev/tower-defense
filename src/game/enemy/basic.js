@@ -2,6 +2,7 @@
 
 const { BASIC_ENEMY, GAME } = require('../../util/constants');
 const offset = require('../../util/offset');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = class Enemy {
    constructor(path, stats = BASIC_ENEMY) {
@@ -20,6 +21,7 @@ module.exports = class Enemy {
       this.x = this.lastPath.x;
       this.y = this.lastPath.y;
       this.calculateVelocity();
+      this.id = uuidv4().slice(0, 10);
    }
    get dead() {
       return this.health <= 0;
@@ -95,7 +97,7 @@ module.exports = class Enemy {
    }
    showEnemyStats(ctx, camera) {
       if (this.dead) return;
-      ctx.globalAlpha = 0.3;
+      ctx.globalAlpha = 0.4;
       ctx.fillStyle = this.color;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';

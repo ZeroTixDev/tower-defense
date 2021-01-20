@@ -11,7 +11,7 @@ function radToDeg(rad) {
    return (rad * 180) / Math.PI;
 }
 module.exports = class Tower {
-   constructor(x, y, object = BASIC_TOWER) {
+   constructor(x, y, object = BASIC_TOWER, bullet = BASIC_BULLET) {
       this.x = x;
       this.y = y;
       this.angle = Math.round(Math.random() * 360);
@@ -25,8 +25,9 @@ module.exports = class Tower {
       this.tick = Math.round(Math.random() * this.reload);
       this.bullet = {
          object: Bullet,
-         stats: BASIC_BULLET,
+         stats: bullet,
       };
+      this.renderAngle = this.angle;
    }
    update() {
       this.angle += this.rotateSpeed;
@@ -42,7 +43,7 @@ module.exports = class Tower {
          const dist = Math.sqrt(distX * distX + distY * distY);
          if (dist < this.fov / 2 + enemy.radius) {
             if (distance === null || distance.dist > dist) {
-               distance = { dist, index: i };
+               distance = { dist, index: i, id: enemy.id };
             }
          }
       }
@@ -57,7 +58,10 @@ module.exports = class Tower {
                   this.x,
                   this.y,
                   this.bullet.stats.speed,
-                  degToRad(this.angle),
+                  degToRad(this.angle) +
+                     (this.stats.angle_randomness
+                        ? (Math.random() - this.stats.angle_randomness[0]) / this.stats.angle_randomness[1]
+                        : 0),
                   this.radius / 4,
                   this.fov / 2,
                   this.stats.damage,
@@ -70,6 +74,11 @@ module.exports = class Tower {
       }
       this.locked--;
       this.tick++;
+      if (Math.abs(this.angle - this.renderAngle) > 100) {
+         this.renderAngle = this.angle;
+      } else {
+         this.renderAngle += (this.angle - this.renderAngle) * (GAME.simulation_rate / 100);
+      }
    }
    showStats(ctx, camera) {
       ctx.globalAlpha = 0.5;
@@ -88,12 +97,12 @@ module.exports = class Tower {
       ctx.font = `${24 * camera.scale}px Arial`;
       ctx.fillText(`Type: ${this.type}`, pos.x, Math.round(pos.y + this.stats.stats_height / 5));
       ctx.fillText(
-         `Damage Per Shot: ${Math.round(this.stats.damage)}`,
+         `Damage Per Shot: ${this.stats.damage}`,
          pos.x,
          Math.round(pos.y + (this.stats.stats_height / 5) * 2)
       );
       ctx.fillText(
-         `Reload Time: ${Math.round(this.stats.reload_time)}s`,
+         `Reload Time: ${this.stats.reload_time}s`,
          pos.x,
          Math.round(pos.y + (this.stats.stats_height / 5) * 3)
       );
@@ -107,7 +116,7 @@ module.exports = class Tower {
       const pos = offset(this.x, this.y, camera);
       ctx.save();
       ctx.translate(pos.x, pos.y);
-      ctx.rotate(degToRad(this.angle));
+      ctx.rotate(degToRad(this.renderAngle));
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.arc(0, 0, this.radius * camera.scale, 0, Math.PI * 2);

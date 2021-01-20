@@ -1,7 +1,7 @@
 'use strict';
 
 const { SPOT, TOWER } = require('../util/constants');
-const { Basic, Pounder } = require('./tower/all');
+const { Basic, Pounder, Gunner } = require('./tower/all');
 const offset = require('../util/offset');
 module.exports = class Spot {
    constructor(x, y) {
@@ -10,7 +10,11 @@ module.exports = class Spot {
       this.radius = SPOT.size / 2;
       this.color = SPOT.color;
       this.tower =
-         Math.random() < 0.5 ? (Math.random() < 0.5 ? null : new Pounder(this.x, this.y)) : new Basic(this.x, this.y);
+         Math.random() < 0.5
+            ? new Gunner(this.x, this.y)
+            : Math.random() > 0.5
+            ? new Pounder(this.x, this.y)
+            : new Basic(this.x, this.y);
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
