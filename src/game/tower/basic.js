@@ -46,23 +46,25 @@ module.exports = class Tower {
             }
          }
       }
-      if (distance != null && this.tick % this.reload === 0) {
+      if (distance != null) {
          this.angle = radToDeg(
             Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)
          );
          this.angle = this.angle % 360;
-         state.bullet.push(
-            new this.bullet.object(
-               this.x,
-               this.y,
-               this.bullet.stats.speed,
-               degToRad(this.angle),
-               this.radius / 4,
-               this.fov / 2,
-               this.stats.damage,
-               this.bullet.stats
-            )
-         );
+         if (this.tick % this.reload === 0) {
+            state.bullet.push(
+               new this.bullet.object(
+                  this.x,
+                  this.y,
+                  this.bullet.stats.speed,
+                  degToRad(this.angle),
+                  this.radius / 4,
+                  this.fov / 2,
+                  this.stats.damage,
+                  this.bullet.stats
+               )
+            );
+         }
       } else {
          this.update();
       }
