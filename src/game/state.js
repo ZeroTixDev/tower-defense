@@ -81,7 +81,7 @@ module.exports = class State {
          this.spots[hoverTowerIndex].showStats = true;
       }
    }
-   handleMouseDown(mouse, camera, pivot) {
+   handleMouseDown(mouse, camera) {
       let spotOnMouse = null;
       for (let i = this.spots.length - 1; i >= 0; i--) {
          const spot = this.spots[i];
@@ -95,16 +95,11 @@ module.exports = class State {
       }
       if (spotOnMouse != null) {
          const spot = this.spots[spotOnMouse];
-         pivot.x = spot.x;
-         pivot.y = spot.y;
          if (spot.y < GAME.height / 2 + GAME.height / 10) {
             spot.showData = 'down';
          } else {
             spot.showData = 'up';
          }
-      } else {
-         pivot.x = GAME.width / 2;
-         pivot.y = GAME.height / 2;
       }
    }
    drawPathEnds(ctx, camera, path) {
