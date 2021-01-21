@@ -26,6 +26,7 @@ canvas {
 .menu h1 {
 	color: #b80b2e;
 	font-size:5rem;
+	z-index: 20;
 }
 .button-container {
 	display: flex;
