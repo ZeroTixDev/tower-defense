@@ -69,7 +69,7 @@ module.exports = class State {
             this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
             // do sound effect
             const audio = this.explosion[Math.floor(Math.random() * this.explosion.length)];
-            audio.volume = 0.25;
+            audio.volume = 0.15;
             audio.play();
          }
          if (enemy.delete) {
