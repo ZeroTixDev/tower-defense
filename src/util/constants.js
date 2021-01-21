@@ -22,7 +22,7 @@ const PATH = {
 };
 
 const SPOT = {
-   color: '140', // this is a number because the spot class handles it like rgb(33, 33, 33) lol just to stop confusion
+   color: 120, // 0 - 255  this is a number because the spot class handles it like rgb(33, 33, 33) lol just to stop confusion
    size: 65,
 };
 
@@ -34,6 +34,8 @@ const ENEMY = {
    color: 'black',
    size: 50,
    name: 'Default',
+   money: 25,
+   money_randomness: 50,
 };
 
 const BASIC_ENEMY = Object.assign(
@@ -44,6 +46,8 @@ const BASIC_ENEMY = Object.assign(
       size: 50,
       health: 100,
       name: 'Basic',
+      money: 35,
+      money_randomness: 80,
    }
 );
 
@@ -55,6 +59,8 @@ const FAST_ENEMY = Object.assign(
       size: 45,
       health: 70,
       name: 'Fast',
+      money: 30,
+      money_randomness: 40,
    }
 );
 
@@ -66,6 +72,8 @@ const STRONG_ENEMY = Object.assign(
       size: 55,
       health: 200,
       name: 'Strong',
+      money: 80,
+      money_randomness: 80,
    }
 );
 
@@ -96,10 +104,10 @@ const BASIC_TOWER = Object.assign(
    {
       fov: 600,
       damage: 15,
-      reload_time: 0.5,
+      reload_time: 0.35,
       color: '#474747',
       name: 'Basic',
-      cost: 50,
+      cost: 100,
    }
 );
 
@@ -107,13 +115,13 @@ const POUNDER_TOWER = Object.assign(
    { ...TOWER },
    {
       fov: 500,
-      damage: 80,
-      reload_time: 2,
+      damage: 110,
+      reload_time: 1.3,
       color: '#0a591a',
       name: 'Pounder',
       size: 45,
       barrel_height: 35,
-      cost: 150,
+      cost: 300,
    }
 );
 
@@ -121,13 +129,13 @@ const GUNNER_TOWER = Object.assign(
    { ...TOWER },
    {
       fov: 450,
-      damage: 4,
+      damage: 6,
       reload_time: 0.07,
       color: '#a1081a',
       name: 'Gunner',
       size: 50,
       barrel_height: 40,
-      cost: 200,
+      cost: 500,
    }
 );
 

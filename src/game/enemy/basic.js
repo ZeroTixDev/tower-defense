@@ -22,6 +22,7 @@ module.exports = class Enemy {
       this.y = this.lastPath.y;
       this.calculateVelocity();
       this.id = uuidv4().slice(0, 10);
+      this.renderHealth = this.health;
    }
    get dead() {
       return this.health <= 0;
@@ -73,6 +74,7 @@ module.exports = class Enemy {
             state.bullet.splice(i, 1);
          }
       }
+      this.renderHealth += (this.health - this.renderHealth) * (GAME.simulation_rate / 500);
    }
    get roundPos() {
       return { x: Math.round(this.x), y: Math.round(this.y) };
@@ -92,7 +94,12 @@ module.exports = class Enemy {
       ctx.globalAlpha = 1;
       if (this.dead) return;
       const width = 50;
-      ctx.fillRect(pos.x - width / 2, pos.y - this.radius - 5, Math.round(width * (this.health / this.maxHealth)), 10);
+      ctx.fillRect(
+         pos.x - width / 2,
+         pos.y - this.radius - 5,
+         Math.round(width * (this.renderHealth / this.maxHealth)),
+         10
+      );
       ctx.strokeRect(pos.x - width / 2, pos.y - this.radius - 5, width, 10);
    }
    showEnemyStats(ctx, camera) {

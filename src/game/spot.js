@@ -15,6 +15,7 @@ module.exports = class Spot {
       this.mouse = null;
       this.buttons = [];
       this.selectedIndex = null;
+      this.hovering = false;
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
@@ -55,9 +56,15 @@ module.exports = class Spot {
       this.mouse = mouse;
       if (Math.abs(distX) < 50 && Math.abs(distY) < 50 && !this.hasTower) {
          const distance = Math.sqrt(distX * distX + distY * distY);
-         if (distance < this.radius) {
+         if (distance < this.radius && this.color !== SPOT.color - 25) {
             this.color = SPOT.color - 25;
+            this.hovering = true;
+            document.body.style.cursor = 'pointer';
+         } else if (distance > this.radius) {
+            this.hovering = false;
          }
+      } else {
+         this.hovering = false;
       }
       if (this.hasTower) {
          this.tower.simulate(state);
@@ -65,12 +72,15 @@ module.exports = class Spot {
    }
    drawSpot(ctx, camera) {
       ctx.fillStyle = this.fill;
+      if (this.hasTower) {
+         ctx.fillStyle = 'black';
+      }
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = '#302730';
       ctx.lineWidth = 3;
-      ctx.stroke();
+      // ctx.stroke();
       ctx.fill();
    }
    drawTowerData(ctx, camera) {

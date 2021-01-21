@@ -33,9 +33,13 @@ module.exports = class State {
       }
       let hasTowerMenuOpen = false;
       let hoverTowerIndex = null;
+      let hoveringTower = false;
       for (let i = this.spots.length - 1; i >= 0; i--) {
          const spot = this.spots[i];
          spot.update(mouse, camera, this);
+         if (spot.hovering) {
+            hoveringTower = true;
+         }
          spot.showStats = false;
          if (spot.showData) {
             hasTowerMenuOpen = true;
@@ -48,13 +52,16 @@ module.exports = class State {
             hoverTowerIndex = i;
          }
       }
+      if (!hoveringTower) {
+         document.body.style.cursor = 'default';
+      }
       let enemyOnMouse = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {
          const enemy = this.enemy[i];
          enemy.update(this);
          enemy.showStats = false;
          if (enemy.delete) {
-            this.money += 50 + Math.round(Math.random() * 150);
+            this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
             this.enemy.splice(i, 1);
             continue;
          }
