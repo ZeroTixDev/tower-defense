@@ -5,7 +5,7 @@ const GAME = {
    height: 900,
    margin: 200,
    simulation_rate: 60,
-   background_color: '#dbd2ba',
+   background_color: '#291627',
 };
 
 const CONTROLS = {
@@ -15,8 +15,8 @@ const CONTROLS = {
 
 const PATH = {
    size: 75,
-   inside_color: '#bda562',
-   stroke_color: '#8f7328',
+   inside_color: '#94658a',
+   stroke_color: '#701f5f',
    ends_color: '#d40018',
    ends_size: 70,
 };

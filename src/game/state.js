@@ -3,6 +3,7 @@
 const { GAME, PATH } = require('../util/constants');
 const offset = require('../util/offset');
 const { money } = require('./gui/all');
+const { loadSound } = require('../util/loadAsset');
 
 module.exports = class State {
    constructor() {
@@ -12,6 +13,9 @@ module.exports = class State {
       this.wave = 1;
       this.money = 500;
       this.waveLocation = { x: 0, y: 0 };
+      this.explosion = Array(4)
+         .fill(null)
+         .map((_, index) => loadSound(`explosion${index + 1}.wav`));
    }
    intersect(pos, mouse, radius, camera) {
       const offsetPos = offset(pos.x, pos.y, camera);
@@ -60,8 +64,15 @@ module.exports = class State {
          const enemy = this.enemy[i];
          enemy.update(this);
          enemy.showStats = false;
-         if (enemy.delete) {
+         if (enemy.dead && !enemy.doingAnimation) {
+            enemy.doingAnimation = true;
             this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
+            // do sound effect
+            const audio = this.explosion[Math.floor(Math.random() * this.explosion.length)];
+            audio.volume = 0.25;
+            audio.play();
+         }
+         if (enemy.delete) {
             this.enemy.splice(i, 1);
             continue;
          }

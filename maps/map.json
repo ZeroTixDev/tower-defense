@@ -3,20 +3,20 @@
 		{
 			"type": "basic",
 			"amount": 10,
-			"time-in-between-ms": 500,
+			"time-in-between-ms": 550,
 			"delay": 1600
 		},
 		{
 			"type": "fast",
-			"amount": 5,
+			"amount": 6,
 			"delay": 0,
 			"time-in-between-ms": 400
 		},
 		{
 			"type": "strong",
-			"amount": 45,
+			"amount": 40,
 			"delay": 6200,
-			"time-in-between-ms": 500
+			"time-in-between-ms": 550
 		}
 	],
 	"path":[

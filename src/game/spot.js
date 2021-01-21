@@ -4,6 +4,7 @@ const { SPOT, TOWER, POUNDER_TOWER, GUNNER_TOWER, BASIC_TOWER } = require('../ut
 const intersects = require('../util/intersects');
 const { Basic, Pounder, Gunner } = require('./tower/all');
 const offset = require('../util/offset');
+const { loadSound } = require('../util/loadAsset');
 
 module.exports = class Spot {
    constructor(x, y) {
@@ -16,6 +17,7 @@ module.exports = class Spot {
       this.buttons = [];
       this.selectedIndex = null;
       this.hovering = false;
+      this.audio = loadSound('tower.wav');
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
@@ -28,23 +30,30 @@ module.exports = class Spot {
          this.tower = new Basic(this.x, this.y);
          if (this.tower.stats.cost > state.money) {
             this.tower = null;
+            this.selectedIndex = null;
             return;
          }
          state.money -= this.tower.stats.cost;
+         this.audio.play();
       } else if (this.selectedIndex === 1) {
          this.tower = new Pounder(this.x, this.y);
          if (this.tower.stats.cost > state.money) {
             this.tower = null;
+            this.selectedIndex = null;
             return;
          }
          state.money -= this.tower.stats.cost;
+         this.audio.play();
       } else if (this.selectedIndex === 2) {
          this.tower = new Gunner(this.x, this.y);
          if (this.tower.stats.cost > state.money) {
             this.tower = null;
+            this.selectedIndex = null;
             return;
          }
          state.money -= this.tower.stats.cost;
+         this.audio.volume = 0.4;
+         this.audio.play();
       }
       this.selectedIndex = null;
    }
@@ -73,7 +82,7 @@ module.exports = class Spot {
    drawSpot(ctx, camera) {
       ctx.fillStyle = this.fill;
       if (this.hasTower) {
-         ctx.fillStyle = 'black';
+         ctx.fillStyle = '#13001c';
       }
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
@@ -96,13 +105,13 @@ module.exports = class Spot {
    }
    drawSpotData(ctx, camera) {
       this.selectedIndex = null;
-      ctx.fillStyle = '#877a56';
-      ctx.globalAlpha = 0.6;
+      ctx.fillStyle = '#492e61';
+      ctx.globalAlpha = 0.4;
       const pos = offset(this.x, this.y, camera);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.font = '40px Arial';
-      ctx.strokeStyle = '#573700';
+      ctx.strokeStyle = '#6b0538';
       ctx.lineWidth = 10;
       if (this.showData === 'up') {
          pos.y -= TOWER.display_height;
@@ -117,7 +126,7 @@ module.exports = class Spot {
          TOWER.display_width / 3,
          TOWER.display_height
       );
-      ctx.fillStyle = '#474747';
+      ctx.fillStyle = '#878787';
       ctx.beginPath();
       ctx.arc(
          Math.round(pos.x - TOWER.display_width / 2 + TOWER.display_width / 6),
@@ -127,11 +136,11 @@ module.exports = class Spot {
          Math.PI * 2
       );
       ctx.fill();
-      ctx.fillStyle = '#0a591a';
+      ctx.fillStyle = '#15a131';
       ctx.beginPath();
       ctx.arc(Math.round(pos.x), pos.y + TOWER.display_height / 2, 30, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = '#a1081a';
+      ctx.fillStyle = '#ad1313';
       ctx.beginPath();
       ctx.arc(Math.round(pos.x + TOWER.display_width / 3), pos.y + TOWER.display_height / 2, 30, 0, Math.PI * 2);
       ctx.fill();

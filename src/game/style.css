@@ -4,8 +4,8 @@
 	padding:0;
 	box-sizing: border-box;
 }
-body {
-	background-color: #cfc3a5;
+html, body {
+	background-color: black;
 	font-family: 'Potta One', cursive;
 	font-size: 16px;
 }
@@ -13,6 +13,7 @@ canvas {
 	position:absolute;
 	left:0;
 	top:0;
+	z-index: 1;
 }
 .menu {
 	display: flex;
@@ -20,9 +21,10 @@ canvas {
 	justify-content:center;
 	align-items: center;
 	min-height:100vh;
+	z-index: 10;
 }
 .menu h1 {
-	color: #5e3c00;
+	color: #b80b2e;
 	font-size:5rem;
 }
 .button-container {
@@ -31,6 +33,7 @@ canvas {
 	align-items: center;
 	flex-direction:column;
 	margin: 10px;
+	z-index: 20;
 }
 button {
 	border: 10px solid #573700;
@@ -61,4 +64,14 @@ a {
 	position:absolute;
 	left: 10px;
 	bottom: 10px;
+}
+.play {
+	background: #12a108;
+	border: 10px solid #0d2607;
+	color: #0d2607;
+}
+.contribute, .feedback {
+	background: #029c96;
+	border: 10px solid #121d21;
+	color: #121d21;
 }

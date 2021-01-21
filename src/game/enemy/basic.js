@@ -3,6 +3,7 @@
 const { BASIC_ENEMY, GAME } = require('../../util/constants');
 const offset = require('../../util/offset');
 const { v4: uuidv4 } = require('uuid');
+const { loadSound } = require('../../util/loadAsset');
 
 module.exports = class Enemy {
    constructor(path, stats = BASIC_ENEMY) {
@@ -23,6 +24,10 @@ module.exports = class Enemy {
       this.calculateVelocity();
       this.id = uuidv4().slice(0, 10);
       this.renderHealth = this.health;
+      this.doingAnimation = false;
+      this.audio = Array(3)
+         .fill(null)
+         .map((_, index) => loadSound(`hit${index + 1}.wav`));
    }
    get dead() {
       return this.health <= 0;
@@ -71,6 +76,11 @@ module.exports = class Enemy {
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < bullet.radius + this.radius) {
             this.health -= bullet.damage;
+            if (Math.random() < 0.3) {
+               const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
+               audio.volume = 0.15;
+               audio.play();
+            }
             state.bullet.splice(i, 1);
          }
       }
