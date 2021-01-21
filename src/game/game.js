@@ -52,11 +52,12 @@ module.exports = class Game {
       this.listen('keyup', this.trackKeys.bind(this));
       this.listen('mousedown', () => {
          this.mouse.down = true;
-         this.state.handleMouseDown(this.mouse, this.camera);
+         this.state.handleMouseDown(this.mouse, this.camera, this.pivot);
       });
       this.listen('mouseup', () => {
          this.mouse.down = false;
       });
+      this.pivot = { x: GAME.width / 2, y: GAME.height / 2 };
       document.body.appendChild(this.canvas);
       document.body.appendChild(this.GUI.canvas);
    }
@@ -129,7 +130,7 @@ module.exports = class Game {
          expectedTick = this.tick;
          this.tick -= 1;
       }
-      this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
+      this.camera.interp(this.pivot.x, this.pivot.y, this.delta);
       this.time = window.performance.now();
       while (this.tick < expectedTick) {
          if (this.events[this.tick]) {

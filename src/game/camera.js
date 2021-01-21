@@ -12,7 +12,7 @@ module.exports = class Camera {
       this.speed = speed;
       this.xv = 0;
       this.yv = 0;
-      this.friction = 0.6;
+      this.friction = 0.4;
    }
    zoomIn() {
       this.scale += 0.2;
