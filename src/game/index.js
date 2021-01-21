@@ -79,8 +79,8 @@ function resize() {
 
 const particleAmount = 500;
 const particleRadius = 2;
-const gravity = 20;
-const leftVelocity = 20;
+const gravity = 5;
+const leftVelocity = 5;
 let particles = [];
 let afr;
 (function run() {
