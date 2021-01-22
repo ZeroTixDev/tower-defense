@@ -114,9 +114,9 @@ const BASIC_TOWER = Object.assign(
 const POUNDER_TOWER = Object.assign(
    { ...TOWER },
    {
-      fov: 500,
-      damage: 110,
-      reload_time: 1.3,
+      fov: 550,
+      damage: 135,
+      reload_time: 1.4,
       color: '#0a591a',
       name: 'Pounder',
       size: 45,
@@ -129,8 +129,8 @@ const GUNNER_TOWER = Object.assign(
    { ...TOWER },
    {
       fov: 450,
-      damage: 6,
-      reload_time: 0.07,
+      damage: 15,
+      reload_time: 0.05,
       color: '#a1081a',
       name: 'Gunner',
       size: 50,
@@ -138,6 +138,22 @@ const GUNNER_TOWER = Object.assign(
       cost: 1000,
    }
 );
+
+const SNIPER_TOWER = Object.assign(
+   { ...TOWER },
+   {
+      fov: 800,
+      damage: 90,
+      reload_time: 0.35,
+      color: '#d9cb5f',
+      name: 'Sniper',
+      size: 45,
+      barrel_height: 45,
+      barrel_width: 15,
+      cost: 1000,
+   }
+);
+
 
 const MONEY = {
    display_width: 200,
