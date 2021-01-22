@@ -17,6 +17,30 @@
 			"amount": 40,
 			"delay": 6200,
 			"time-in-between-ms": 550
+		},
+		{
+			"type": "fast",
+			"amount": 40,
+			"delay": 6200,
+			"time-in-between-ms": 550
+		},
+		{
+			"type": "fast",
+			"amount": 40,
+			"delay": 30000,
+			"time-in-between-ms": 100
+		},
+		{
+			"type": "basic",
+			"amount": 20,
+			"delay": 30000,
+			"time-in-between-ms": 200
+		},
+		{
+			"type": "strong",
+			"amount": 10,
+			"delay": 30000,
+			"time-in-between-ms": 400
 		}
 	],
 	"path":[
