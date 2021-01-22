@@ -57,7 +57,7 @@ const FAST_ENEMY = Object.assign(
       color: '#19d4ab',
       speed: 3.5,
       size: 45,
-      health: 90,
+      health: 100,
       name: 'Fast',
       money: 30,
       money_randomness: 40,
