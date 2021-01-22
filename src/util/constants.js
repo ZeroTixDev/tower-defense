@@ -107,7 +107,7 @@ const BASIC_TOWER = Object.assign(
       reload_time: 0.35,
       color: '#474747',
       name: 'Basic',
-      cost: 100,
+      cost: 150,
    }
 );
 
@@ -121,7 +121,7 @@ const POUNDER_TOWER = Object.assign(
       name: 'Pounder',
       size: 45,
       barrel_height: 35,
-      cost: 300,
+      cost: 400,
    }
 );
 
@@ -135,7 +135,7 @@ const GUNNER_TOWER = Object.assign(
       name: 'Gunner',
       size: 50,
       barrel_height: 40,
-      cost: 500,
+      cost: 1000,
    }
 );
 
