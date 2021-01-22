@@ -44,7 +44,7 @@ const BASIC_ENEMY = Object.assign(
       color: '#2d2e2e',
       speed: 2.5,
       size: 50,
-      health: 100,
+      health: 200,
       name: 'Basic',
       money: 35,
       money_randomness: 80,
@@ -57,7 +57,7 @@ const FAST_ENEMY = Object.assign(
       color: '#19d4ab',
       speed: 3.5,
       size: 45,
-      health: 70,
+      health: 100,
       name: 'Fast',
       money: 30,
       money_randomness: 40,
@@ -70,7 +70,7 @@ const STRONG_ENEMY = Object.assign(
       color: '#73020f',
       speed: 2,
       size: 55,
-      health: 200,
+      health: 400,
       name: 'Strong',
       money: 80,
       money_randomness: 80,
@@ -139,20 +139,6 @@ const GUNNER_TOWER = Object.assign(
    }
 );
 
-const SNIPER_TOWER = Object.assign(
-   { ...TOWER },
-   {
-      fov: 800,
-      damage: 90,
-      reload_time: 0.35,
-      color: '#d9cb5f',
-      name: 'Sniper',
-      size: 45,
-      barrel_height: 45,
-      barrel_width: 15,
-      cost: 1000,
-   }
-);
 
 
 const MONEY = {
