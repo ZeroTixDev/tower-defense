@@ -9,7 +9,9 @@
     "game": "webpack serve --config config/webpack.dev.js",
     "editor": "webpack serve --config config/webpack.dev-editor.js",
     "deploy": "firebase deploy --only hosting:tower-defense-site",
-    "push": "git push origin master && npm run deploy"
+    "update-version": "node src/util/updateVersion.js",
+    "push": "git push origin master && npm run update-version && npm run deploy",
+    "revert-version": "node src/util/revertVersion.js"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +35,7 @@
     "webpackbar": "^5.0.0-3"
   },
   "dependencies": {
-    "uuid": "^8.3.2"
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1"
   }
 }

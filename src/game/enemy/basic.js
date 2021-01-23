@@ -2,7 +2,6 @@
 
 const { BASIC_ENEMY, GAME } = require('../../util/constants');
 const offset = require('../../util/offset');
-const { v4: uuidv4 } = require('uuid');
 const { loadSound } = require('../../util/loadAsset');
 
 module.exports = class Enemy {
@@ -22,7 +21,7 @@ module.exports = class Enemy {
       this.x = this.lastPath.x;
       this.y = this.lastPath.y;
       this.calculateVelocity();
-      this.id = uuidv4().slice(0, 10);
+      this.id = Math.random() * 100000;
       this.renderHealth = this.health;
       this.doingAnimation = false;
       this.audio = Array(3)
