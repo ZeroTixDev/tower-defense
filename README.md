@@ -19,7 +19,7 @@
 </p>
 TLDR: a tower defense based game where you try to stop the enemies from invading your base.
 
-## Hello, This is an epic open-source tower-defense game
+## Hello, This is an open-source tower-defense game
 ## for developers that will actually contribute, do git clone this repo then cd into it and do `npm install` to download its dependencies then do `npm run game` to start the developement server and it will host at `localhost`
 
 # [game link](https://tower-defense-site.web.app)
