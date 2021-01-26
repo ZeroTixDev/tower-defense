@@ -4,7 +4,6 @@ require('./style.css');
 const Game = require('./game');
 const dom = require('./references');
 const fetch = require('node-fetch');
-
 dom.playButton.addEventListener('mousedown', () => {
    dom.menu.classList.add('hidden');
    stop();

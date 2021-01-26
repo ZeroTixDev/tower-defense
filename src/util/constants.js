@@ -52,8 +52,8 @@ const BASIC_ENEMY = Object.assign(
       size: 50,
       health: 150,
       name: 'Basic',
-      money: 35,
-      money_randomness: 80,
+      money: 65,
+      money_randomness: 10,
    }
 );
 
@@ -65,8 +65,8 @@ const FAST_ENEMY = Object.assign(
       size: 45,
       health: 100,
       name: 'Fast',
-      money: 30,
-      money_randomness: 40,
+      money: 45,
+      money_randomness: 10,
    }
 );
 
@@ -79,7 +79,7 @@ const STRONG_ENEMY = Object.assign(
       health: 300,
       name: 'Strong',
       money: 80,
-      money_randomness: 80,
+      money_randomness: 20,
    }
 );
 
