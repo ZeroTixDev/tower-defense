@@ -50,7 +50,7 @@ class SnowParticle {
       this.bound();
    }
    render() {
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
       ctx.beginPath();
       ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, Math.PI * 2);
       ctx.fill();
@@ -82,10 +82,17 @@ const particleAmount = 500;
 const particleRadius = 2;
 const gravity = 5;
 const leftVelocity = 5;
+let alpha = 0;
+let lastTime = 0;
 let particles = [];
 let afr;
-(function run() {
+(function run(time = 0) {
    ctx.clearRect(0, 0, canvas.width, canvas.height);
+   const delta = (time - lastTime) / 1000;
+   lastTime = time;
+   if (alpha < 8) {
+      alpha += delta;
+   }
    for (const particle of particles) {
       particle.update();
       particle.render();

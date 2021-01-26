@@ -18,6 +18,7 @@ module.exports = class Spot {
       this.selectedIndex = null;
       this.hovering = false;
       this.audio = loadSound('tower.wav');
+      this.audio.volume = 0.5;
    }
    get fill() {
       return `rgb(${this.color}, ${this.color}, ${this.color})`;
@@ -52,7 +53,6 @@ module.exports = class Spot {
             return;
          }
          state.money -= this.tower.stats.cost;
-         this.audio.volume = 0.4;
          this.audio.play();
       }
       this.selectedIndex = null;

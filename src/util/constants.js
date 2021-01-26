@@ -9,8 +9,7 @@ const GAME = {
 };
 
 const CONTROLS = {
-   i: 'zoomin',
-   o: 'zoomout',
+   ' ': 'pause',
 };
 
 const PATH = {

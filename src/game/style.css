@@ -8,12 +8,35 @@ html, body {
 	background-color: black;
 	font-family: 'Potta One', cursive;
 	font-size: 16px;
+	overflow: hidden;
+	outline: none;
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 canvas {
 	position:absolute;
 	left:0;
 	top:0;
 	z-index: 1;
+	transition: all 0.3s linear;
+}
+.game-canvas {
+	background: #291627;
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 .menu {
 	display: flex;
@@ -22,11 +45,14 @@ canvas {
 	align-items: center;
 	min-height:100vh;
 	z-index: 10;
+	transition: all 0.2s linear;
+	animation: fadeIn 0.8s linear;
 }
-.menu h1 {
-	color: #b80b2e;
+.menu h1  {
 	font-size:5rem;
 	z-index: 20;
+	transition: all 0.2s linear;
+	color: #b80b2e;
 }
 .button-container {
 	display: flex;
@@ -38,6 +64,7 @@ canvas {
 }
 button {
 	border: 10px solid #573700;
+	outline: none;
 	cursor: pointer;
 	padding: 10px;
 	background-color: #b37710;
@@ -70,9 +97,19 @@ a {
 	background: #12a108;
 	border: 10px solid #0d2607;
 	color: #0d2607;
+	transition: all 0.3s linear;
 }
 .contribute, .feedback {
 	background: #029c96;
 	border: 10px solid #121d21;
 	color: #121d21;
+	transition: all 0.3s linear;
+}
+.contribute:hover, .feedback:hover {
+	background: #00c4bd;
+	border: 10px solid #173945;
+}
+.play:hover {
+	background: #12c406;
+	border: 10px solid #123b09;
 }

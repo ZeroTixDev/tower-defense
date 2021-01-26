@@ -10,7 +10,7 @@
     "editor": "webpack serve --config config/webpack.dev-editor.js",
     "deploy": "firebase deploy --only hosting:tower-defense-site",
     "update-version": "node src/util/updateVersion.js",
-    "push": "git push origin master && npm run update-version && npm run deploy",
+    "push": "git push origin master && pnpm run update-version && pnpm run deploy",
     "revert-version": "node src/util/revertVersion.js"
   },
   "keywords": [],

@@ -33,6 +33,7 @@ module.exports = class Game {
       this.tick = 0;
       this.time = window.performance.now();
       this.startTime = window.performance.now();
+      this.paused = false;
       this.mouse = {
          x: 0,
          y: 0,
@@ -52,6 +53,7 @@ module.exports = class Game {
       this.listen('keyup', this.trackKeys.bind(this));
       this.listen('mousedown', () => {
          this.mouse.down = true;
+         if (this.paused) return;
          this.state.handleMouseDown(this.mouse, this.camera);
       });
       this.listen('mouseup', () => {
@@ -60,6 +62,26 @@ module.exports = class Game {
       document.body.appendChild(this.canvas);
       document.body.appendChild(this.GUI.canvas);
    }
+   pauseOverlay(ctx) {
+      ctx.rect(0, 0, this.canvas.width, this.canvas.height);
+      const outerRadius = this.canvas.width * 0.5;
+      const innerRadius = this.canvas.height * 0.2;
+      const grd = ctx.createRadialGradient(
+         this.canvas.width / 2,
+         this.canvas.height / 2,
+         innerRadius,
+         this.canvas.width / 2,
+         this.canvas.height / 2,
+         outerRadius
+      );
+      // light blue
+      grd.addColorStop(0, 'rgba(0,0,0,0)');
+      // dark blue
+      grd.addColorStop(1, 'rgba(0,0,0,' + 0.6 + ')');
+
+      ctx.fillStyle = grd;
+      ctx.fill();
+   }
    resize() {
       this.scale = resizeCanvas(this.canvas);
       resizeCanvas(this.GUI.canvas);
@@ -67,20 +89,13 @@ module.exports = class Game {
    trackKeys(event) {
       if (event.repeat) return;
       if (this.controls[event.key.toLowerCase()]) {
-         /*switch (this.controls[event.key.toLowerCase()]) {
-            case 'zoomin':
+         switch (this.controls[event.key.toLowerCase()]) {
+            case 'pause':
                if (event.type === 'keyup') {
-                  this.camera.zoomIn();
-                  console.log(this.camera.scale);
+                  this.paused ? this.unpause() : this.pause();
                }
                break;
-            case 'zoomout':
-               if (event.type === 'keyup') {
-                  this.camera.zoomOut();
-                  console.log(this.camera.scale);
-               }
-               break;
-         }*/
+         }
       }
    }
    makeSpots() {
@@ -118,18 +133,30 @@ module.exports = class Game {
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.pathObject.render(this.ctx, this.camera);
       this.state.render(this.ctx, this.camera, this.GUI);
+      if (this.paused) {
+         this.pauseOverlay(this.ctx);
+      }
    }
    simulate() {
       this.state.simulate(this.mouse, this.camera);
    }
+   pause() {
+      this.paused = true;
+      this.time = window.performance.now();
+   }
+   unpause() {
+      this.startTime += window.performance.now() - this.time;
+      this.time = window.performance.now();
+      this.paused = false;
+   }
    update() {
+      this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
+      if (this.paused) return;
       let expectedTick = currentTick(this.startTime);
       if (expectedTick - this.tick > GAME.simulation_rate / 3) {
          this.startTime += window.performance.now() - this.time;
          expectedTick = this.tick;
-         this.tick -= 1;
       }
-      this.camera.interp(this.mouse.x, this.mouse.y, this.delta);
       this.time = window.performance.now();
       while (this.tick < expectedTick) {
          if (this.events[this.tick]) {
