@@ -5,12 +5,19 @@ const Path = require('./path');
 const Camera = require('./camera');
 const State = require('./state');
 const Spot = require('./spot');
-const { GAME, CONTROLS } = require('../util/constants');
+const { GAME, CONTROLS, THEME_SONG } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const spawnEnemy = require('../util/spawnEnemy');
+const setCursor = require('../util/setCursor');
+const { loadSound } = require('../util/loadAsset');
 
 module.exports = class Game {
    constructor() {
+      this.themeSong = loadSound('theme.wav');
+      this.themeSong.volume = THEME_SONG.volume;
+      this.themeSong.loop = THEME_SONG.loop;
+      this.themeSong.playbackRate = THEME_SONG.rate;
+      this.playAudio();
       this.wave = 0;
       this.towers = [];
       this.events = Object.create(null);
@@ -27,9 +34,8 @@ module.exports = class Game {
       };
       this.GUI.ctx = this.GUI.canvas.getContext('2d');
       this.ctx = this.canvas.getContext('2d');
-      this.state = new State();
+      this.state = new State(this.map);
       this.makeSpots();
-      this.state.waveLocation = this.map.waveLocation;
       this.tick = 0;
       this.time = window.performance.now();
       this.startTime = window.performance.now();
@@ -39,7 +45,27 @@ module.exports = class Game {
          y: 0,
          down: false,
       };
+      this.controls = CONTROLS;
+      Object.keys(this.controls).map((key) => {
+         const control = this.controls[key];
+         if (control.keylock) {
+            control.locked = false;
+         }
+      });
       this.resize();
+      this.applyEventListeners();
+      document.body.appendChild(this.canvas);
+      document.body.appendChild(this.GUI.canvas);
+      document.children[0].style.backgroundColor = '#170a16';
+   }
+   playAudio() {
+      const audio = loadSound('start.wav');
+      audio.play();
+      audio.addEventListener('ended', () => {
+         this.themeSong.play();
+      });
+   }
+   applyEventListeners() {
       this.listen('resize', () => {
          this.resize();
       });
@@ -48,7 +74,6 @@ module.exports = class Game {
          this.mouse.x = Math.round((event.pageX - bound.left) / this.scale);
          this.mouse.y = Math.round((event.pageY - bound.top) / this.scale);
       });
-      this.controls = CONTROLS;
       this.listen('keydown', this.trackKeys.bind(this));
       this.listen('keyup', this.trackKeys.bind(this));
       this.listen('mousedown', () => {
@@ -59,8 +84,6 @@ module.exports = class Game {
       this.listen('mouseup', () => {
          this.mouse.down = false;
       });
-      document.body.appendChild(this.canvas);
-      document.body.appendChild(this.GUI.canvas);
    }
    pauseOverlay(ctx) {
       ctx.rect(0, 0, this.canvas.width, this.canvas.height);
@@ -74,11 +97,8 @@ module.exports = class Game {
          this.canvas.height / 2,
          outerRadius
       );
-      // light blue
       grd.addColorStop(0, 'rgba(0,0,0,0)');
-      // dark blue
       grd.addColorStop(1, 'rgba(0,0,0,' + 0.6 + ')');
-
       ctx.fillStyle = grd;
       ctx.fill();
    }
@@ -88,14 +108,21 @@ module.exports = class Game {
    }
    trackKeys(event) {
       if (event.repeat) return;
-      if (this.controls[event.key.toLowerCase()]) {
-         switch (this.controls[event.key.toLowerCase()]) {
-            case 'pause':
-               if (event.type === 'keyup') {
-                  this.paused ? this.unpause() : this.pause();
+      const control = this.controls[event.key.toLowerCase()];
+      if (!control ?? true) return;
+      switch (control.type) {
+         case 'pause':
+            if (control.keylock && event.type === 'keyup') {
+               control.locked = false;
+               return;
+            }
+            if ((control.keylock && !control.locked) || (!control.keylock ?? true)) {
+               this.paused ? this.unpause() : this.pause(); // what happens when you clicked pause
+               if (control.keylock) {
+                  control.locked = true;
                }
-               break;
-         }
+            }
+            break;
       }
    }
    makeSpots() {
@@ -143,11 +170,14 @@ module.exports = class Game {
    pause() {
       this.paused = true;
       this.time = window.performance.now();
+      setCursor('default');
+      this.themeSong.playbackRate = THEME_SONG.paused_rate;
    }
    unpause() {
       this.startTime += window.performance.now() - this.time;
       this.time = window.performance.now();
       this.paused = false;
+      this.themeSong.playbackRate = THEME_SONG.rate;
    }
    update() {
       this.camera.interp(this.mouse.x, this.mouse.y, this.delta);

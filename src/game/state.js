@@ -4,15 +4,17 @@ const { GAME, PATH } = require('../util/constants');
 const offset = require('../util/offset');
 const { money } = require('./gui/all');
 const { loadSound } = require('../util/loadAsset');
+const setCursor = require('../util/setCursor');
 
 module.exports = class State {
-   constructor() {
+   constructor(map) {
       this.enemy = [];
       this.spots = [];
       this.bullet = [];
       this.wave = 1;
       this.money = 500;
-      this.waveLocation = { x: 0, y: 0 };
+      this.map = map;
+      this.waveLocation = this.map.waveLocation;
       this.explosion = Array(4)
          .fill(null)
          .map((_, index) => loadSound(`explosion${index + 1}.wav`));
@@ -57,7 +59,7 @@ module.exports = class State {
          }
       }
       if (!hoveringTower) {
-         document.body.style.cursor = 'default';
+         setCursor('default');
       }
       let enemyOnMouse = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {

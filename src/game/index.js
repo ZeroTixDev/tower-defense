@@ -3,23 +3,13 @@
 require('./style.css');
 const Game = require('./game');
 const dom = require('./references');
-const { loadSound } = require('../util/loadAsset');
 const fetch = require('node-fetch');
 
 dom.playButton.addEventListener('mousedown', () => {
    dom.menu.classList.add('hidden');
-   const audio = loadSound('start.wav');
-   const themeSong = loadSound('theme.wav');
-   themeSong.volume = 0.65;
    stop();
    const game = new Game();
    game.start();
-   audio.play();
-   themeSong.loop = true;
-   audio.addEventListener('ended', () => {
-      themeSong.play();
-   });
-   document.children[0].style.backgroundColor = '#170a16';
 });
 
 // snow particle effects

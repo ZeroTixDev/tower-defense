@@ -5,6 +5,7 @@ const intersects = require('../util/intersects');
 const { Basic, Pounder, Gunner } = require('./tower/all');
 const offset = require('../util/offset');
 const { loadSound } = require('../util/loadAsset');
+const setCursor = require('../util/setCursor');
 
 module.exports = class Spot {
    constructor(x, y) {
@@ -68,7 +69,7 @@ module.exports = class Spot {
          if (distance < this.radius && this.color !== SPOT.color - 25) {
             this.color = SPOT.color - 25;
             this.hovering = true;
-            document.body.style.cursor = 'pointer';
+            setCursor('pointer');
          } else if (distance > this.radius) {
             this.hovering = false;
          }

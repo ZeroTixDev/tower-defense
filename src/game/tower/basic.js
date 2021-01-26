@@ -38,27 +38,25 @@ module.exports = class Tower {
       this.angle = this.angle % 360;
    }
    simulate(state) {
-      let distance = null;
+      let target = null;
       for (let i = 0; i < state.enemy.length; i++) {
          const enemy = state.enemy[i];
+         if (enemy.dead) continue;
          const distX = enemy.x - this.x;
          const distY = enemy.y - this.y;
-         if (enemy.dead) continue;
          const dist = Math.sqrt(distX * distX + distY * distY);
          if (dist < this.fov / 2 + enemy.radius) {
-            if (distance === null || distance.dist > dist) {
-               distance = { dist, index: i, id: enemy.id };
+            if (target === null || enemy.traveled > target.traveled) {
+               target = { index: i, traveled: enemy.traveled };
             }
          }
       }
-      if (distance != null) {
-         this.angle = radToDeg(
-            Math.atan2(state.enemy[distance.index].y - this.y, state.enemy[distance.index].x - this.x)
-         );
+      if (target != null) {
+         this.angle = radToDeg(Math.atan2(state.enemy[target.index].y - this.y, state.enemy[target.index].x - this.x));
          this.angle = this.angle % 360;
          if (this.tick % this.reload === 0) {
             const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
-            audio.volume = 0.3;
+            audio.volume = 0.2;
             audio.play();
             state.bullet.push(
                new this.bullet.object(

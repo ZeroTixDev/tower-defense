@@ -24,6 +24,7 @@ module.exports = class Enemy {
       this.id = Math.random() * 100000;
       this.renderHealth = this.health;
       this.doingAnimation = false;
+      this.traveled = 0;
       this.audio = Array(3)
          .fill(null)
          .map((_, index) => loadSound(`hit${index + 1}.wav`));
@@ -50,6 +51,7 @@ module.exports = class Enemy {
          }
          return;
       }
+      this.traveled++;
       for (let i = 0; i < this.accuracy; i++) {
          this.x += this.xv;
          this.y += this.yv;
@@ -77,7 +79,7 @@ module.exports = class Enemy {
             this.health -= bullet.damage;
             if (Math.random() < 0.3) {
                const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
-               audio.volume = 0.15;
+               audio.volume = 0.1;
                audio.play();
             }
             state.bullet.splice(i, 1);

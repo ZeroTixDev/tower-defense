@@ -9,7 +9,14 @@ const GAME = {
 };
 
 const CONTROLS = {
-   ' ': 'pause',
+   ' ': { type: 'pause', keylock: true },
+};
+
+const THEME_SONG = {
+   rate: 1.6,
+   paused_rate: 0.9,
+   loop: true,
+   volume: 0.65,
 };
 
 const PATH = {
@@ -198,5 +205,6 @@ module.exports = {
    BASIC_BULLET,
    POUNDER_BULLET,
    GUNNER_BULLET,
+   THEME_SONG,
    TOWER,
 };
