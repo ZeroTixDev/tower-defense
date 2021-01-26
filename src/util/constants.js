@@ -113,7 +113,7 @@ const BASIC_TOWER = Object.assign(
 const POUNDER_TOWER = Object.assign(
    { ...TOWER },
    {
-      fov: 600,
+      fov: 650,
       damage: 165,
       reload_time: 1.1,
       color: '#0a591a',
@@ -127,7 +127,7 @@ const POUNDER_TOWER = Object.assign(
 const GUNNER_TOWER = Object.assign(
    { ...TOWER },
    {
-      fov: 450,
+      fov: 675,
       damage: 10,
       reload_time: 0.07,
       color: '#a1081a',
