@@ -109,14 +109,14 @@ module.exports = class Game {
    trackKeys(event) {
       if (event.repeat) return;
       const control = this.controls[event.key.toLowerCase()];
-      if (!control ?? true) return;
+      if (!control) return;
       switch (control.type) {
          case 'pause':
             if (control.keylock && event.type === 'keyup') {
                control.locked = false;
                return;
             }
-            if ((control.keylock && !control.locked) || (!control.keylock ?? true)) {
+            if ((control.keylock && !control.locked) || !control.keylock) {
                this.paused ? this.unpause() : this.pause(); // what happens when you clicked pause
                if (control.keylock) {
                   control.locked = true;
