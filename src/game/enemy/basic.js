@@ -16,7 +16,6 @@ module.exports = class Enemy {
       this.health = this.stats.health;
       this.maxHealth = this.stats.health;
       this.showStats = false;
-      this.deadTimer = 0;
       this.type = this.stats.name;
       this.x = this.lastPath.x;
       this.y = this.lastPath.y;
@@ -28,9 +27,16 @@ module.exports = class Enemy {
       this.audio = Array(3)
          .fill(null)
          .map((_, index) => loadSound(`hit${index + 1}.wav`));
+      this.dying = false;
    }
    get dead() {
-      return this.health <= 0;
+      return (
+         (this.x - this.radius < -GAME.margin ||
+            this.x + this.radius > GAME.width + GAME.margin ||
+            this.y + this.radius > GAME.height + GAME.margin ||
+            this.y - this.radius < -GAME.margin) &&
+         this.health <= 0
+      );
    }
    lerp(start, end, time) {
       return start * (1 - time) + end * time;
@@ -44,17 +50,11 @@ module.exports = class Enemy {
       this.yv = (this.speed * Math.sin(this.angle)) / this.accuracy;
    }
    update(state) {
-      if (this.dead) {
-         this.deadTimer++;
-         if (this.deadTimer > GAME.simulation_rate / 2) {
-            this.delete = true;
-         }
-         return;
-      }
       this.traveled++;
       for (let i = 0; i < this.accuracy; i++) {
          this.x += this.xv;
          this.y += this.yv;
+         if (this.dying) continue;
          if (this.onPath) {
             this.pathIndex++;
             this.x = this.lastPath.x;
@@ -65,7 +65,6 @@ module.exports = class Enemy {
                this.x = this.path[0].x;
                this.y = this.path[0].y;
                this.calculateVelocity();
-               // this.dead = true; break;
             } else {
                this.calculateVelocity();
             }
@@ -77,11 +76,19 @@ module.exports = class Enemy {
          const distY = bullet.y - this.y;
          const distance = Math.sqrt(distX * distX + distY * distY);
          if (distance < bullet.radius + this.radius) {
-            this.health -= bullet.damage;
-            if (Math.random() < 0.3) {
-               const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
-               audio.volume = 0.1;
-               audio.play();
+            if (!this.dying) {
+               this.health -= bullet.damage;
+               if (Math.random() < 0.5) {
+                  const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
+                  audio.volume = 0.1;
+                  audio.play();
+               }
+            }
+            if (this.health <= 0) {
+               this.dying = true;
+               this.xv = bullet.xv / 2;
+               this.yv = bullet.yv / 2;
+               this.health = 0;
             }
             state.bullet.splice(i, 1);
          }
@@ -93,9 +100,6 @@ module.exports = class Enemy {
    }
    drawEnemy(ctx, fill, camera) {
       ctx.fillStyle = fill;
-      if (this.dead) {
-         ctx.globalAlpha = 1 - this.deadTimer / (GAME.simulation_rate / 2);
-      }
       ctx.beginPath();
       const pos = offset(this.x, this.y, camera);
       ctx.arc(pos.x, pos.y, this.radius * camera.scale, 0, Math.PI * 2);
@@ -104,7 +108,7 @@ module.exports = class Enemy {
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 2;
       ctx.globalAlpha = 1;
-      if (this.dead) return;
+      if (this.dying) return;
       const width = 50;
       ctx.fillRect(
          pos.x - width / 2,
@@ -115,7 +119,7 @@ module.exports = class Enemy {
       ctx.strokeRect(pos.x - width / 2, pos.y - this.radius - 5, width, 10);
    }
    showEnemyStats(ctx, camera) {
-      if (this.dead) return;
+      if (this.dying) return;
       ctx.globalAlpha = 0.4;
       ctx.fillStyle = this.color;
       ctx.textAlign = 'center';

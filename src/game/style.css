@@ -5,8 +5,9 @@
 	box-sizing: border-box;
 }
 html, body {
-	background-color: black;
-	font-family: 'Potta One', cursive;
+	/*background: linear-gradient(to left, #2b1342, #300823);*/
+	background-image: url(../../assets/images/background.png);
+	font-family: 'Inter', sans-serif;
 	font-size: 16px;
 	overflow: hidden;
 	outline: none;
@@ -19,6 +20,16 @@ html, body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+.bottom {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100vh;
+	height: 100px;
+	display: flex;
+	justify-content: baseline;
+	align-items: flex-end;
 }
 canvas {
 	position:absolute;
@@ -52,7 +63,7 @@ canvas {
 	font-size:5rem;
 	z-index: 20;
 	transition: all 0.2s linear;
-	color: #b80b2e;
+	color: #09081c;
 }
 .button-container {
 	display: flex;
@@ -74,7 +85,6 @@ button {
 	height: 75px;
 	text-align:center;
 	font-size: 1.5rem;
-	font-weight: bold;
 	color: #573700;
 }
 a {
@@ -94,22 +104,66 @@ a {
 	bottom: 10px;
 }
 .play {
-	background: #12a108;
-	border: 10px solid #0d2607;
-	color: #0d2607;
+	background: #613273;
+	border: 4px solid #6a00d4;
+	color: #200526;
 	transition: all 0.3s linear;
+	border-radius: 3px;
+	opacity: 0.8;
+	height: 50px;
+	padding: 5px;
+	margin-top: 25px;
 }
-.contribute, .feedback {
-	background: #029c96;
-	border: 10px solid #121d21;
+.bottom button{
+	background: #42508a;
+	border: 4px solid #121d21;
 	color: #121d21;
 	transition: all 0.3s linear;
+	height: 50px;
+	width: 150px;
+	margin: 5px;
+	padding: 5px;
 }
-.contribute:hover, .feedback:hover {
-	background: #00c4bd;
-	border: 10px solid #173945;
+.update {
+	color: #c4ae4b;
+	animation: sizing 1s ease-in-out infinite;
+	position: absolute;
+	margin-top:10px;
+}
+@keyframes sizing {
+	0% {
+		font-size: 1rem;
+	}
+	50% {
+		font-size: 1.5rem;
+	}
+	100% {
+		font-size: 1rem;
+	}
+}
+.bottom button:hover {
+	background: #0089c4;
 }
 .play:hover {
-	background: #12c406;
-	border: 10px solid #123b09;
+	background: #763e8c;
+	border: 5px solid #6a00d4;
+	opacity: 1;
+}
+.overlay {
+	position: absolute;
+	left: -140%;
+	top: 0;
+	width: 140%;
+	height: 100vh;
+	background-color: white;
+	opacity: 0.05;
+	animation: moveOverlay 60s linear infinite;
+}
+@keyframes moveOverlay {
+	0% {
+		left: -140%;
+	}
+	100% {
+		left: 150vw;
+	}
 }

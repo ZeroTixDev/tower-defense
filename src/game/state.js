@@ -5,6 +5,7 @@ const offset = require('../util/offset');
 const { money } = require('./gui/all');
 const { loadSound } = require('../util/loadAsset');
 const setCursor = require('../util/setCursor');
+const spawnEnemy = require('../util/spawnEnemy');
 
 module.exports = class State {
    constructor(map) {
@@ -14,7 +15,7 @@ module.exports = class State {
       this.wave = 1;
       this.money = 500;
       this.map = map;
-      this.waveLocation = this.map.waveLocation;
+      this.currentWave = 0;
       this.explosion = Array(4)
          .fill(null)
          .map((_, index) => loadSound(`explosion${index + 1}.wav`));
@@ -28,6 +29,15 @@ module.exports = class State {
       }
       const distance = Math.sqrt(distX * distX + distY * distY);
       return distance < radius;
+   }
+   spawnWave(game) {
+      const wave = this.map.waves[this.currentWave];
+      spawnEnemy(this.map.path, wave.enemy, game);
+      this.currentWave++;
+      if (this.currentWave > this.map.stats.waves - 1) {
+         this.currentWave = this.map.stats.waves - 1;
+         this.finishedMap = true;
+      }
    }
    simulate(mouse, camera) {
       for (let i = this.bullet.length - 1; i >= 0; i--) {
@@ -74,7 +84,7 @@ module.exports = class State {
             audio.volume = 0.15;
             audio.play();
          }
-         if (enemy.delete) {
+         if (enemy.dead) {
             this.enemy.splice(i, 1);
             continue;
          }

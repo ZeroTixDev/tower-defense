@@ -5,7 +5,7 @@ const GAME = {
    height: 900,
    margin: 200,
    simulation_rate: 60,
-   background_color: '#291627',
+   background_color: '#26112e',
 };
 
 const CONTROLS = {

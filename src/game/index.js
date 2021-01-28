@@ -6,14 +6,14 @@ const dom = require('./references');
 const fetch = require('node-fetch');
 dom.playButton.addEventListener('mousedown', () => {
    dom.menu.classList.add('hidden');
-   stop();
+   // stop();
    const game = new Game();
    game.start();
 });
 
 // snow particle effects
 
-class SnowParticle {
+/*class SnowParticle {
    constructor(x, y) {
       this.x = x;
       this.y = y;
@@ -93,7 +93,7 @@ function stop() {
    cancelAnimationFrame(afr);
    particles = [];
    canvas.style.display = 'none';
-}
+} */
 
 void fetch('https://version-api.zerotixdev.repl.co/')
    .then((res) => res.json())

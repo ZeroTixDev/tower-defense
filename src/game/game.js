@@ -7,9 +7,8 @@ const State = require('./state');
 const Spot = require('./spot');
 const { GAME, CONTROLS, THEME_SONG } = require('../util/constants');
 const currentTick = require('../util/currentTick');
-const spawnEnemy = require('../util/spawnEnemy');
 const setCursor = require('../util/setCursor');
-const { loadSound } = require('../util/loadAsset');
+const { loadSound, loadImage } = require('../util/loadAsset');
 
 module.exports = class Game {
    constructor() {
@@ -17,6 +16,9 @@ module.exports = class Game {
       this.themeSong.volume = THEME_SONG.volume;
       this.themeSong.loop = THEME_SONG.loop;
       this.themeSong.playbackRate = THEME_SONG.rate;
+      this.textures = {
+         background: loadImage('background.png'),
+      };
       this.playAudio();
       this.wave = 0;
       this.towers = [];
@@ -34,6 +36,7 @@ module.exports = class Game {
       };
       this.GUI.ctx = this.GUI.canvas.getContext('2d');
       this.ctx = this.canvas.getContext('2d');
+      this.backgroundPattern = this.ctx.createPattern(this.textures.background, 'repeat');
       this.state = new State(this.map);
       this.makeSpots();
       this.tick = 0;
@@ -56,7 +59,8 @@ module.exports = class Game {
       this.applyEventListeners();
       document.body.appendChild(this.canvas);
       document.body.appendChild(this.GUI.canvas);
-      document.children[0].style.backgroundColor = '#170a16';
+      document.children[0].style.backgroundImage = 'none';
+      document.children[0].style.backgroundColor = GAME.background_color;
    }
    playAudio() {
       const audio = loadSound('start.wav');
@@ -145,7 +149,7 @@ module.exports = class Game {
       }
    }
    start() {
-      spawnEnemy(this.path, this.map.enemy, this);
+      this.state.spawnWave(this);
       this.lastTime = 0;
       (function run(time = 0) {
          this.delta = (time - this.lastTime) / 1000;
@@ -155,9 +159,22 @@ module.exports = class Game {
          this.afr = requestAnimationFrame(run.bind(this));
       }.bind(this)());
    }
+   drawBackgroundPattern(ctx) {
+      ctx.save();
+      ctx.translate(-this.camera.x * this.camera.scale, -this.camera.y * this.camera.scale);
+      ctx.fillStyle = this.backgroundPattern;
+      ctx.fillRect(
+         this.camera.x * this.camera.scale,
+         this.camera.y * this.camera.scale,
+         this.canvas.width,
+         this.canvas.height
+      );
+      ctx.restore();
+   }
    render() {
-      this.ctx.fillStyle = GAME.background_color;
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawBackgroundPattern(this.ctx);
+      // this.ctx.fillStyle = GAME.background_color;
+      // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.pathObject.render(this.ctx, this.camera);
       this.state.render(this.ctx, this.camera, this.GUI);
       if (this.paused) {

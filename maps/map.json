@@ -1,24 +1,29 @@
 {
-	"enemy": [
-		{
-			"type": "basic",
-			"amount": 10,
-			"time-in-between-ms": 550,
-			"delay": 1600
-		},
-		{
-			"type": "fast",
-			"amount": 6,
-			"delay": 0,
-			"time-in-between-ms": 400
-		},
-		{
-			"type": "strong",
-			"amount": 40,
-			"delay": 6200,
-			"time-in-between-ms": 550
-		}
-	],
+	"waves": [{
+		"enemy": [
+			{
+				"type": "basic",
+				"amount": 10,
+				"time-in-between-ms": 550,
+				"delay": 1600
+			},
+			{
+				"type": "fast",
+				"amount": 6,
+				"delay": 0,
+				"time-in-between-ms": 400
+			},
+			{
+				"type": "strong",
+				"amount": 40,
+				"delay": 6200,
+				"time-in-between-ms": 550
+			}
+		]
+	}],
+	"stats": {
+		"waves": 1
+	},
 	"path":[
 		{ "x": -200, "y": -200 },
 		{ "x": 100, "y": 100 },
@@ -47,8 +52,6 @@
 		{ "x": 1500, "y": 850 },
 		{ "x": 1800, "y": 1100 }
 	],
-	"waves": [0, 50],
-	"waveLocation": { "x": 1500, "y": 50 },
 	"spots": [
 		{ "x": 170, "y": 20 },
 		{ "x": 50, "y": 220 },
