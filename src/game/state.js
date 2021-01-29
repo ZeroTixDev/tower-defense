@@ -2,7 +2,7 @@
 
 const { GAME, PATH } = require('../util/constants');
 const offset = require('../util/offset');
-const { money } = require('./gui/all');
+const { topBar } = require('./gui/all');
 const { loadSound } = require('../util/loadAsset');
 const setCursor = require('../util/setCursor');
 const spawnEnemy = require('../util/spawnEnemy');
@@ -76,7 +76,7 @@ module.exports = class State {
          const enemy = this.enemy[i];
          enemy.update(this);
          enemy.showStats = false;
-         if (enemy.dead && !enemy.doingAnimation) {
+         if (enemy.dying && !enemy.doingAnimation) {
             enemy.doingAnimation = true;
             this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
             // do sound effect
@@ -143,7 +143,7 @@ module.exports = class State {
       ctx.fillText(`Wave ${this.wave}`, pos.x, pos.y);
    }
    drawGUI(ctx, camera) {
-      money(ctx, camera, this.money);
+      topBar(ctx, camera, { money: this.money, wave: this.currentWave });
    }
    render(ctx, camera, GUI) {
       for (const bullet of this.bullet) {

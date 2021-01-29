@@ -32,6 +32,7 @@ module.exports = class Game {
          canvas: document.createElement('canvas'),
          last: {
             money: null,
+            wave: null,
          },
       };
       this.GUI.ctx = this.GUI.canvas.getContext('2d');

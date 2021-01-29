@@ -1,4 +1,4 @@
 'use strict';
 
-const money = require('./money');
-module.exports = { money };
+const topBar = require('./topBar');
+module.exports = { topBar };

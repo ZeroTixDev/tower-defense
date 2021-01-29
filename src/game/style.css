@@ -105,7 +105,7 @@ a {
 }
 .play {
 	background: #613273;
-	border: 4px solid #6a00d4;
+	border: none;
 	color: #200526;
 	transition: all 0.3s linear;
 	border-radius: 3px;
@@ -142,11 +142,10 @@ a {
 	}
 }
 .bottom button:hover {
-	background: #0089c4;
+	background: #005791;
 }
 .play:hover {
-	background: #763e8c;
-	border: 5px solid #6a00d4;
+	background: #653578;
 	opacity: 1;
 }
 .overlay {
