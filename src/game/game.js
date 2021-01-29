@@ -9,9 +9,11 @@ const { GAME, CONTROLS, THEME_SONG } = require('../util/constants');
 const currentTick = require('../util/currentTick');
 const setCursor = require('../util/setCursor');
 const { loadSound, loadImage } = require('../util/loadAsset');
-
 module.exports = class Game {
    constructor() {
+      this.stopAllSounds();
+      window.sounds = [];
+      window.maxSounds = GAME.max_sounds;
       this.themeSong = loadSound('theme.wav');
       this.themeSong.volume = THEME_SONG.volume;
       this.themeSong.loop = THEME_SONG.loop;
@@ -62,6 +64,12 @@ module.exports = class Game {
       document.body.appendChild(this.GUI.canvas);
       document.children[0].style.backgroundImage = 'none';
       document.children[0].style.backgroundColor = GAME.background_color;
+   }
+   stopAllSounds() {
+      const sounds = document.getElementsByTagName('audio');
+      for (const sound of sounds) {
+         sound.pause();
+      }
    }
    playAudio() {
       const audio = loadSound('start.wav');

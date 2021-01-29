@@ -6,6 +6,7 @@ const { topBar } = require('./gui/all');
 const { loadSound } = require('../util/loadAsset');
 const setCursor = require('../util/setCursor');
 const spawnEnemy = require('../util/spawnEnemy');
+const playAudio = require('../util/playAudio');
 
 module.exports = class State {
    constructor(map) {
@@ -86,7 +87,7 @@ module.exports = class State {
             this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
             const audio = this.explosion[Math.floor(Math.random() * this.explosion.length)];
             audio.volume = 0.15;
-            audio.play();
+            playAudio(audio);
          }
          if (enemy.dead) {
             this.enemy.splice(i, 1);

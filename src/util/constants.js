@@ -6,6 +6,7 @@ const GAME = {
    margin: 200,
    simulation_rate: 60,
    background_color: '#26112e',
+   max_sounds: 6,
 };
 
 const CONTROLS = {

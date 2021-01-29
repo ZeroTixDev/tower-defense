@@ -4,6 +4,7 @@ const { BASIC_TOWER, GAME, BASIC_BULLET } = require('../../util/constants');
 const offset = require('../../util/offset');
 const Bullet = require('../bullet/basic');
 const { loadSound } = require('../../util/loadAsset');
+const playAudio = require('../../util/playAudio');
 
 function degToRad(deg) {
    return (deg * Math.PI) / 180;
@@ -55,9 +56,11 @@ module.exports = class Tower {
          this.angle = radToDeg(Math.atan2(state.enemy[target.index].y - this.y, state.enemy[target.index].x - this.x));
          this.angle = this.angle % 360;
          if (this.tick % this.reload === 0) {
-            const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
-            audio.volume = 0.2;
-            audio.play();
+            if ((this.stats.reload_time < 0.15 && Math.random() < 0.3) || this.stats.reload_time > 0.15) {
+               const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
+               audio.volume = 0.2;
+               playAudio(audio);
+            }
             state.bullet.push(
                new this.bullet.object(
                   this.x,

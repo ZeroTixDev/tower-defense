@@ -3,6 +3,7 @@
 const { BASIC_ENEMY, GAME } = require('../../util/constants');
 const offset = require('../../util/offset');
 const { loadSound } = require('../../util/loadAsset');
+const playAudio = require('../../util/playAudio');
 
 module.exports = class Enemy {
    constructor(path, stats = BASIC_ENEMY) {
@@ -78,10 +79,10 @@ module.exports = class Enemy {
          if (distance < bullet.radius + this.radius) {
             if (!this.dying) {
                this.health -= bullet.damage;
-               if (Math.random() < 0.5) {
+               if (Math.random() < 0.3) {
                   const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
                   audio.volume = 0.1;
-                  audio.play();
+                  playAudio(audio);
                }
             }
             if (this.health <= 0) {
