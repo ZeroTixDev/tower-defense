@@ -54,21 +54,21 @@
 		"enemy": [
 			{
 				"type": "basic",
-				"amount": 1500,
-				"time-in-between-ms": 0,
+				"amount": 500,
+				"time-in-between-ms": 5,
 				"delay": 1600
 			},
 			{
 				"type": "fast",
 				"amount": 900,
 				"delay": 0,
-				"time-in-between-ms": 0
+				"time-in-between-ms": 5
 			},
 			{
 				"type": "strong",
-				"amount": 1500,
+				"amount": 1000,
 				"delay": 6200,
-				"time-in-between-ms": 0
+				"time-in-between-ms": 5
 			}
 		]
 	}],
