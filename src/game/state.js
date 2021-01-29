@@ -19,6 +19,8 @@ module.exports = class State {
       this.explosion = Array(4)
          .fill(null)
          .map((_, index) => loadSound(`explosion${index + 1}.wav`));
+      this.enemyOnMapLock = true;
+      this.queueEnemy = false;
    }
    intersect(pos, mouse, radius, camera) {
       const offsetPos = offset(pos.x, pos.y, camera);
@@ -30,16 +32,16 @@ module.exports = class State {
       const distance = Math.sqrt(distX * distX + distY * distY);
       return distance < radius;
    }
-   spawnWave(game) {
-      const wave = this.map.waves[this.currentWave];
+   spawnWave(game, waveIndex = false) {
+      const wave = this.map.waves[waveIndex || this.currentWave];
       spawnEnemy(this.map.path, wave.enemy, game);
-      this.currentWave++;
       if (this.currentWave > this.map.stats.waves - 1) {
          this.currentWave = this.map.stats.waves - 1;
          this.finishedMap = true;
       }
    }
-   simulate(mouse, camera) {
+   simulate(game) {
+      const { mouse, camera } = game;
       for (let i = this.bullet.length - 1; i >= 0; i--) {
          const bullet = this.bullet[i];
          bullet.update();
@@ -73,6 +75,7 @@ module.exports = class State {
       }
       let enemyOnMouse = null;
       for (let i = this.enemy.length - 1; i >= 0; i--) {
+         this.enemyOnMapLock = false;
          const enemy = this.enemy[i];
          enemy.update(this);
          enemy.showStats = false;
@@ -102,6 +105,11 @@ module.exports = class State {
       }
       if (hoverTowerIndex != null && this.spots[hoverTowerIndex]) {
          this.spots[hoverTowerIndex].showStats = true;
+      }
+      if (this.enemy.length === 0 && !this.enemyOnMapLock && !this.queueEnemy) {
+         this.enemyOnLock = true;
+         this.queueEnemy = true;
+         this.spawnWave(game, this.currentWave);
       }
    }
    handleMouseDown(mouse, camera) {

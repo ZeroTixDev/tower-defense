@@ -183,7 +183,7 @@ module.exports = class Game {
       }
    }
    simulate() {
-      this.state.simulate(this.mouse, this.camera);
+      this.state.simulate(this);
    }
    pause() {
       this.paused = true;
