@@ -1,6 +1,5 @@
 dependencies:
   dotenv: 8.2.0
-  howler: 2.2.1
   node-fetch: 2.6.1
 devDependencies:
   clean-webpack-plugin: 3.0.0_webpack@5.19.0
@@ -1965,10 +1964,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
-  /howler/2.2.1:
-    dev: false
-    resolution:
-      integrity: sha512-0iIXvuBO/81CcrQ/HSSweYmbT50fT2mIc9XMFb+kxIfk2pW/iKzDbX1n3fZmDXMEIpYvyyfrB+gXwPYSDqUxIQ==
   /hpack.js/2.1.6:
     dependencies:
       inherits: 2.0.4
@@ -4716,7 +4711,6 @@ specifiers:
   eslint-config-prettier: ^7.1.0
   eslint-plugin-prettier: ^3.3.1
   file-loader: ^6.2.0
-  howler: ^2.2.1
   html-webpack-plugin: ^4.5.1
   node-fetch: ^2.6.1
   prettier: ^2.2.1
