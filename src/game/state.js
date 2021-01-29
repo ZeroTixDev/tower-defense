@@ -32,13 +32,15 @@ module.exports = class State {
       const distance = Math.sqrt(distX * distX + distY * distY);
       return distance < radius;
    }
-   spawnWave(game, waveIndex = false) {
-      const wave = this.map.waves[waveIndex || this.currentWave];
+   spawnWave(game) {
+      const wave = this.map.waves[this.currentWave];
       spawnEnemy(this.map.path, wave.enemy, game);
+      this.currentWave++;
       if (this.currentWave > this.map.stats.waves - 1) {
          this.currentWave = this.map.stats.waves - 1;
          this.finishedMap = true;
       }
+      this.queueEnemy = false;
    }
    simulate(game) {
       const { mouse, camera } = game;
@@ -82,7 +84,6 @@ module.exports = class State {
          if (enemy.dying && !enemy.doingAnimation) {
             enemy.doingAnimation = true;
             this.money += Math.round(enemy.stats.money + enemy.stats.money_randomness * Math.random());
-            // do sound effect
             const audio = this.explosion[Math.floor(Math.random() * this.explosion.length)];
             audio.volume = 0.15;
             audio.play();
@@ -107,9 +108,22 @@ module.exports = class State {
          this.spots[hoverTowerIndex].showStats = true;
       }
       if (this.enemy.length === 0 && !this.enemyOnMapLock && !this.queueEnemy) {
-         this.enemyOnLock = true;
+         this.enemyOnMapLock = true;
          this.queueEnemy = true;
-         this.spawnWave(game, this.currentWave);
+         this.spawnWave(game);
+      }
+   }
+   handleRightClick(mouse, camera) {
+      let spotOnMouse = null;
+      for (let i = this.spots.length - 1; i >= 0; i--) {
+         const spot = this.spots[i];
+         if (spotOnMouse === null && this.intersect({ x: spot.x, y: spot.y }, mouse, spot.radius, camera)) {
+            spotOnMouse = i;
+            if (spot.hasTower) {
+               this.money += spot.tower.stats.cost / 2;
+               spot.tower = null;
+            }
+         }
       }
    }
    handleMouseDown(mouse, camera) {

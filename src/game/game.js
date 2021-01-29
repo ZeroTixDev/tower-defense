@@ -81,13 +81,23 @@ module.exports = class Game {
       });
       this.listen('keydown', this.trackKeys.bind(this));
       this.listen('keyup', this.trackKeys.bind(this));
-      this.listen('mousedown', () => {
+      this.listen('mousedown', (event) => {
+         let rightClick = false;
+         if (event.which) rightClick = event.which == 3;
+         else if (event.button) rightClick = event.button == 2;
+         if (rightClick) return;
          this.mouse.down = true;
          if (this.paused) return;
          this.state.handleMouseDown(this.mouse, this.camera);
       });
       this.listen('mouseup', () => {
          this.mouse.down = false;
+      });
+      this.listen('contextmenu', (event) => {
+         event.preventDefault();
+         if (this.paused) return;
+         this.state.handleRightClick(this.mouse, this.camera);
+         return false;
       });
    }
    pauseOverlay(ctx) {
