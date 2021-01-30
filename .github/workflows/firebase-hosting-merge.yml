@@ -10,15 +10,15 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-      - uses: actions/setup-node@v2.1.4
       - name: Install PNPM
         run: sudo npm i -g pnpm
       - name: Install Dependencies
         run: pnpm i
       - name: Build
         run: pnpm run build
+      - uses: actions/checkout@v2
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: actions/setup-node@v2.1.4
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOWER_DEFENSE_C342F }}'
