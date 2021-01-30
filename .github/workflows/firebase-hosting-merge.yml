@@ -12,7 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v1.2.1
-        run: pnpm ci && pnpm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           version: 4.11.4
@@ -23,3 +22,4 @@ jobs:
           node-version: 15
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
+        run: pnpm ci && pnpm run build
