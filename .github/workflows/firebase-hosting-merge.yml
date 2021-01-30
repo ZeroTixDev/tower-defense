@@ -10,19 +10,16 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install PNPM
-        run: sudo npm i -g pnpm
-      - name: Install Dependencies
-        run: pnpm i
-      - name: Build
-        run: ls
       - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v1.2.1
+        run: pnpm ci && pnpm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
-      - uses: actions/setup-node@v2.1.4
         with:
+          version: 4.11.4
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOWER_DEFENSE_C342F }}'
           channelId: live
           projectId: tower-defense-c342f
+          node-version: 15
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
