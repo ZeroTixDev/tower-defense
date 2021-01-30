@@ -15,7 +15,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm i
       - name: Build
-        run: pnpm run build
+        run: npm ci && pnpm run build
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
       - uses: actions/setup-node@v2.1.4
