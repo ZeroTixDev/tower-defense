@@ -14,6 +14,8 @@ module.exports = class Game {
       this.stopAllSounds();
       window.sounds = [];
       window.maxSounds = GAME.max_sounds;
+      window.muted = localStorage.getItem('muted') ?? 'false';
+      localStorage.setItem('muted', window.muted);
       this.themeSong = loadSound('theme.wav');
       this.themeSong.volume = THEME_SONG.volume;
       this.themeSong.loop = THEME_SONG.loop;
@@ -72,6 +74,7 @@ module.exports = class Game {
       }
    }
    playAudio() {
+      if (window.muted === 'true') return;
       const audio = loadSound('start.wav');
       audio.play();
       audio.addEventListener('ended', () => {
@@ -133,12 +136,16 @@ module.exports = class Game {
       if (event.repeat) return;
       const control = this.controls[event.key.toLowerCase()];
       if (!control) return;
+      function tryUnlock() {
+         if (control.keylock && event.type === 'keyup') {
+            control.locked = false;
+            return true;
+         }
+         return false;
+      }
       switch (control.type) {
          case 'pause':
-            if (control.keylock && event.type === 'keyup') {
-               control.locked = false;
-               return;
-            }
+            if (tryUnlock()) return;
             if ((control.keylock && !control.locked) || !control.keylock) {
                this.paused ? this.unpause() : this.pause(); // what happens when you clicked pause
                if (control.keylock) {
@@ -146,6 +153,21 @@ module.exports = class Game {
                }
             }
             break;
+         case 'mute':
+            if (tryUnlock()) return;
+            if ((control.keylock && !control.locked) || !control.keylock) {
+               window.muted = window.muted === 'false' ? 'true' : 'false'; // what happens when you try to mute my good audio (fuck you)
+               localStorage.setItem('muted', window.muted);
+               if (window.muted === 'false') {
+                  this.themeSong.currentTime = 0;
+                  this.themeSong.play();
+               } else if (window.muted === 'true') {
+                  this.themeSong.pause();
+               }
+               if (control.keylock) {
+                  control.locked = true;
+               }
+            }
       }
    }
    makeSpots() {
@@ -190,6 +212,25 @@ module.exports = class Game {
       );
       ctx.restore();
    }
+   drawMutedBox(ctx) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.fillRect(0, this.canvas.height - 40, 120, 40);
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '25px Arial';
+      ctx.fillText('MUTED', 60, this.canvas.height - 20);
+   }
+   drawPausedBox(ctx) {
+      const y = window.muted === 'true' ? this.canvas.height - 80 : this.canvas.height - 40;
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.fillRect(0, y, 120, 40);
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '25px Arial';
+      ctx.fillText('PAUSED', 60, window.muted === 'true' ? this.canvas.height - 60 : this.canvas.height - 20);
+   }
    render() {
       this.drawBackgroundPattern(this.ctx);
       // this.ctx.fillStyle = GAME.background_color;
@@ -198,6 +239,10 @@ module.exports = class Game {
       this.state.render(this.ctx, this.camera, this.GUI);
       if (this.paused) {
          this.pauseOverlay(this.ctx);
+         this.drawPausedBox(this.ctx);
+      }
+      if (window.muted === 'true') {
+         this.drawMutedBox(this.ctx);
       }
    }
    simulate() {

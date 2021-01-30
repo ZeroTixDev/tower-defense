@@ -23,7 +23,7 @@ function generateId(array = [], generate = () => {}) {
    return uniqueId;
 }
 module.exports = function play(audio) {
-   if (window.sounds.length < window.maxSounds) {
+   if (window.sounds.length < window.maxSounds && window.muted === 'false') {
       audio.play();
       audio.id = generateId(window.sounds, () => {
          return Math.round(Math.random() * 200);

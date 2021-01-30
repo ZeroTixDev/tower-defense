@@ -11,6 +11,7 @@ const GAME = {
 
 const CONTROLS = {
    ' ': { type: 'pause', keylock: true },
+   m: { type: 'mute', keylock: true },
 };
 
 const THEME_SONG = {

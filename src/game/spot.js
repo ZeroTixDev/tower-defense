@@ -36,7 +36,9 @@ module.exports = class Spot {
             return;
          }
          state.money -= this.tower.stats.cost;
-         this.audio.play();
+         if (window.muted === 'false') {
+            this.audio.play();
+         }
       } else if (this.selectedIndex === 1) {
          this.tower = new Pounder(this.x, this.y);
          if (this.tower.stats.cost > state.money) {
@@ -45,7 +47,9 @@ module.exports = class Spot {
             return;
          }
          state.money -= this.tower.stats.cost;
-         this.audio.play();
+         if (!window.muted) {
+            this.audio.play();
+         }
       } else if (this.selectedIndex === 2) {
          this.tower = new Gunner(this.x, this.y);
          if (this.tower.stats.cost > state.money) {
@@ -54,7 +58,9 @@ module.exports = class Spot {
             return;
          }
          state.money -= this.tower.stats.cost;
-         this.audio.play();
+         if (!window.muted) {
+            this.audio.play();
+         }
       }
       this.selectedIndex = null;
    }
