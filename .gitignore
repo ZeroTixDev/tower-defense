@@ -2,3 +2,4 @@ node_modules
 skap.js
 autofly.js
 .env
+.github/workflows/
