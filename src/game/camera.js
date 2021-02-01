@@ -25,16 +25,14 @@ module.exports = class Camera {
       // this.scale = Math.max(this.scalingBounds[0], Math.round(this.scale));
    }
    interp(x, y, delta) {
-      if (delta < 1 / 30) {
-         this.xv += (x - this.x) * 0.45 * delta * this.speed;
-         this.yv += (y - this.y) * 0.45 * delta * this.speed;
-         this.xv += (GAME.width / 2 - this.x) * 0.9 * delta * this.speed * 5;
-         this.yv += (GAME.height / 2 - this.y) * 0.9 * delta * this.speed * 5;
-         this.xv *= Math.pow(this.friction, delta * GAME.simulation_rate);
-         this.yv *= Math.pow(this.friction, delta * GAME.simulation_rate);
-         this.x += this.xv;
-         this.y += this.yv;
-      }
+      this.xv += (x - this.x) * 0.45 * delta * this.speed;
+      this.yv += (y - this.y) * 0.45 * delta * this.speed;
+      this.xv += (GAME.width / 2 - this.x) * 0.9 * delta * this.speed * 5;
+      this.yv += (GAME.height / 2 - this.y) * 0.9 * delta * this.speed * 5;
+      this.xv *= Math.pow(this.friction, delta * GAME.simulation_rate);
+      this.yv *= Math.pow(this.friction, delta * GAME.simulation_rate);
+      this.x += this.xv;
+      this.y += this.yv;
    }
    setTo(x, y) {
       this.x = x;

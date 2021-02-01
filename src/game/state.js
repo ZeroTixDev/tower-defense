@@ -73,7 +73,7 @@ module.exports = class State {
             hoverTowerIndex = i;
          }
       }
-      if (!hoveringTower) {
+      if (!hoveringTower && document.body.style.cursor !== 'default') {
          setCursor('default');
       }
       let enemyOnMouse = null;

@@ -32,11 +32,11 @@ module.exports = class Enemy {
    }
    get dead() {
       return (
+         this.health <= 0 &&
          (this.x - this.radius < -GAME.margin ||
             this.x + this.radius > GAME.width + GAME.margin ||
             this.y + this.radius > GAME.height + GAME.margin ||
-            this.y - this.radius < -GAME.margin) &&
-         this.health <= 0
+            this.y - this.radius < -GAME.margin)
       );
    }
    lerp(start, end, time) {
@@ -75,23 +75,25 @@ module.exports = class Enemy {
          const bullet = state.bullet[i];
          const distX = bullet.x - this.x;
          const distY = bullet.y - this.y;
-         const distance = Math.sqrt(distX * distX + distY * distY);
-         if (distance < bullet.radius + this.radius) {
-            if (!this.dying) {
-               this.health -= bullet.damage;
-               if (Math.random() < 0.3) {
-                  const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
-                  audio.volume = 0.1;
-                  playAudio(audio);
+         if (Math.abs(distX) < bullet.radius + this.radius && Math.abs(distY) < bullet.radius + this.radius) {
+            const distance = Math.sqrt(distX * distX + distY * distY);
+            if (distance < bullet.radius + this.radius) {
+               if (!this.dying) {
+                  this.health -= bullet.damage;
+                  if (Math.random() < 0.3) {
+                     const audio = this.audio[Math.floor(Math.random() * this.audio.length)];
+                     audio.volume = 0.1;
+                     playAudio(audio);
+                  }
                }
+               if (this.health <= 0) {
+                  this.dying = true;
+                  this.xv = bullet.xv / 2;
+                  this.yv = bullet.yv / 2;
+                  this.health = 0;
+               }
+               state.bullet.splice(i, 1);
             }
-            if (this.health <= 0) {
-               this.dying = true;
-               this.xv = bullet.xv / 2;
-               this.yv = bullet.yv / 2;
-               this.health = 0;
-            }
-            state.bullet.splice(i, 1);
          }
       }
       this.renderHealth += (this.health - this.renderHealth) * (GAME.simulation_rate / 500);

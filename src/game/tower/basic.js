@@ -45,10 +45,12 @@ module.exports = class Tower {
          if (enemy.dead) continue;
          const distX = enemy.x - this.x;
          const distY = enemy.y - this.y;
-         const dist = Math.sqrt(distX * distX + distY * distY);
-         if (dist < this.fov / 2 + enemy.radius) {
-            if (target === null || enemy.traveled > target.traveled) {
-               target = { index: i, traveled: enemy.traveled };
+         if (Math.abs(distX) < this.fov / 2 + enemy.radius && Math.abs(distY) < this.fov / 2 + enemy.radius) {
+            const dist = Math.sqrt(distX * distX + distY * distY);
+            if (dist < this.fov / 2 + enemy.radius) {
+               if (target === null || enemy.traveled > target.traveled) {
+                  target = { index: i, traveled: enemy.traveled };
+               }
             }
          }
       }
