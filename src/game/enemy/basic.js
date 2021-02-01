@@ -86,7 +86,7 @@ module.exports = class Enemy {
                      playAudio(audio);
                   }
                }
-               if (this.health <= 0) {
+               if (this.health <= 0 && !this.dying) {
                   this.dying = true;
                   this.xv = bullet.xv / 2;
                   this.yv = bullet.yv / 2;
