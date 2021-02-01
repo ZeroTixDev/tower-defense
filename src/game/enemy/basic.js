@@ -76,8 +76,8 @@ module.exports = class Enemy {
          const distX = bullet.x - this.x;
          const distY = bullet.y - this.y;
          if (Math.abs(distX) < bullet.radius + this.radius && Math.abs(distY) < bullet.radius + this.radius) {
-            const distance = Math.sqrt(distX * distX + distY * distY);
-            if (distance < bullet.radius + this.radius) {
+            const dist = distX * distX + distY * distY;
+            if (dist < (bullet.radius + this.radius) ** 2) {
                if (!this.dying) {
                   this.health -= bullet.damage;
                   if (Math.random() < 0.3) {

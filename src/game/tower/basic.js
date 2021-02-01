@@ -46,8 +46,8 @@ module.exports = class Tower {
          const distX = enemy.x - this.x;
          const distY = enemy.y - this.y;
          if (Math.abs(distX) < this.fov / 2 + enemy.radius && Math.abs(distY) < this.fov / 2 + enemy.radius) {
-            const dist = Math.sqrt(distX * distX + distY * distY);
-            if (dist < this.fov / 2 + enemy.radius) {
+            const dist = distX * distX + distY * distY;
+            if (dist < (this.fov / 2 + enemy.radius) ** 2) {
                if (target === null || enemy.traveled > target.traveled) {
                   target = { index: i, traveled: enemy.traveled };
                }
