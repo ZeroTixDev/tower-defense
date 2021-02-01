@@ -42,7 +42,7 @@ module.exports = class Tower {
       let target = null;
       for (let i = 0; i < state.enemy.length; i++) {
          const enemy = state.enemy[i];
-         if (enemy.dead) continue;
+         if (enemy.dead || enemy.dying) continue;
          const distX = enemy.x - this.x;
          const distY = enemy.y - this.y;
          if (Math.abs(distX) < this.fov / 2 + enemy.radius && Math.abs(distY) < this.fov / 2 + enemy.radius) {
